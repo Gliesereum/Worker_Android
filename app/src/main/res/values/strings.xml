@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">KARMAworker</string>
+
+    <string name="error">Ошибка!</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="error_1160">Value empty is</string>
+    <string name="error_1161">Code is empty</string>
+    <string name="error_1162">Type empty is</string>
+    <string name="error_1163">User type is empty</string>
+    <string name="error_1164">Вы ввели не правильный код подтверждения</string>
+
+    <string name="error_1000">Id not specified</string>
+    <string name="error_1001">Validation error</string>
+    <string name="error_1002">Not valid uri</string>
+    <string name="error_1003">Request body is invalid</string>
+    <string name="error_1004">Not exist by id</string>
+    <string name="error_1040">Current user don\'t have any permission</string>
+    <string name="error_1041">Current user don\'t have permission to module</string>
+    <string name="error_1042">Current user don\'t have permission to endpoint</string>
+    <string name="error_1043">Module not active</string>
+    <string name="error_1044">Endpoint not active</string>
+    <string name="error_1045">Endpoint not found</string>
+    <string name="error_1046">Для данного действия необходимо Войти или Зарегистрироваться</string>
+
+    <string name="error_9000">Сервер в данный момент не доступен. Ведутся технические работы</string>
+    <string name="error_9001">Сервер в данный момент не доступен. Попробуйте позже</string>
+
+    <string name="error_1140">Value email is empty</string>
+    <string name="error_1141">Value code by email is empty</string>
+    <string name="error_1142">Email not found </string>
+    <string name="error_1143">Email already exist</string>
+    <string name="error_1144">Not valid email</string>
+    <string name="error_1145">User already has some email</string>
+    <string name="error_1146">User doesn\'t any email</string>
+    <string name="error_1147">You can\'t delete email. You don\'t have phone. Email is only way to verify your account</string>
+
+    <string name="error_1300">Permission group not found</string>
+    <string name="error_1301">User exist in group, remove before add to other</string>
+    <string name="error_1302">User not exist in group</string>
+    <string name="error_1303">Permission group not active</string>
+
+    <string name="error_1400">Car not found</string>
+    <string name="error_1410">Service class not found</string>
+    <string name="error_1411">Service price not found</string>
+    <string name="error_1420">Current user don\'t have permission to action this carwash</string>
+    <string name="error_1421">Carwash not found</string>
+    <string name="error_1422">Carwash id is empty</string>
+    <string name="error_1423">Current user don\'t have permission to create carwash</string>
+
+    <string name="error_1424">Current user don\'t have permission to action this service</string>
+
+    <string name="error_1425">Service not found</string>
+    <string name="error_1426">Выберите пакет либо услугу</string>
+    <string name="error_1427">Package not found </string>
+
+    <string name="error_1428">CarWash don\'t have this working space </string>
+    <string name="error_1429">Working space id is null </string>
+    <string name="error_1430">Не достаточно свободного вермени для выполнения всех услуг в Вашем заказе. </string>
+    <string name="error_1431">Record not found</string>
+
+    <string name="error_1432">Time begin is empty</string>
+    <string name="error_1433">Working space not found</string>
+    <string name="error_1434">В этот день мойка не работает. Пажулайста выберите другой день</string>
+    <string name="error_1435">В это время мойка не работает. Пажулайста выберите другое время</string>
+
+    <string name="error_1436">Time working already exist in this car wash</string>
+    <string name="error_1437">Time working not found</string>
+
+    <string name="error_1438">Current user don\'t have permission to action this record</string>
+
+    <string name="error_1439">Вы пытаетесь записаться на прошедшие время</string>
+
+
+    <string name="error_1440">Anonymous user can\'t comment</string>
+    <string name="error_1441">Comment for current user exist</string>
+    <string name="error_1442">Current user cant\'t edit this comment</string>
+    <string name="error_1443">Comment not found</string>
+
+
+    <string name="error_1450">Media not found by id</string>
+
+    <string name="error_1120">Value phone number is empty</string>
+    <string name="error_1121">Value code by phone is empty</string>
+    <string name="error_1122">Phone number not found </string>
+    <string name="error_1123">Phone number already exist</string>
+    <string name="error_1124">Not valid phone number</string>
+    <string name="error_1125">User already has some phone</string>
+    <string name="error_1126">User doesn\'t any phone</string>
+    <string name="error_1127">You can\'t delete phone. You don\'t have email. Phone is only way to verify your account</string>
+
+    <string name="error_1100">Access or Refresh token empty</string>
+    <string name="error_1101">Access token empty</string>
+    <string name="error_1102">Access token not found </string>
+    <string name="error_1103">The pair of access and refresh token not valid</string>
+    <string name="error_1104">Access token is expired</string>
+    <string name="error_1105">Refresh token is expired</string>
+
+    <string name="error_1010">User not found </string>
+    <string name="error_1011">User not authentication </string>
+    <string name="error_1012">You can\'t change first name. Contact administrator</string>
+    <string name="error_1013">You can\'t change last name. Contact administrator</string>
+    <string name="error_1014">Url avatar is not valid</string>
+    <string name="error_1015">Url cover is not valid</string>
+    <string name="error_1016">User not business </string>
+    <string name="error_1017">User not VERIFIED </string>
+    <string name="error_1018">User in ban</string>
+
+    <string name="error_1451">Package don\'t have any services</string>
+    <string name="error_1510">Multipart data is empty</string>
+    <string name="error_1511">Multipart data type undefined</string>
+    <string name="error_1512">Multipart file name undefined</string>
+    <string name="error_1513">Multipart file type not compatible</string>
+    <string name="error_1514">Maximum upload size exceeded</string>
+
+    <string name="moneyUNICODE">&#128176;</string>
+    <string name="timeUNICODE">&#8987;</string>
+    <string name="tagKeyDuration">tagKeyDuration</string>
+    <string name="tagKeyPrice">tagKeyPrice</string>
+</resources>

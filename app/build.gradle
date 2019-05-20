@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.gliesereum.karmaworker"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
+
+    //Socket
+    implementation 'org.java-websocket:Java-WebSocket:1.4.0'
+    implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.4'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.5'
+
+//    implementation 'com.github.yehiahd:FastSave-Android:1.0.6'
+    //https://android-arsenal.com/details/1/6875
+    implementation 'com.chaos.view:pinview:1.4.2'
+    //https://github.com/ChaosLeong/PinView
+    implementation 'com.github.joielechong:countrycodepicker:2.1.8'
+    //https://github.com/joielechong/CountryCodePicker
+    implementation 'com.github.Haegon:EasyNativeDialog-for-Android:0.3.0'
+    //https://android-arsenal.com/details/1/6525
+    implementation 'com.airbnb.android:lottie:2.7.0'
+    implementation 'com.github.mayuce:LottieAlertDialog:1.1'
+    //https://android-arsenal.com/details/1/7557
+    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+    implementation 'com.github.okdroid:checkablechipview:1.0.3'
+    //https://android-arsenal.com/details/1/7087
+    implementation 'de.ehsun.coloredtimebar:coloredtimebar:1.0'
+    //https://github.com/ehsunshine/colored-time-selector
+
+
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+}
