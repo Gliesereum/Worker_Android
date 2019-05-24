@@ -18,11 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gliesereum.karmaworker.MyFirebaseMessagingService;
 import com.gliesereum.karmaworker.R;
 import com.gliesereum.karmaworker.adapter.RecordListAdapter;
 import com.gliesereum.karmaworker.network.APIClient;
 import com.gliesereum.karmaworker.network.APIInterface;
 import com.gliesereum.karmaworker.network.CustomCallback;
+import com.gliesereum.karmaworker.network.json.notificatoin.NotificatoinBody;
+import com.gliesereum.karmaworker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.karmaworker.network.json.record.AllRecordResponse;
 import com.gliesereum.karmaworker.network.json.record.RecordsSearchBody;
 import com.gliesereum.karmaworker.util.ErrorHandler;
@@ -55,8 +58,10 @@ import ua.naiksoftware.stomp.dto.StompHeader;
 import static com.gliesereum.karmaworker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.karmaworker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.karmaworker.util.Constants.CARWASH_ID;
+import static com.gliesereum.karmaworker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.karmaworker.util.Constants.FROM_DATE;
 import static com.gliesereum.karmaworker.util.Constants.FROM_TIME;
+import static com.gliesereum.karmaworker.util.Constants.KARMA_BUSINESS_RECORD;
 import static com.gliesereum.karmaworker.util.Constants.SERVICE_TYPE;
 import static com.gliesereum.karmaworker.util.Constants.STATUS_FILTER;
 import static com.gliesereum.karmaworker.util.Constants.TO_DATE;
@@ -92,7 +97,27 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         setContentView(R.layout.activity_record_list);
         FastSave.init(getApplicationContext());
         initView();
+        subscribeToChanel();
         getAllRecord();
+        startService(new Intent(this, MyFirebaseMessagingService.class));
+    }
+
+    private void subscribeToChanel() {
+        UserSubscribe userSubscribe = new UserSubscribe(true, KARMA_BUSINESS_RECORD);
+        userSubscribe.setObjectId(FastSave.getInstance().getString(CARWASH_ID, ""));
+        NotificatoinBody notificatoinBody = new NotificatoinBody(FastSave.getInstance().getString(FIREBASE_TOKEN, ""), true, Arrays.asList(userSubscribe));
+        API.subscribeToChanel(FastSave.getInstance().getString(ACCESS_TOKEN, ""), notificatoinBody, true)
+                .enqueue(new Callback<List<UserSubscribe>>() {
+                    @Override
+                    public void onResponse(Call<List<UserSubscribe>> call, Response<List<UserSubscribe>> response) {
+                        Toast.makeText(RecordListActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<UserSubscribe>> call, Throwable t) {
+                        Toast.makeText(RecordListActivity.this, "NOT OK", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void getAllRecord() {

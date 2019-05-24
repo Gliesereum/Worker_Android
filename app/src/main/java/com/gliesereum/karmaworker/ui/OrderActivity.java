@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -17,11 +18,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import com.github.okdroid.checkablechipview.CheckableChipView;
 import com.gliesereum.karmaworker.R;
 import com.gliesereum.karmaworker.network.APIClient;
 import com.gliesereum.karmaworker.network.APIInterface;
@@ -38,6 +39,8 @@ import com.gliesereum.karmaworker.util.Util;
 import com.gohn.nativedialog.ButtonType;
 import com.gohn.nativedialog.NDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,7 +76,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private ConstraintLayout packageBlock;
     private LinearLayout packageItems;
     private TextView textView19;
-    private LinearLayout servicePriceItem;
+    private ChipGroup servicePriceItem;
+//    private LinearLayout servicePriceItem;
     private Button orderButton;
     private TextView packageLabel;
 
@@ -120,22 +124,31 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         packageItems.removeAllViews();
         for (int i = 0; i < carWash.getServicePrices().size(); i++) {
             if (!serviceMap.containsKey(carWash.getServicePrices().get(i).getId())) {
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0, 4, 0, 4);
-                CheckableChipView checkableChipView = new CheckableChipView(OrderActivity.this);
-                checkableChipView.setTextSize(60);
+//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                layoutParams.setMargins(0, 4, 0, 4);
+                Chip checkableChipView = new Chip(OrderActivity.this, null, R.style.Widget_MaterialComponents_Chip_Choice);
+//                Chip checkableChipView = new Chip(new ContextThemeWrapper(this, R.style.Widget_MaterialComponents_Chip_Filter), null, 0);
+                checkableChipView.setChipBackgroundColorResource(R.color.bg_chip_state_list);
+                checkableChipView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                checkableChipView.setTextSize(30);
+                checkableChipView.setCheckable(true);
+                checkableChipView.setClickable(true);
+                checkableChipView.setPadding(0, 8, 0, 8);
                 checkableChipView.setText(carWash.getServicePrices().get(i).getName() + "\n" + getString(R.string.timeUNICODE) + carWash.getServicePrices().get(i).getDuration() + " мин        " + getString(R.string.moneyUNICODE) + carWash.getServicePrices().get(i).getPrice() + " грн");
                 checkableChipView.setTag(carWash.getServicePrices().get(i).getId());
                 checkableChipView.setTag(R.string.tagKeyDuration, carWash.getServicePrices().get(i).getDuration());
                 checkableChipView.setTag(R.string.tagKeyPrice, carWash.getServicePrices().get(i).getPrice());
-                checkableChipView.setOutlineCornerRadius(10f);
-                checkableChipView.setBackgroundColor(getResources().getColor(R.color.white));
-                checkableChipView.setOutlineColor(getResources().getColor(R.color.black));
-                checkableChipView.setCheckedColor(getResources().getColor(R.color.colorAccent));
+//                checkableChipView.setChipBackgroundColorResource(R.color.bg_chip_state_list);
+
+//                checkableChipView.setOutlineCornerRadius(10f);
+//                checkableChipView.setBackgroundColor(getResources().getColor(R.color.white));
+//                checkableChipView.setOutlineColor(getResources().getColor(R.color.black));
+//                checkableChipView.setCheckedColor(getResources().getColor(R.color.colorAccent));
                 checkableChipView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (((CheckableChipView) v).isChecked()) {
+                        Log.d(TAG, "onClick: "+((Chip) v).isChecked());
+                        if (((Chip) v).isChecked()) {
                             durationLabel.setText(String.valueOf(Integer.parseInt(durationLabel.getText().toString()) + ((int) v.getTag(R.string.tagKeyDuration))));
                             priceLabel.setText(String.valueOf(Integer.parseInt(priceLabel.getText().toString()) + ((int) v.getTag(R.string.tagKeyPrice))));
                         } else {
@@ -144,20 +157,27 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
-                servicePriceItem.addView(checkableChipView, layoutParams);
+//                servicePriceItem.addView(checkableChipView, layoutParams);
+                servicePriceItem.addView(checkableChipView);
             } else {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(0, 4, 0, 4);
-                CheckableChipView checkableChipView = new CheckableChipView(OrderActivity.this);
-                checkableChipView.setTextSize(60);
+                Chip checkableChipView = new Chip(OrderActivity.this, null, R.style.Widget_MaterialComponents_Chip_Choice);
+                checkableChipView.setChipBackgroundColorResource(R.color.bg_chip_state_list);
+                checkableChipView.setTextSize(30);
+                checkableChipView.setPadding(0, 8, 0, 8);
+//                checkableChipView.setPadding(0, 4, 0, 4);
                 checkableChipView.setText(carWash.getServicePrices().get(i).getName() + "\n" + getString(R.string.timeUNICODE) + carWash.getServicePrices().get(i).getDuration() + " мин        " + getString(R.string.moneyUNICODE) + carWash.getServicePrices().get(i).getPrice() + " грн");
                 checkableChipView.setTag(carWash.getServicePrices().get(i).getId());
-                checkableChipView.setOutlineCornerRadius(10f);
-                checkableChipView.setBackgroundColor(getResources().getColor(R.color.white));
-                checkableChipView.setOutlineColor(getResources().getColor(R.color.black));
-                checkableChipView.setCheckedColor(getResources().getColor(R.color.material_drawer_selected));
+//                checkableChipView.setChipBackgroundColorResource(R.color.bg_chip_state_list);
+//                checkableChipView.setOutlineCornerRadius(10f);
+//                checkableChipView.setBackgroundColor(getResources().getColor(R.color.white));
+//                checkableChipView.setOutlineColor(getResources().getColor(R.color.black));
+//                checkableChipView.setCheckedColor(getResources().getColor(R.color.material_drawer_selected));
+                checkableChipView.setCheckable(true);
+                checkableChipView.setClickable(false);
                 checkableChipView.setChecked(true);
-                checkableChipView.setEnabled(false);
+//                checkableChipView.setEnabled(false);
                 packageItems.addView(checkableChipView, 0, layoutParams);
             }
         }
@@ -375,8 +395,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         orderBody.setDescription("Android");
         List<String> list = new ArrayList<>();
         for (int i = 0; i < servicePriceItem.getChildCount(); i++) {
-            if (((CheckableChipView) servicePriceItem.getChildAt(i)).isChecked()) {
-                list.add((String) ((CheckableChipView) servicePriceItem.getChildAt(i)).getTag());
+            if (((Chip) servicePriceItem.getChildAt(i)).isChecked()) {
+                list.add((String) ((Chip) servicePriceItem.getChildAt(i)).getTag());
             }
             Log.d(TAG, "getRecordFreeTime: ");
         }

@@ -3,6 +3,7 @@ package com.gliesereum.karmaworker.util;
 public class Constants {
 
     public static final String ANDROID_APP = "Не заполенно";
+    public static final String FIREBASE_TOKEN = "FIREBASE_TOKEN";
 
     public static final String STATUS_UP = "UP";
 

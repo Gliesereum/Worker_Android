@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.gliesereum.karmaworker"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -52,8 +52,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.7.0'
     implementation 'com.github.mayuce:LottieAlertDialog:1.1'
     //https://android-arsenal.com/details/1/7557
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation 'com.github.okdroid:checkablechipview:1.0.3'
+    implementation 'androidx.core:core-ktx:1.2.0-alpha01'
+//    implementation 'com.github.okdroid:checkablechipview:1.0.3'
     //https://android-arsenal.com/details/1/7087
     implementation 'de.ehsun.coloredtimebar:coloredtimebar:1.0'
     //https://github.com/ehsunshine/colored-time-selector

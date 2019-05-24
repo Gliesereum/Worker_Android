@@ -20,4 +20,36 @@ public class UserSubscribe {
         this.notificationEnable = notificationEnable;
         this.subscribeDestination = subscribeDestination;
     }
+
+    public String getUserDeviceId() {
+        return userDeviceId;
+    }
+
+    public void setUserDeviceId(String userDeviceId) {
+        this.userDeviceId = userDeviceId;
+    }
+
+    public Boolean getNotificationEnable() {
+        return notificationEnable;
+    }
+
+    public void setNotificationEnable(Boolean notificationEnable) {
+        this.notificationEnable = notificationEnable;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public String getSubscribeDestination() {
+        return subscribeDestination;
+    }
+
+    public void setSubscribeDestination(String subscribeDestination) {
+        this.subscribeDestination = subscribeDestination;
+    }
 }
