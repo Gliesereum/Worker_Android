@@ -6,8 +6,8 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gliesereum.karmaworker.MyFirebaseMessagingService;
 import com.gliesereum.karmaworker.R;
 import com.gliesereum.karmaworker.adapter.RecordListAdapter;
 import com.gliesereum.karmaworker.network.APIClient;
@@ -36,7 +35,6 @@ import com.gohn.nativedialog.NDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -51,21 +49,16 @@ import java.util.TimeZone;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ua.naiksoftware.stomp.Stomp;
-import ua.naiksoftware.stomp.StompClient;
-import ua.naiksoftware.stomp.dto.StompHeader;
 
 import static com.gliesereum.karmaworker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.karmaworker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.karmaworker.util.Constants.CARWASH_ID;
 import static com.gliesereum.karmaworker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.karmaworker.util.Constants.FROM_DATE;
-import static com.gliesereum.karmaworker.util.Constants.FROM_TIME;
 import static com.gliesereum.karmaworker.util.Constants.KARMA_BUSINESS_RECORD;
-import static com.gliesereum.karmaworker.util.Constants.SERVICE_TYPE;
+import static com.gliesereum.karmaworker.util.Constants.RECORD_LIST_ACTIVITY;
 import static com.gliesereum.karmaworker.util.Constants.STATUS_FILTER;
 import static com.gliesereum.karmaworker.util.Constants.TO_DATE;
-import static com.gliesereum.karmaworker.util.Constants.TO_TIME;
 
 public class RecordListActivity extends AppCompatActivity implements RecordListAdapter.ItemClickListener {
 
@@ -77,7 +70,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private ErrorHandler errorHandler;
     private TextView splashTextView;
     private ProgressDialog progressDialog;
-//    private StompClient mStompClient;
+    //    private StompClient mStompClient;
     private String TAG = "TAG";
     private NDialog nDialog;
     private CustomCallback customCallback;
@@ -89,6 +82,9 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView fromDateLabel;
     private TextView toDateLabel;
     private ChipGroup chipGroup;
+    private TextView bussinesName;
+    private Button backBtn;
+    private TextView moneyCount;
 
     @SuppressLint("CheckResult")
     @Override
@@ -97,9 +93,9 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         setContentView(R.layout.activity_record_list);
         FastSave.init(getApplicationContext());
         initView();
-        subscribeToChanel();
+//        subscribeToChanel();
         getAllRecord();
-        startService(new Intent(this, MyFirebaseMessagingService.class));
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void subscribeToChanel() {
@@ -134,7 +130,15 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                     public void onSuccessful(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
                         recordsList = response.body();
                         if (recordsList != null && recordsList.size() > 0) {
+                            bussinesName.setText(recordsList.get(0).getBusiness().getName());
                             recordListAdapter.setItems(recordsList);
+                            int count = 0;
+                            for (int i = 0; i < recordsList.size(); i++) {
+                                if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
+                                    count += recordsList.get(i).getPrice();
+                                }
+                            }
+                            moneyCount.setText(count + " грн");
                         }
                     }
 
@@ -170,6 +174,16 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 //                openFilterDialog();
             }
         });
+        bussinesName = findViewById(R.id.bussinesName);
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecordListActivity.this, ChooseCarWash.class));
+                finish();
+            }
+        });
+        moneyCount = findViewById(R.id.moneyCount);
     }
 
     private void openFilterDialog() {
@@ -182,18 +196,18 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                 case R.id.chipGroup:
                     chipGroup = childView.findViewById(R.id.chipGroup);
                     for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(chipGroup.getChildAt(i).getTag())){
-                            ((Chip)chipGroup.getChildAt(i)).setChecked(true);
+                        if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(chipGroup.getChildAt(i).getTag())) {
+                            ((Chip) chipGroup.getChildAt(i)).setChecked(true);
                         }
                     }
                     break;
                 case R.id.fromDateLabel:
-                     fromDateLabel = childView.findViewById(R.id.fromDateLabel);
-                     fromDateLabel.setText(Util.getStringDateTrue(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                    fromDateLabel = childView.findViewById(R.id.fromDateLabel);
+                    fromDateLabel.setText(Util.getStringDateTrue(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
                     break;
                 case R.id.toDateLabel:
-                     toDateLabel = childView.findViewById(R.id.toDateLabel);
-                     toDateLabel.setText(Util.getStringDateTrue(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                    toDateLabel = childView.findViewById(R.id.toDateLabel);
+                    toDateLabel.setText(Util.getStringDateTrue(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
                     break;
                 case R.id.fromBtn:
                     MaterialButton fromBtn = childView.findViewById(R.id.fromBtn);
@@ -210,9 +224,9 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                 case R.id.acceptFilter:
                     MaterialButton nowOrderBtn = childView.findViewById(R.id.acceptFilter);
                     nowOrderBtn.setOnClickListener(v -> {
-                        List<String>statusList = new ArrayList<>();
+                        List<String> statusList = new ArrayList<>();
                         for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                            if (((Chip)chipGroup.getChildAt(i)).isChecked()){
+                            if (((Chip) chipGroup.getChildAt(i)).isChecked()) {
                                 statusList.add((String) chipGroup.getChildAt(i).getTag());
                             }
                         }
@@ -478,5 +492,17 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         super.onBackPressed();
         startActivity(new Intent(RecordListActivity.this, ChooseCarWash.class));
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, false);
     }
 }

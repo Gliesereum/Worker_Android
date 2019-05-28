@@ -2,20 +2,23 @@ package com.gliesereum.karmaworker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gliesereum.karmaworker.MyFirebaseMessagingService;
 import com.gliesereum.karmaworker.R;
 import com.gliesereum.karmaworker.adapter.MyRecyclerViewAdapter;
 import com.gliesereum.karmaworker.network.APIClient;
 import com.gliesereum.karmaworker.network.APIInterface;
 import com.gliesereum.karmaworker.network.CustomCallback;
 import com.gliesereum.karmaworker.network.json.carwash.AllCarWashResponse;
+import com.gliesereum.karmaworker.network.json.notificatoin.NotificatoinBody;
+import com.gliesereum.karmaworker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.karmaworker.util.ErrorHandler;
 import com.gliesereum.karmaworker.util.FastSave;
 import com.gliesereum.karmaworker.util.Util;
@@ -25,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.gliesereum.karmaworker.util.Constants.ACCESS_EXPIRATION_DATE;
@@ -33,14 +37,14 @@ import static com.gliesereum.karmaworker.util.Constants.ACCESS_TOKEN_WITHOUT_BEA
 import static com.gliesereum.karmaworker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.karmaworker.util.Constants.CARWASH_ID;
 import static com.gliesereum.karmaworker.util.Constants.CARWASH_NAME;
+import static com.gliesereum.karmaworker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.karmaworker.util.Constants.FROM_DATE;
-import static com.gliesereum.karmaworker.util.Constants.FROM_TIME;
 import static com.gliesereum.karmaworker.util.Constants.IS_LOGIN;
+import static com.gliesereum.karmaworker.util.Constants.KARMA_BUSINESS_RECORD;
 import static com.gliesereum.karmaworker.util.Constants.REFRESH_EXPIRATION_DATE;
 import static com.gliesereum.karmaworker.util.Constants.REFRESH_TOKEN;
 import static com.gliesereum.karmaworker.util.Constants.STATUS_FILTER;
 import static com.gliesereum.karmaworker.util.Constants.TO_DATE;
-import static com.gliesereum.karmaworker.util.Constants.TO_TIME;
 import static com.gliesereum.karmaworker.util.Constants.USER_ID;
 
 public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
@@ -62,6 +66,10 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         initView();
         cleanRecordFilter();
         getAllCarWash();
+        startService(new Intent(this, MyFirebaseMessagingService.class));
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
     }
 
     private void cleanRecordFilter() {
@@ -123,6 +131,25 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         FastSave.getInstance().saveString(CARWASH_ID, adapter.getItem(position).getBusinessId());
         FastSave.getInstance().saveString(CARWASH_NAME, adapter.getItem(position).getName());
         FastSave.getInstance().saveString(BUSINESS_CATEGORY_ID, adapter.getItem(position).getBusinessCategoryId());
+        subscribeToChanel();
         startActivity(new Intent(ChooseCarWash.this, RecordListActivity.class));
+    }
+
+    private void subscribeToChanel() {
+        UserSubscribe userSubscribe = new UserSubscribe(true, KARMA_BUSINESS_RECORD);
+        userSubscribe.setObjectId(FastSave.getInstance().getString(CARWASH_ID, ""));
+        NotificatoinBody notificatoinBody = new NotificatoinBody(FastSave.getInstance().getString(FIREBASE_TOKEN, ""), true, Arrays.asList(userSubscribe));
+        API.subscribeToChanel(FastSave.getInstance().getString(ACCESS_TOKEN, ""), notificatoinBody, true)
+                .enqueue(new Callback<List<UserSubscribe>>() {
+                    @Override
+                    public void onResponse(Call<List<UserSubscribe>> call, Response<List<UserSubscribe>> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<UserSubscribe>> call, Throwable t) {
+
+                    }
+                });
     }
 }

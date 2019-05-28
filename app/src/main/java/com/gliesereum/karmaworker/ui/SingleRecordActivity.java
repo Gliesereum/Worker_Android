@@ -3,9 +3,9 @@ package com.gliesereum.karmaworker.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +20,7 @@ import com.gliesereum.karmaworker.network.json.car.AllCarResponse;
 import com.gliesereum.karmaworker.network.json.record.AllRecordResponse;
 import com.gliesereum.karmaworker.util.FastSave;
 import com.gliesereum.karmaworker.util.Util;
+import com.google.android.material.button.MaterialButton;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 
 import java.util.ArrayList;
@@ -29,13 +30,14 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.karmaworker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.karmaworker.util.Constants.SINGLE_RECORD_ACTIVITY;
 
 public class SingleRecordActivity extends AppCompatActivity implements View.OnClickListener {
 
     private APIInterface API;
     private CustomCallback customCallback;
     private AllRecordResponse record;
-    private Button progressBtn;
+    private MaterialButton progressBtn;
     private Button doneBtn;
     private Button cancelBtn;
     private TextView carName;
@@ -60,6 +62,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         } else {
             carName.setText("________");
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
     }
 
     private void initData() {
@@ -95,7 +99,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             progressBtn.setEnabled(false);
         }
         timeLabel.setText(Util.getStringTime(record.getBegin()));
-        durationLabel.setText(String.valueOf((record.getFinish() - record.getBegin()) / 60000) + " мин");
+//        durationLabel.setText(String.valueOf((record.getFinish() - record.getBegin()) / 60000) + " мин");
+        durationLabel.setText(Util.getStringTime(record.getFinish()));
         moneyLabel.setText(String.valueOf(record.getPrice()) + " грн");
         if (record.getPackageDto() != null) {
             for (int i = 0; i < record.getPackageDto().getServices().size(); i++) {
@@ -145,7 +150,6 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
                     @Override
                     public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                        Toast.makeText(SingleRecordActivity.this, "recordCancele", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
                         finish();
                     }
@@ -162,7 +166,6 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
                     @Override
                     public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                        Toast.makeText(SingleRecordActivity.this, "recordDone", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
                         finish();
                     }
@@ -179,7 +182,6 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
                     @Override
                     public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                        Toast.makeText(SingleRecordActivity.this, "recordDone", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
                         finish();
                     }
@@ -197,4 +199,18 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
         finish();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FastSave.getInstance().saveBoolean(SINGLE_RECORD_ACTIVITY, true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FastSave.getInstance().saveBoolean(SINGLE_RECORD_ACTIVITY, false);
+    }
+
+
 }

@@ -12,8 +12,12 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.gliesereum.karmaworker.ui.RecordListActivity;
+import com.gliesereum.karmaworker.util.FastSave;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import static com.gliesereum.karmaworker.util.Constants.RECORD_LIST_ACTIVITY;
+import static com.gliesereum.karmaworker.util.Constants.SINGLE_RECORD_ACTIVITY;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -23,16 +27,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        FastSave.init(getApplicationContext());
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Data: " + remoteMessage.getData());
-        if (remoteMessage.getData().get("event")!=null && remoteMessage.getData().get("event").equals("KARMA_BUSINESS_RECORD")){
+        if (remoteMessage.getData().get("event") != null && remoteMessage.getData().get("event").equals("KARMA_BUSINESS_RECORD") && !FastSave.getInstance().getBoolean(SINGLE_RECORD_ACTIVITY, false) && FastSave.getInstance().getBoolean(RECORD_LIST_ACTIVITY, false)) {
             Intent intent = new Intent(this, RecordListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        } else {
+            sendNotification(remoteMessage);
         }
-//        sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"), remoteMessage.getData().get("event"));
-        sendNotification(remoteMessage);
+
+//        if (remoteMessage.getData().get("event")!=null && remoteMessage.getData().get("event").equals("KARMA_BUSINESS_RECORD")){
+//            Intent intent = new Intent(this, RecordListActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//        }
+////        sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"), remoteMessage.getData().get("event"));
+//        sendNotification(remoteMessage);
     }
 
     @Override

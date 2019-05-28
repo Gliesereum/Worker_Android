@@ -4,6 +4,8 @@ public class Constants {
 
     public static final String ANDROID_APP = "Не заполенно";
     public static final String FIREBASE_TOKEN = "FIREBASE_TOKEN";
+    public static final String SINGLE_RECORD_ACTIVITY = "SINGLE_RECORD_ACTIVITY";
+    public static final String RECORD_LIST_ACTIVITY = "RECORD_LIST_ACTIVITY";
 
     public static final String STATUS_UP = "UP";
 
