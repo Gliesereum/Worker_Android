@@ -45,19 +45,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView dataTextView;
         private TextView timeTextView;
-        //        private TextView priceTextView;
-//        private TextView carWashName;
-        private TextView recordId;
-        //        private ImageView carWashLogo;
         private TextView statusTextView;
+        private TextView firstName;
+        private TextView secondName;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             dataTextView = itemView.findViewById(R.id.dataTextView);
-//            recordId = itemView.findViewById(R.id.recordId);
             timeTextView = itemView.findViewById(R.id.timeTextView);
             statusTextView = itemView.findViewById(R.id.statusTextView);
+            firstName = itemView.findViewById(R.id.firstName);
+            secondName = itemView.findViewById(R.id.secondName);
             itemView.setOnClickListener(this);
         }
 
@@ -69,6 +68,16 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         public void bind(AllRecordResponse recordInfo) {
             dataTextView.setText(Util.getStringDate(recordInfo.getBegin()));
             timeTextView.setText(Util.getStringTime(recordInfo.getBegin()));
+            if (recordInfo.getClient().getFirstName() != null && !recordInfo.getClient().getFirstName().equals("")) {
+                firstName.setText(recordInfo.getClient().getFirstName());
+            } else {
+                firstName.setText("");
+            }
+            if (recordInfo.getClient().getMiddleName() != null && !recordInfo.getClient().getMiddleName().equals("")) {
+                secondName.setText(recordInfo.getClient().getMiddleName());
+            } else {
+                secondName.setText("");
+            }
             if (recordInfo.getStatusRecord().equals("CANCELED")) {
                 statusTextView.setText("Отменена");
                 statusTextView.setTextColor(context.getResources().getColor(android.R.color.holo_red_light));

@@ -1,6 +1,5 @@
 package com.gliesereum.karmaworker.network.json.record;
 
-import com.gliesereum.karmaworker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.karmaworker.network.json.carwash.PackagesItem;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,179 +10,245 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class AllRecordResponse {
 
-    @SerializedName("business")
-    private AllCarWashResponse business;
+	@SerializedName("statusProcess")
+	private String statusProcess;
 
-    @SerializedName("packageDto")
-    private PackagesItem packageDto;
+	@SerializedName("workerId")
+	private String workerId;
 
-    @SerializedName("statusRecord")
-    private String statusRecord;
+	@SerializedName("clientId")
+	private String clientId;
 
-    @SerializedName("servicesIds")
-    private List<Object> servicesIds;
+	@SerializedName("targetId")
+	private String targetId;
 
-    @SerializedName("packageId")
-    private Object packageId;
+	@SerializedName("business")
+	private Business business;
 
-    @SerializedName("description")
-    private String description;
+	@SerializedName("packageDto")
+	private PackagesItem packageDto;
 
-    @SerializedName("services")
-    private List<ServicesItem> services;
+	@SerializedName("statusRecord")
+	private String statusRecord;
 
-    @SerializedName("statusPay")
-    private Object statusPay;
+	@SerializedName("servicesIds")
+	private List<Object> servicesIds;
 
-    @SerializedName("targetId")
-    private String targetId;
+	@SerializedName("packageId")
+	private Object packageId;
 
-    @SerializedName("statusProcess")
-    private String statusProcess;
+	@SerializedName("businessId")
+	private String businessId;
 
-    @SerializedName("workingSpaceId")
-    private String workingSpaceId;
+	@SerializedName("description")
+	private String description;
 
-    @SerializedName("price")
-    private int price;
+	@SerializedName("services")
+	private List<ServicesItem> services;
 
-    @SerializedName("finish")
-    private long finish;
+	@SerializedName("statusPay")
+	private String statusPay;
 
-    @SerializedName("id")
-    private String id;
+	@SerializedName("payType")
+	private String payType;
 
-    @SerializedName("begin")
-    private long begin;
+	@SerializedName("workingSpaceId")
+	private String workingSpaceId;
 
-    @SerializedName("businessId")
-    private String businessId;
+	@SerializedName("price")
+	private int price;
 
-    public String getStatusProcess() {
-        return statusProcess;
-    }
+	@SerializedName("businessCategoryId")
+	private String businessCategoryId;
 
-    public void setStatusProcess(String statusProcess) {
-        this.statusProcess = statusProcess;
-    }
+	@SerializedName("client")
+	private Client client;
 
-    public AllCarWashResponse getBusiness() {
-        return business;
-    }
+	@SerializedName("finish")
+	private long finish;
 
-    public void setBusiness(AllCarWashResponse business) {
-        this.business = business;
-    }
+	@SerializedName("id")
+	private String id;
 
-    public PackagesItem getPackageDto() {
-        return packageDto;
-    }
+	@SerializedName("begin")
+	private long begin;
 
-    public void setPackageDto(PackagesItem packageDto) {
-        this.packageDto = packageDto;
-    }
+	@SerializedName("notificationSend")
+	private boolean notificationSend;
 
-    public String getStatusRecord() {
-        return statusRecord;
-    }
+	public void setStatusProcess(String statusProcess) {
+		this.statusProcess = statusProcess;
+	}
 
-    public void setStatusRecord(String statusRecord) {
-        this.statusRecord = statusRecord;
-    }
+	public String getStatusProcess() {
+		return statusProcess;
+	}
 
-    public List<Object> getServicesIds() {
-        return servicesIds;
-    }
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
+	}
 
-    public void setServicesIds(List<Object> servicesIds) {
-        this.servicesIds = servicesIds;
-    }
+	public String getWorkerId() {
+		return workerId;
+	}
 
-    public Object getPackageId() {
-        return packageId;
-    }
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
 
-    public void setPackageId(Object packageId) {
-        this.packageId = packageId;
-    }
+	public String getClientId() {
+		return clientId;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setTargetId(String targetId) {
+		this.targetId = targetId;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getTargetId() {
+		return targetId;
+	}
 
-    public List<ServicesItem> getServices() {
-        return services;
-    }
+	public void setBusiness(Business business) {
+		this.business = business;
+	}
 
-    public void setServices(List<ServicesItem> services) {
-        this.services = services;
-    }
+	public Business getBusiness() {
+		return business;
+	}
 
-    public Object getStatusPay() {
-        return statusPay;
-    }
+	public PackagesItem getPackageDto() {
+		return packageDto;
+	}
 
-    public void setStatusPay(Object statusPay) {
-        this.statusPay = statusPay;
-    }
+	public void setPackageDto(PackagesItem packageDto) {
+		this.packageDto = packageDto;
+	}
 
-    public String getTargetId() {
-        return targetId;
-    }
+	public void setStatusRecord(String statusRecord) {
+		this.statusRecord = statusRecord;
+	}
 
-    public void setTargetId(String targetId) {
-        this.targetId = targetId;
-    }
+	public String getStatusRecord() {
+		return statusRecord;
+	}
 
-    public String getWorkingSpaceId() {
-        return workingSpaceId;
-    }
+	public void setServicesIds(List<Object> servicesIds) {
+		this.servicesIds = servicesIds;
+	}
 
-    public void setWorkingSpaceId(String workingSpaceId) {
-        this.workingSpaceId = workingSpaceId;
-    }
+	public List<Object> getServicesIds() {
+		return servicesIds;
+	}
 
-    public int getPrice() {
-        return price;
-    }
+	public void setPackageId(Object packageId) {
+		this.packageId = packageId;
+	}
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
+	public Object getPackageId() {
+		return packageId;
+	}
 
-    public long getFinish() {
-        return finish;
-    }
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
 
-    public void setFinish(long finish) {
-        this.finish = finish;
-    }
+	public String getBusinessId() {
+		return businessId;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public long getBegin() {
-        return begin;
-    }
+	public void setServices(List<ServicesItem> services) {
+		this.services = services;
+	}
 
-    public void setBegin(long begin) {
-        this.begin = begin;
-    }
+	public List<ServicesItem> getServices() {
+		return services;
+	}
 
-    public String getBusinessId() {
-        return businessId;
-    }
+	public void setStatusPay(String statusPay) {
+		this.statusPay = statusPay;
+	}
 
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
+	public String getStatusPay() {
+		return statusPay;
+	}
+
+	public void setPayType(String payType) {
+		this.payType = payType;
+	}
+
+	public String getPayType() {
+		return payType;
+	}
+
+	public void setWorkingSpaceId(String workingSpaceId) {
+		this.workingSpaceId = workingSpaceId;
+	}
+
+	public String getWorkingSpaceId() {
+		return workingSpaceId;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setBusinessCategoryId(String businessCategoryId) {
+		this.businessCategoryId = businessCategoryId;
+	}
+
+	public String getBusinessCategoryId() {
+		return businessCategoryId;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setFinish(long finish) {
+		this.finish = finish;
+	}
+
+	public long getFinish() {
+		return finish;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setBegin(long begin) {
+		this.begin = begin;
+	}
+
+	public long getBegin() {
+		return begin;
+	}
+
+	public void setNotificationSend(boolean notificationSend) {
+		this.notificationSend = notificationSend;
+	}
+
+	public boolean isNotificationSend() {
+		return notificationSend;
+	}
 }
