@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -71,7 +72,6 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView splashTextView;
     private ProgressDialog progressDialog;
     //    private StompClient mStompClient;
-    private String TAG = "TAG";
     private NDialog nDialog;
     private CustomCallback customCallback;
     private Button addRecord;
@@ -85,13 +85,14 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView bussinesName;
     private Button backBtn;
     private TextView moneyCount;
+    private String TAG = "activityTest";
+
 
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_list);
-        FastSave.init(getApplicationContext());
         initView();
 //        subscribeToChanel();
         getAllRecord();
@@ -140,16 +141,20 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                             }
                             moneyCount.setText(count + " грн");
                         }
+                        Log.d(TAG, "onSuccessful: ");
+                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
                     }
 
                     @Override
                     public void onEmpty(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
                         Toast.makeText(RecordListActivity.this, "204", Toast.LENGTH_SHORT).show();
+                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
                     }
                 }));
     }
 
     private void initView() {
+        FastSave.init(getApplicationContext());
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(this, this);
         errorHandler = new ErrorHandler(this, this);
@@ -498,11 +503,13 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     protected void onStart() {
         super.onStart();
         FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+        Log.d(TAG, "onStart: ");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, false);
+        Log.d(TAG, "onStop: ");
     }
 }
