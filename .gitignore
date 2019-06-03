@@ -5,9 +5,12 @@
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
+/app/google-services.json
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
+libs/
+src/main/res/layout-land/
