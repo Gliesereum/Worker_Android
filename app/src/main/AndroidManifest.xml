@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gliesereum.karmaworker">
+    package="com.gliesereum.coupler_worker">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -23,19 +23,26 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.OrderNewActivity"
+        <activity
+            android:name="com.gliesereum.coupler_worker.ui.OrderNewActivity"
             android:screenOrientation="landscape"></activity>
-        <activity android:name=".ui.OrderActivity"
+        <activity
+            android:name="com.gliesereum.coupler_worker.ui.OrderActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".ui.SingleRecordActivity"
+        <activity
+            android:name="com.gliesereum.coupler_worker.ui.SingleRecordActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".ui.RecordListActivity"
+        <activity
+            android:name="com.gliesereum.coupler_worker.ui.RecordListActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".ui.ChooseCarWash"
+        <activity
+            android:name="com.gliesereum.coupler_worker.ui.ChooseCarWash"
             android:screenOrientation="landscape"/>
-        <activity android:name=".ui.LoginActivity"
+        <activity
+            android:name="com.gliesereum.coupler_worker.ui.LoginActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name="com.gliesereum.coupler_worker.SplashActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
