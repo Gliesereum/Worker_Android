@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -83,7 +84,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView toDateLabel;
     private ChipGroup chipGroup;
     private TextView bussinesName;
-    private Button backBtn;
+    private ImageView backBtn;
     private TextView moneyCount;
     private String TAG = "activityTest";
 
@@ -92,7 +93,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record_list);
+        setContentView(R.layout.activity_record_list_new);
         initView();
 //        subscribeToChanel();
         getAllRecord();
@@ -131,7 +132,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                     public void onSuccessful(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
                         recordsList = response.body();
                         if (recordsList != null && recordsList.size() > 0) {
-                            bussinesName.setText(recordsList.get(0).getBusiness().getName());
+                            bussinesName.setText("Список заказов: " + recordsList.get(0).getBusiness().getName());
                             recordListAdapter.setItems(recordsList);
                             int count = 0;
                             for (int i = 0; i < recordsList.size(); i++) {
@@ -139,7 +140,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                                     count += recordsList.get(i).getPrice();
                                 }
                             }
-                            moneyCount.setText(count + " грн");
+                            moneyCount.setText("Касса: " + count + " грн");
                         }
                         Log.d(TAG, "onSuccessful: ");
                         FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);

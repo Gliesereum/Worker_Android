@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         private TextView timeTextView;
         private TextView statusTextView;
         private TextView firstName;
-        private TextView secondName;
+        private ImageView statusImg;
 
 
         public ViewHolder(View itemView) {
@@ -56,7 +57,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
             timeTextView = itemView.findViewById(R.id.timeTextView);
             statusTextView = itemView.findViewById(R.id.statusTextView);
             firstName = itemView.findViewById(R.id.firstName);
-            secondName = itemView.findViewById(R.id.secondName);
+            statusImg = itemView.findViewById(R.id.statusImg);
             itemView.setOnClickListener(this);
         }
 
@@ -66,38 +67,34 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         }
 
         public void bind(AllRecordResponse recordInfo) {
-            dataTextView.setText(Util.getStringDate(recordInfo.getBegin()));
+            dataTextView.setText(Util.getStringFullDateTrue(recordInfo.getBegin()));
             timeTextView.setText(Util.getStringTime(recordInfo.getBegin()));
             if (recordInfo.getClient().getFirstName() != null && !recordInfo.getClient().getFirstName().equals("")) {
-                firstName.setText(recordInfo.getClient().getFirstName());
+                firstName.setText(recordInfo.getClient().getFirstName() + " " + recordInfo.getClient().getMiddleName());
             } else {
                 firstName.setText("");
             }
-            if (recordInfo.getClient().getMiddleName() != null && !recordInfo.getClient().getMiddleName().equals("")) {
-                secondName.setText(recordInfo.getClient().getMiddleName());
-            } else {
-                secondName.setText("");
-            }
+
             if (recordInfo.getStatusRecord().equals("CANCELED")) {
                 statusTextView.setText("Отменена");
-                statusTextView.setTextColor(context.getResources().getColor(android.R.color.holo_red_light));
+                statusImg.setImageResource(R.drawable.ic_outline_block_24px);
             } else {
                 switch (recordInfo.getStatusProcess()) {
                     case "WAITING":
                         statusTextView.setText("В ожидании");
-                        statusTextView.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
+                        statusImg.setImageResource(R.drawable.ic_outline_av_timer_24px);
                         break;
                     case "IN_PROCESS":
                         statusTextView.setText("В процессе");
-                        statusTextView.setTextColor(context.getResources().getColor(android.R.color.holo_orange_light));
+                        statusImg.setImageResource(R.drawable.ic_outline_pause_circle_outline_24px);
                         break;
                     case "COMPLETED":
                         statusTextView.setText("Завершена");
-                        statusTextView.setTextColor(context.getResources().getColor(android.R.color.holo_green_light
-                        ));
+                        statusImg.setImageResource(R.drawable.ic_outline_check_circle_outline_24px);
                         break;
                     default:
                         statusTextView.setText("");
+                        statusImg.setImageResource(R.drawable.ic_outline_block_24px);
                         break;
                 }
             }
