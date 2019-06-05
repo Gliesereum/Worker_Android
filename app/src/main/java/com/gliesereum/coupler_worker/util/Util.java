@@ -191,6 +191,16 @@ public class Util {
 
     }
 
+    public static String getStringFullDateTrue(Long millisecond) {
+//        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+//        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+//        calendar.setTimeInMillis(millisecond);
+//        return format.format(calendar.getTime());
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return format.format(new Date(millisecond));
+
+    }
+
     public static String getStringDate(Long millisecond) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM");
         format.setTimeZone(TimeZone.getTimeZone("UTC"));

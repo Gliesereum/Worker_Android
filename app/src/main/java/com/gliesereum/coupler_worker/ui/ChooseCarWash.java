@@ -18,6 +18,7 @@ import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
+import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationTokenDeleteResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
@@ -93,6 +94,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     }
 
     private void logout() {
+        deleteRegistrationToken();
         FastSave.getInstance().deleteValue(IS_LOGIN);
         FastSave.getInstance().deleteValue(USER_ID);
         FastSave.getInstance().deleteValue(ACCESS_TOKEN);
@@ -102,6 +104,22 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         FastSave.getInstance().deleteValue(REFRESH_EXPIRATION_DATE);
         startActivity(new Intent(ChooseCarWash.this, LoginActivity.class));
         finish();
+    }
+
+    private void deleteRegistrationToken() {
+        API.deleteRegistrationToken(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(FIREBASE_TOKEN, ""))
+                .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<RegistrationTokenDeleteResponse>() {
+                    @Override
+                    public void onSuccessful(Call<RegistrationTokenDeleteResponse> call, Response<RegistrationTokenDeleteResponse> response) {
+
+                    }
+
+                    @Override
+                    public void onEmpty(Call<RegistrationTokenDeleteResponse> call, Response<RegistrationTokenDeleteResponse> response) {
+
+                    }
+                }));
+
     }
 
     private void getAllCarWash() {

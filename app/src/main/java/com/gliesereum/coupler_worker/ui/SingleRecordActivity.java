@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,19 +49,21 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView recyclerView;
     private ServiceListAdapter serviceListAdapter;
     private LottieAlertDialog alertDialog;
+    private TextView dataLabel;
+    private ImageView backImg;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_record);
+        setContentView(R.layout.activity_single_record_new);
         initData();
         initView();
         fillActivity();
         if (record.getTargetId() != null) {
             getCar(record.getTargetId());
         } else {
-            carName.setText("________");
+            carName.setText("");
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -87,6 +90,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         serviceListAdapter = new ServiceListAdapter(SingleRecordActivity.this);
         recyclerView.setAdapter(serviceListAdapter);
+        dataLabel = findViewById(R.id.dataLabel);
+        backImg = findViewById(R.id.backImg);
     }
 
     private void fillActivity() {
@@ -101,6 +106,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         timeLabel.setText(Util.getStringTime(record.getBegin()));
 //        durationLabel.setText(String.valueOf((record.getFinish() - record.getBegin()) / 60000) + " мин");
         durationLabel.setText(Util.getStringTime(record.getFinish()));
+        dataLabel.setText(Util.getStringFullDateTrue(record.getBegin()));
         moneyLabel.setText(String.valueOf(record.getPrice()) + " грн");
         if (record.getPackageDto() != null) {
             for (int i = 0; i < record.getPackageDto().getServices().size(); i++) {

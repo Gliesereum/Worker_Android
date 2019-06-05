@@ -32,7 +32,7 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ServiceListAdapter.ViewHolder holder, int position) {
-        holder.bind(allServiceList.get(position));
+        holder.bind(allServiceList.get(position), position);
     }
 
     @Override
@@ -42,12 +42,13 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView serviceTextView;
-
+        private TextView count;
 
         public ViewHolder(View itemView) {
             super(itemView);
             serviceTextView = itemView.findViewById(R.id.serviceTextView);
-            itemView.setOnClickListener(this);
+            count = itemView.findViewById(R.id.count);
+//            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -55,8 +56,9 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(String name) {
+        public void bind(String name, int position) {
             serviceTextView.setText(name);
+            count.setText(String.valueOf(position + 1));
         }
     }
 

@@ -11,6 +11,7 @@ import com.gliesereum.coupler_worker.network.json.code.CodeResponse;
 import com.gliesereum.coupler_worker.network.json.code.SigninBody;
 import com.gliesereum.coupler_worker.network.json.filter.FilterResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
+import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationTokenDeleteResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.order.OrderBody;
 import com.gliesereum.coupler_worker.network.json.order.OrderResponse;
@@ -46,6 +47,9 @@ public interface APIInterface {
 
     @POST("notification/v1/user-subscribe/list")
     Call<List<UserSubscribe>> subscribeToChanel(@Header("Authorization") String accessToken, @Body NotificatoinBody notificatoinBody, @Query("overrideExistedDestination") Boolean overrideExistedDestination);
+
+    @DELETE("notification/v1/user-device")
+    Call<RegistrationTokenDeleteResponse> deleteRegistrationToken(@Header("Authorization") String accessToken, @Query("registrationToken") String registrationToken);
 
 
     //ACCOUNT
