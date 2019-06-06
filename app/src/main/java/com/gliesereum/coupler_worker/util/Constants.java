@@ -19,6 +19,7 @@ public class Constants {
     public static final String TO_TIME = "toTime";
     public static final String STATUS_FILTER = "statusFilter";
     public static final String BUSINESS_CATEGORY_ID = "businessCategoryId";
+    public static final String CARWASH_TIME_ZONE = "CARWASH_TIME_ZONE";
 
 
     public static final String USER_NAME = "userName";

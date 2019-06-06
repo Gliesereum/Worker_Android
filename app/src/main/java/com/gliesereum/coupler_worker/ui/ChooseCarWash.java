@@ -38,6 +38,7 @@ import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN_WITHOUT_
 import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CARWASH_TIME_ZONE;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FROM_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOGIN;
@@ -149,6 +150,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         FastSave.getInstance().saveString(CARWASH_ID, adapter.getItem(position).getBusinessId());
         FastSave.getInstance().saveString(CARWASH_NAME, adapter.getItem(position).getName());
         FastSave.getInstance().saveString(BUSINESS_CATEGORY_ID, adapter.getItem(position).getBusinessCategoryId());
+        FastSave.getInstance().saveInt(CARWASH_TIME_ZONE, adapter.getItem(position).getTimeZone());
         subscribeToChanel();
         startActivity(new Intent(ChooseCarWash.this, RecordListActivity.class));
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KARMAworker</string>
+    <string name="app_name">Coupler Worker</string>
 
     <string name="error">Ошибка!</string>
     <string name="unknown_error">Неизвестная ошибка</string>

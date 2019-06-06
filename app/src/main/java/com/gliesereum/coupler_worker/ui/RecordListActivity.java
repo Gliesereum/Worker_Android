@@ -209,11 +209,11 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                     break;
                 case R.id.fromDateLabel:
                     fromDateLabel = childView.findViewById(R.id.fromDateLabel);
-                    fromDateLabel.setText(Util.getStringDateTrue(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                    fromDateLabel.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
                     break;
                 case R.id.toDateLabel:
                     toDateLabel = childView.findViewById(R.id.toDateLabel);
-                    toDateLabel.setText(Util.getStringDateTrue(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                    toDateLabel.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
                     break;
                 case R.id.fromBtn:
                     MaterialButton fromBtn = childView.findViewById(R.id.fromBtn);
@@ -260,13 +260,13 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
     public void fromDatePicker() {
         final Calendar currentDate = Calendar.getInstance();
-        date = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        date = Calendar.getInstance();
         new DatePickerDialog(RecordListActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 date.set(year, monthOfYear, dayOfMonth);
                 FastSave.getInstance().saveLong(FROM_DATE, Util.startOfDay(date.getTimeInMillis()));
-                fromDateLabel.setText(Util.getStringDateTrue(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                fromDateLabel.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
             }
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
@@ -274,13 +274,13 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
     public void toDatePicker() {
         final Calendar currentDate = Calendar.getInstance();
-        date = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        date = Calendar.getInstance();
         new DatePickerDialog(RecordListActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 date.set(year, monthOfYear, dayOfMonth);
                 FastSave.getInstance().saveLong(TO_DATE, Util.endOfDay(date.getTimeInMillis()));
-                toDateLabel.setText(Util.getStringDateTrue(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                toDateLabel.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
             }
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();

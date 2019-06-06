@@ -197,6 +197,7 @@ public class Util {
 //        calendar.setTimeInMillis(millisecond);
 //        return format.format(calendar.getTime());
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
         return format.format(new Date(millisecond));
 
     }
@@ -208,7 +209,7 @@ public class Util {
     }
 
     public static long startOfDay(Long time) {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(time);
         cal.set(Calendar.HOUR_OF_DAY, 0); //set hours to zero
         cal.set(Calendar.MINUTE, 0); // set minutes to zero
@@ -217,7 +218,7 @@ public class Util {
     }
 
     public static long endOfDay(Long time) {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(time);
         cal.set(Calendar.HOUR_OF_DAY, 23); //set hours to zero
         cal.set(Calendar.MINUTE, 59); // set minutes to zero
