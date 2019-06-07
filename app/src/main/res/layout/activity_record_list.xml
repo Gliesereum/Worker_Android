@@ -67,7 +67,7 @@
         tools:text="Name" />
 
     <Button
-        android:id="@+id/backBtn"
+        android:id="@+id/logoutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

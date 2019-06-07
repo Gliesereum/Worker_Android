@@ -440,8 +440,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                                         }
                                     });
                                     break;
-                                case R.id.backBtn:
-                                    Button backBtn = childView.findViewById(R.id.backBtn);
+                                case R.id.logoutBtn:
+                                    Button backBtn = childView.findViewById(R.id.logoutBtn);
                                     backBtn.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

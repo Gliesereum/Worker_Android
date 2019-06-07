@@ -181,7 +181,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
             }
         });
         bussinesName = findViewById(R.id.bussinesName);
-        backBtn = findViewById(R.id.backBtn);
+        backBtn = findViewById(R.id.logoutBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

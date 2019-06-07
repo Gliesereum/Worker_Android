@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,6 @@ import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.Arrays;
 import java.util.List;
@@ -57,13 +57,13 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private ErrorHandler errorHandler = new ErrorHandler(this, this);
     private List<AllCarWashResponse> carWashList;
     private MyRecyclerViewAdapter adapter;
-    private MaterialButton logoutBtn;
+    private ImageView logoutBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_car_wash);
+        setContentView(R.layout.activity_choose_car_wash_new);
         FastSave.init(getApplicationContext());
         initView();
         cleanRecordFilter();
