@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +57,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private ErrorHandler errorHandler = new ErrorHandler(this, this);
     private List<AllCarWashResponse> carWashList;
     private MyRecyclerViewAdapter adapter;
-    private ImageView logoutBtn;
+    private Button logoutBtn;
 
 
     @Override
