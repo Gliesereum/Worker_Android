@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,6 @@ import com.gliesereum.coupler_worker.network.json.status.StatusRegistration;
 import com.gliesereum.coupler_worker.network.json.user.UserResponse;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.labters.lottiealertdialoglibrary.DialogTypes;
@@ -55,8 +55,8 @@ import static com.gliesereum.coupler_worker.util.Constants.USER_SECOND_NAME;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CountryCodePicker ccp;
-    private MaterialButton getCodeBtn;
-    private MaterialButton loginBtn;
+    private Button getCodeBtn;
+    private Button loginBtn;
     private TextInputEditText phoneTextView;
     private ConstraintLayout valueBlock;
     private PinView codeView;
