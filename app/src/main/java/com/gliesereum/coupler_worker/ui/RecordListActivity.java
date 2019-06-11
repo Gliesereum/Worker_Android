@@ -91,8 +91,12 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private CheckBox checkInProcess;
     private CheckBox checkCompleted;
     private CheckBox checkCanceled;
-    private Button fromBtn;
-    private Button toBtn;
+    private ImageView fromBtn;
+    private ImageView toBtn;
+    private TextView fromLabel1;
+    private TextView fromLabel2;
+    private TextView toLabel1;
+    private TextView toLabel2;
 
 
     @SuppressLint("CheckResult")
@@ -198,6 +202,20 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         moneyCount = findViewById(R.id.moneyCount);
     }
 
+    View.OnClickListener fromDateListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            fromDatePicker();
+        }
+    };
+
+    View.OnClickListener toDateListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            toDatePicker();
+        }
+    };
+
     private void openFilterDialog() {
         NDialog filterDialog = new NDialog(RecordListActivity.this, ButtonType.NO_BUTTON);
 //        filterDialog.isCancelable(true);
@@ -229,35 +247,31 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                         checkCanceled.setChecked(true);
                     }
                     break;
-//                case R.id.chipGroup:
-//                    chipGroup = childView.findViewById(R.id.chipGroup);
-//                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-//                        if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(chipGroup.getChildAt(i).getTag())) {
-//                            ((Chip) chipGroup.getChildAt(i)).setChecked(true);
-//                        }
-//                    }
-//                    break;
-//                case R.id.fromDateLabel:
-//                    fromDateLabel = childView.findViewById(R.id.fromDateLabel);
-//                    fromDateLabel.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
-//                    break;
-//                case R.id.toDateLabel:
-//                    toDateLabel = childView.findViewById(R.id.toDateLabel);
-//                    toDateLabel.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
-//                    break;
+                case R.id.fromLabel1:
+                    fromLabel1 = childView.findViewById(R.id.fromLabel1);
+                    fromLabel1.setOnClickListener(fromDateListener);
+                    break;
+                case R.id.fromLabel2:
+                    fromLabel2 = childView.findViewById(R.id.fromLabel2);
+                    fromLabel2.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                    fromLabel2.setOnClickListener(fromDateListener);
+                    break;
+                case R.id.toLabel1:
+                    toLabel1 = childView.findViewById(R.id.toLabel1);
+                    toLabel1.setOnClickListener(toDateListener);
+                    break;
+                case R.id.toLabel2:
+                    toLabel2 = childView.findViewById(R.id.toLabel2);
+                    toLabel2.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                    toLabel2.setOnClickListener(toDateListener);
+                    break;
                 case R.id.fromBtn:
                     fromBtn = childView.findViewById(R.id.fromBtn);
-                    fromBtn.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
-                    fromBtn.setOnClickListener(v -> {
-                        fromDatePicker();
-                    });
+                    fromBtn.setOnClickListener(fromDateListener);
                     break;
                 case R.id.toBtn:
                     toBtn = childView.findViewById(R.id.toBtn);
-                    toBtn.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
-                    toBtn.setOnClickListener(v -> {
-                        toDatePicker();
-                    });
+                    toBtn.setOnClickListener(toDateListener);
                     break;
                 case R.id.acceptFilter:
                     MaterialButton nowOrderBtn = childView.findViewById(R.id.acceptFilter);
@@ -310,7 +324,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 date.set(year, monthOfYear, dayOfMonth);
                 FastSave.getInstance().saveLong(FROM_DATE, Util.startOfDay(date.getTimeInMillis()));
-                fromBtn.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                fromLabel2.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
             }
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
@@ -324,7 +338,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 date.set(year, monthOfYear, dayOfMonth);
                 FastSave.getInstance().saveLong(TO_DATE, Util.endOfDay(date.getTimeInMillis()));
-                toBtn.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                toLabel2.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
             }
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
