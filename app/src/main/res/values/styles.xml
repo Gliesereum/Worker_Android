@@ -12,4 +12,17 @@
         <item name="colorAccent">@color/colorPrimaryGreen</item>
     </style>
 
+    <style name="MyCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorAccent">@color/colorPrimaryGreen</item>
+    </style>
+
+    <style name="MyButtonAccept" parent="Widget.AppCompat.Button">
+        <item name="colorAccent">@color/whiteTrue</item>
+    </style>
+
+    <style name="MyButtonCancel" parent="Widget.AppCompat.Button">
+        <item name="colorAccent">@color/whiteTrue</item>
+    </style>
+
+
 </resources>

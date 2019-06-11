@@ -17,12 +17,12 @@
         android:text="Запустить"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/doneBtn"
+        app:layout_constraintEnd_toStartOf="@+id/cancelBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/doneBtn"
+        android:id="@+id/cancelBtn"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/doneBtn" />
+        app:layout_constraintStart_toEndOf="@+id/cancelBtn" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"

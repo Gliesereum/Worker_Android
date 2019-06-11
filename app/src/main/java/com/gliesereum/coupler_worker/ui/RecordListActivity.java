@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +36,6 @@ import com.gliesereum.coupler_worker.util.Util;
 import com.gohn.nativedialog.ButtonType;
 import com.gohn.nativedialog.NDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import org.json.JSONObject;
@@ -87,6 +87,12 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private ImageView backBtn;
     private TextView moneyCount;
     private String TAG = "activityTest";
+    private CheckBox checkWaiting;
+    private CheckBox checkInProcess;
+    private CheckBox checkCompleted;
+    private CheckBox checkCanceled;
+    private Button fromBtn;
+    private Button toBtn;
 
 
     @SuppressLint("CheckResult")
@@ -195,34 +201,60 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private void openFilterDialog() {
         NDialog filterDialog = new NDialog(RecordListActivity.this, ButtonType.NO_BUTTON);
 //        filterDialog.isCancelable(true);
-        filterDialog.setCustomView(R.layout.filter_dialod);
+        filterDialog.setCustomView(R.layout.filter_dialod_new);
         List<View> childViews = filterDialog.getCustomViewChildren();
         for (View childView : childViews) {
             switch (childView.getId()) {
-                case R.id.chipGroup:
-                    chipGroup = childView.findViewById(R.id.chipGroup);
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(chipGroup.getChildAt(i).getTag())) {
-                            ((Chip) chipGroup.getChildAt(i)).setChecked(true);
-                        }
+                case R.id.checkWaiting:
+                    checkWaiting = childView.findViewById(R.id.checkWaiting);
+                    if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(checkWaiting.getTag())) {
+                        checkWaiting.setChecked(true);
                     }
                     break;
-                case R.id.fromDateLabel:
-                    fromDateLabel = childView.findViewById(R.id.fromDateLabel);
-                    fromDateLabel.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                case R.id.checkInProcess:
+                    checkInProcess = childView.findViewById(R.id.checkInProcess);
+                    if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(checkInProcess.getTag())) {
+                        checkInProcess.setChecked(true);
+                    }
                     break;
-                case R.id.toDateLabel:
-                    toDateLabel = childView.findViewById(R.id.toDateLabel);
-                    toDateLabel.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                case R.id.checkCompleted:
+                    checkCompleted = childView.findViewById(R.id.checkCompleted);
+                    if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(checkCompleted.getTag())) {
+                        checkCompleted.setChecked(true);
+                    }
                     break;
+                case R.id.checkCanceled:
+                    checkCanceled = childView.findViewById(R.id.checkCanceled);
+                    if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(checkCanceled.getTag())) {
+                        checkCanceled.setChecked(true);
+                    }
+                    break;
+//                case R.id.chipGroup:
+//                    chipGroup = childView.findViewById(R.id.chipGroup);
+//                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
+//                        if (FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class).contains(chipGroup.getChildAt(i).getTag())) {
+//                            ((Chip) chipGroup.getChildAt(i)).setChecked(true);
+//                        }
+//                    }
+//                    break;
+//                case R.id.fromDateLabel:
+//                    fromDateLabel = childView.findViewById(R.id.fromDateLabel);
+//                    fromDateLabel.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+//                    break;
+//                case R.id.toDateLabel:
+//                    toDateLabel = childView.findViewById(R.id.toDateLabel);
+//                    toDateLabel.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+//                    break;
                 case R.id.fromBtn:
-                    MaterialButton fromBtn = childView.findViewById(R.id.fromBtn);
+                    fromBtn = childView.findViewById(R.id.fromBtn);
+                    fromBtn.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
                     fromBtn.setOnClickListener(v -> {
                         fromDatePicker();
                     });
                     break;
                 case R.id.toBtn:
-                    MaterialButton toBtn = childView.findViewById(R.id.toBtn);
+                    toBtn = childView.findViewById(R.id.toBtn);
+                    toBtn.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
                     toBtn.setOnClickListener(v -> {
                         toDatePicker();
                     });
@@ -231,10 +263,22 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                     MaterialButton nowOrderBtn = childView.findViewById(R.id.acceptFilter);
                     nowOrderBtn.setOnClickListener(v -> {
                         List<String> statusList = new ArrayList<>();
-                        for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                            if (((Chip) chipGroup.getChildAt(i)).isChecked()) {
-                                statusList.add((String) chipGroup.getChildAt(i).getTag());
-                            }
+//                        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+//                            if (((Chip) chipGroup.getChildAt(i)).isChecked()) {
+//                                statusList.add((String) chipGroup.getChildAt(i).getTag());
+//                            }
+//                        }
+                        if (checkWaiting.isChecked()) {
+                            statusList.add((String) checkWaiting.getTag());
+                        }
+                        if (checkInProcess.isChecked()) {
+                            statusList.add((String) checkInProcess.getTag());
+                        }
+                        if (checkCompleted.isChecked()) {
+                            statusList.add((String) checkCompleted.getTag());
+                        }
+                        if (checkCanceled.isChecked()) {
+                            statusList.add((String) checkCanceled.getTag());
                         }
                         FastSave.getInstance().saveObjectsList(STATUS_FILTER, statusList);
                         filterDialog.dismiss();
@@ -266,7 +310,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 date.set(year, monthOfYear, dayOfMonth);
                 FastSave.getInstance().saveLong(FROM_DATE, Util.startOfDay(date.getTimeInMillis()));
-                fromDateLabel.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
+                fromBtn.setText(Util.getStringDate(Util.startOfDay(FastSave.getInstance().getLong(FROM_DATE, 0))));
             }
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
@@ -280,7 +324,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 date.set(year, monthOfYear, dayOfMonth);
                 FastSave.getInstance().saveLong(TO_DATE, Util.endOfDay(date.getTimeInMillis()));
-                toDateLabel.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
+                toBtn.setText(Util.getStringDate(Util.endOfDay(FastSave.getInstance().getLong(TO_DATE, 0))));
             }
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();

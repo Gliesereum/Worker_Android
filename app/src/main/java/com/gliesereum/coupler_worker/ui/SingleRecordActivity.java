@@ -22,7 +22,11 @@ import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.google.android.material.button.MaterialButton;
+import com.labters.lottiealertdialoglibrary.ClickListener;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,11 +107,21 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private void fillActivity() {
         if (record.getStatusProcess().equals("COMPLETED") || record.getStatusProcess().equals("CANCELED")) {
             progressBtn.setEnabled(false);
+            progressBtn.setVisibility(View.GONE);
             doneBtn.setEnabled(false);
             cancelBtn.setEnabled(false);
         }
         if (record.getStatusProcess().equals("IN_PROCESS")) {
+            doneBtn.setVisibility(View.VISIBLE);
+            progressBtn.setVisibility(View.GONE);
+            doneBtn.setEnabled(true);
             progressBtn.setEnabled(false);
+        }
+        if (record.getStatusProcess().equals("WAITING")) {
+            progressBtn.setVisibility(View.VISIBLE);
+            doneBtn.setVisibility(View.GONE);
+            progressBtn.setEnabled(true);
+            doneBtn.setEnabled(false);
         }
         timeLabel.setText(Util.getStringTime(record.getBegin()));
 //        durationLabel.setText(String.valueOf((record.getFinish() - record.getBegin()) / 60000) + " мин");
@@ -152,7 +166,29 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 recordDone();
                 break;
             case R.id.cancelBtn:
-                recordCancel();
+                alertDialog = new LottieAlertDialog.Builder(this, DialogTypes.TYPE_QUESTION)
+                        .setTitle("Отменить заказ")
+                        .setDescription("Вы действительно хотите отменить заказ?\n(Эту операцию нельзя отменить)")
+                        .setPositiveText("Да")
+                        .setNegativeText("Нет")
+                        .setPositiveButtonColor(getResources().getColor(R.color.red))
+                        .setNegativeButtonColor(getResources().getColor(R.color.colorPrimaryGreen))
+                        .setPositiveListener(new ClickListener() {
+                            @Override
+                            public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                                alertDialog.dismiss();
+                                recordCancel();
+                            }
+                        })
+                        .setNegativeListener(new ClickListener() {
+                            @Override
+                            public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                                alertDialog.dismiss();
+                            }
+                        })
+                        .build();
+                alertDialog.setCancelable(false);
+                alertDialog.show();
                 break;
         }
     }
