@@ -35,7 +35,7 @@ public class OrderNewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_new);
         carWash = FastSave.getInstance().getObject("carWash", AllCarWashResponse.class);
-        boxLinearLayout = (LinearLayout) findViewById(R.id.boxLinearLayout);
+//        boxLinearLayout = (LinearLayout) findViewById(R.id.boxLinearLayout);
         workTimeMap.clear();
         for (int i = 0; i < carWash.getWorkTimes().size(); i++) {
             workTimeMap.put(carWash.getWorkTimes().get(i).getDayOfWeek(), carWash.getWorkTimes().get(i));

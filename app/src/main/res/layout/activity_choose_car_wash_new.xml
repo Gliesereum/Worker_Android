@@ -58,13 +58,13 @@
             android:layout_width="600dp"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/logoutBtn"
+            app:layout_constraintBottom_toTopOf="@+id/backBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout20" />
 
         <Button
-            android:id="@+id/logoutBtn"
+            android:id="@+id/backBtn"
             android:layout_width="600dp"
             android:layout_height="80dp"
             android:text="Выход"

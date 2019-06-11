@@ -95,7 +95,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         serviceListAdapter = new ServiceListAdapter(SingleRecordActivity.this);
         recyclerView.setAdapter(serviceListAdapter);
         dataLabel = findViewById(R.id.dataLabel);
-        backImg = findViewById(R.id.logoutBtn);
+        backImg = findViewById(R.id.backBtn);
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

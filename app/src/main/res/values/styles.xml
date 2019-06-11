@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ButtonPackage" parent="Widget.AppCompat.Button">
+        <item name="colorAccent">#272C31</item>
+    </style>
+
+    <style name="ButtonPackageSelect" parent="Widget.AppCompat.Button">
+        <item name="colorAccent">#29FFFFFF</item>
+    </style>
+
     <style name="MyButton" parent="Widget.AppCompat.Button">
         <item name="colorAccent">@color/colorPrimaryGreen</item>
     </style>

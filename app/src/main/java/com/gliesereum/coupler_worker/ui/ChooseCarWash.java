@@ -85,7 +85,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         customCallback = new CustomCallback(this, this);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        logoutBtn = findViewById(R.id.logoutBtn);
+        logoutBtn = findViewById(R.id.backBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
