@@ -256,7 +256,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/layout_bg"
         app:layout_constraintBottom_toTopOf="@+id/orderButton"
@@ -265,6 +265,7 @@
         app:layout_constraintTop_toBottomOf="@+id/packageBlock">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout24"
             android:layout_width="0dp"
             android:layout_height="80dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -273,7 +274,7 @@
 
             <TextView
                 android:id="@+id/textView40"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:text="Название услуги"
@@ -287,10 +288,11 @@
 
             <TextView
                 android:id="@+id/textView41"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="Время выполнения"
+                android:text="Время"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -301,11 +303,12 @@
 
             <TextView
                 android:id="@+id/textView42"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:text="Стоимость заказа"
+                android:text="Стоимость"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -314,6 +317,26 @@
                 app:layout_constraintStart_toEndOf="@+id/textView41"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout24">
+
+            <LinearLayout
+                android:animateLayoutChanges="true"
+                android:id="@+id/serviceLianear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
+
+        </ScrollView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
