@@ -81,6 +81,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         setPackages(carWash);
     }
 
+
     private void initData() {
         FastSave.init(getApplicationContext());
         API = APIClient.getClient().create(APIInterface.class);
@@ -96,6 +97,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
     private void initView() {
         backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         packageBlock = findViewById(R.id.packageBlock);
         packageLianer = findViewById(R.id.packageLianer);
         durationLabel = findViewById(R.id.durationLabel);
@@ -114,6 +121,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         CheckBox checkBox;
         TextView timeServiceLabel;
         TextView priceServiceLabel;
+        int index = 0;
         for (int i = 0; i < carWash.getServicePrices().size(); i++) {
             if (!serviceMap.containsKey(carWash.getServicePrices().get(i).getId())) {
                 layout2 = LayoutInflater.from(this).inflate(R.layout.service_order_item, serviceLianear, false);
@@ -151,8 +159,9 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 checkBox.setTag(R.string.tagKeyDuration, carWash.getServicePrices().get(i).getDuration());
                 checkBox.setTag(R.string.tagKeyPrice, carWash.getServicePrices().get(i).getPrice());
                 checkBox.setChecked(true);
+//                checkBox.setClickable(false);
                 checkBox.setEnabled(false);
-                serviceLianear.addView(layout2, 0);
+                serviceLianear.addView(layout2, index++);
             }
         }
 

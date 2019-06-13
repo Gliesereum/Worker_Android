@@ -193,10 +193,10 @@
                 android:id="@+id/durationLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView33"
                 app:layout_constraintTop_toTopOf="@+id/imageView2"
                 tools:text="durationLabel" />
@@ -217,11 +217,10 @@
                 android:id="@+id/priceLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                app:layout_constraintStart_toEndOf="@+id/textView35"
+                app:layout_constraintStart_toStartOf="@+id/durationLabel"
                 app:layout_constraintTop_toTopOf="@+id/imageView11"
                 tools:text="priceLabel" />
 
@@ -241,11 +240,10 @@
                 android:id="@+id/discountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-                app:layout_constraintStart_toEndOf="@+id/textView38"
+                app:layout_constraintStart_toStartOf="@+id/priceLabel"
                 app:layout_constraintTop_toTopOf="@+id/imageView12"
                 tools:text="discountTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
