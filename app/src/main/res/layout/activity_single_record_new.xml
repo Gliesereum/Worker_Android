@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout13"
         android:layout_width="0dp"
-        android:layout_height="88dp"
+        android:layout_height="64dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/backBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,18 +31,20 @@
             android:id="@+id/bussinesName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Информация о заказе"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/backBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +67,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout14"
             android:layout_width="400dp"
-            android:layout_height="80dp"
+            android:layout_height="64dp"
             android:background="@drawable/layout_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -75,9 +77,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="Детали заказа"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -149,7 +152,7 @@
                 android:layout_marginStart="24dp"
                 android:text="Дата:"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="@+id/imageView4" />
@@ -161,7 +164,7 @@
                 android:layout_marginStart="24dp"
                 android:text="Время начала:"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="@+id/imageView5" />
@@ -173,7 +176,7 @@
                 android:layout_marginStart="24dp"
                 android:text="Время окончания:"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView6"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
@@ -185,7 +188,7 @@
                 android:layout_marginStart="24dp"
                 android:text="Авто:"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView8"
                 app:layout_constraintStart_toEndOf="@+id/imageView8"
                 app:layout_constraintTop_toTopOf="@+id/imageView8" />
@@ -197,7 +200,7 @@
                 android:layout_marginStart="24dp"
                 android:text="Стоимость заказа:"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView9"
                 app:layout_constraintStart_toEndOf="@+id/imageView9"
                 app:layout_constraintTop_toTopOf="@+id/imageView9" />
@@ -209,7 +212,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView17"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView17" />
@@ -221,7 +224,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="timeLabel"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView19"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView19" />
@@ -233,7 +236,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="durationLabel"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView20" />
@@ -245,7 +248,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="carName"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView21"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView21" />
@@ -257,7 +260,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="moneyLabel"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView24" />
@@ -266,7 +269,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout15"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="64dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/layout_bg"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout14"
@@ -278,9 +281,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="Список услуг заказа"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -327,10 +331,10 @@
     <Button
         android:id="@+id/doneBtn"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="56dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/layout_bg"
         android:text="Завершить"
         android:textSize="18sp"
@@ -341,9 +345,9 @@
     <Button
         android:id="@+id/cancelBtn"
         android:layout_width="400dp"
-        android:layout_height="80dp"
+        android:layout_height="56dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/layout_bg"
         android:text="Отменить"
         android:textSize="18sp"

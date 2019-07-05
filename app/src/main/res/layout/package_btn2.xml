@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="80dp"
+    android:layout_height="56dp"
     android:layout_margin="2dp"
     android:orientation="vertical">
 
@@ -11,10 +11,10 @@
     <Button
         android:id="@+id/packageBtn"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="56dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:textSize="24sp"
+        android:textSize="13dp"
         android:theme="@style/ButtonPackage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
