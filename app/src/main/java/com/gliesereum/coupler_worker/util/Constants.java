@@ -7,6 +7,12 @@ public class Constants {
     public static final String SINGLE_RECORD_ACTIVITY = "SINGLE_RECORD_ACTIVITY";
     public static final String RECORD_LIST_ACTIVITY = "RECORD_LIST_ACTIVITY";
 
+    public static final String CHOOSE_CLIENT_ID = "CHOOSE_CLIENT_ID";
+    public static final String CHOOSE_CLIENT_FIRST_NAME = "CHOOSE_CLIENT_FIRST_NAME";
+    public static final String CHOOSE_CLIENT_SECOND_NAME = "CHOOSE_CLIENT_SECOND_NAME";
+    public static final String CHOOSE_CLIENT_DONE = "CHOOSE_CLIENT_DONE";
+    public static final String REG_NEW_CLIENT = "REG_NEW_CLIENT";
+
     public static final String STATUS_UP = "UP";
 
     public static final String KARMA_USER_RECORD = "KARMA_USER_RECORD";

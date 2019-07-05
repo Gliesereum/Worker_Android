@@ -9,6 +9,9 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class OrderBody {
 
+    @SerializedName("clientId")
+    private String clientId;
+
     @SerializedName("workingSpaceId")
     private String workingSpaceId;
 
@@ -29,6 +32,14 @@ public class OrderBody {
 
     @SerializedName("packageId")
     private String packageId;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public String getPackageId() {
         return packageId;

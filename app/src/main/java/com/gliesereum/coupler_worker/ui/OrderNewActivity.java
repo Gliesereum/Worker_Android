@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class OrderNewActivity extends AppCompatActivity {
     private AllCarWashResponse carWash;
     private Map<String, WorkTimesItem> workTimeMap = new HashMap<>();
     private LinearLayout boxLinearLayout;
+    private Button chooseClient;
 
 
     @Override
@@ -43,6 +45,7 @@ public class OrderNewActivity extends AppCompatActivity {
         setBoxTime(carWash);
 
 
+        initView();
     }
 
     private void setBoxTime(AllCarWashResponse carWash) {
@@ -101,5 +104,9 @@ public class OrderNewActivity extends AppCompatActivity {
         }
 
         return dayOfWeek;
+    }
+
+    private void initView() {
+        chooseClient = findViewById(R.id.chooseClientBtn);
     }
 }

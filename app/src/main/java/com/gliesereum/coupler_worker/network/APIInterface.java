@@ -7,6 +7,7 @@ import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.coupler_worker.network.json.carwash.CommentsItem;
 import com.gliesereum.coupler_worker.network.json.carwash.Rating;
 import com.gliesereum.coupler_worker.network.json.classservices.ClassServiceResponse;
+import com.gliesereum.coupler_worker.network.json.client.ClientResponse;
 import com.gliesereum.coupler_worker.network.json.code.CodeResponse;
 import com.gliesereum.coupler_worker.network.json.code.SigninBody;
 import com.gliesereum.coupler_worker.network.json.filter.FilterResponse;
@@ -36,6 +37,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIInterface {
+
+    @GET("karma/v1/business/customers")
+    Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
 
     //STATUS
     @GET("status")

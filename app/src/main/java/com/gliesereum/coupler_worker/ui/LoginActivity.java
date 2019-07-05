@@ -48,6 +48,7 @@ import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOGIN;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_EXPIRATION_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.USER_ID;
 import static com.gliesereum.coupler_worker.util.Constants.USER_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.USER_SECOND_NAME;
@@ -145,7 +146,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.registerBtn:
-                checkPhone(ccp.getFullNumber() + phoneTextView.getText().toString());
+                if (!FastSave.getInstance().getBoolean(REG_NEW_CLIENT, false)) {
+                    checkPhone(ccp.getFullNumber() + phoneTextView.getText().toString());
+                } else {
+                    getPhoneCode(ccp.getFullNumber() + phoneTextView.getText().toString());
+                }
+
+
                 break;
             case R.id.loginBtn:
                 signIn(new SigninBody(ccp.getFullNumber() + phoneTextView.getText().toString(), code, "PHONE"));

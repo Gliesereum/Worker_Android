@@ -49,6 +49,10 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -71,6 +75,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private TextView discountTextView;
     private LinearLayout serviceLianear;
     private Button orderButton;
+    private Button chooseClientBtn;
+    private TextView clientNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +117,14 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         serviceLianear = findViewById(R.id.serviceLianear);
         orderButton = findViewById(R.id.orderButton);
         orderButton.setOnClickListener(this);
+        chooseClientBtn = findViewById(R.id.chooseClientBtn);
+        chooseClientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OrderActivity.this, ClientsListActivity.class));
+            }
+        });
+        clientNameTextView = findViewById(R.id.clientNameTextView);
     }
 
 
@@ -404,6 +418,9 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                                     okBtn.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+                                            if (!FastSave.getInstance().getString(CHOOSE_CLIENT_ID, "").equals("")) {
+                                                orderBody.setClientId(FastSave.getInstance().getString(CHOOSE_CLIENT_ID, ""));
+                                            }
                                             API.doOrder(FastSave.getInstance().getString(ACCESS_TOKEN, ""), orderBody)
                                                     .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
                                                         @Override
@@ -412,6 +429,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                                                             Toast.makeText(OrderActivity.this, "Запись добавленна в список", Toast.LENGTH_SHORT).show();
 //                                                            startActivity(new Intent(OrderActivity.this, RecordListActivity.class));
                                                             FastSave.getInstance().saveObject("RECORD", response.body());
+                                                            FastSave.getInstance().deleteValue(CHOOSE_CLIENT_ID);
                                                             startActivity(new Intent(OrderActivity.this, SingleRecordActivity.class));
                                                             finish();
                                                         }
@@ -443,5 +461,17 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                     }
                 }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (FastSave.getInstance().getBoolean(CHOOSE_CLIENT_DONE, false)) {
+            chooseClientBtn.setVisibility(View.GONE);
+            clientNameTextView.setText(FastSave.getInstance().getString(CHOOSE_CLIENT_FIRST_NAME, "") + " " + FastSave.getInstance().getString(CHOOSE_CLIENT_SECOND_NAME, ""));
+            clientNameTextView.setVisibility(View.VISIBLE);
+            FastSave.getInstance().deleteValue(CHOOSE_CLIENT_DONE);
+
+        }
     }
 }

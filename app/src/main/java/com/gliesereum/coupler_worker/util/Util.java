@@ -1,11 +1,26 @@
 package com.gliesereum.coupler_worker.util;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.gliesereum.coupler_worker.BuildConfig;
+import com.gliesereum.coupler_worker.R;
 import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
+import com.gliesereum.coupler_worker.ui.ClientsListActivity;
+import com.gliesereum.coupler_worker.ui.RecordListActivity;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +31,7 @@ public class Util {
     private Activity activity;
     private Toolbar toolbar;
     private int identifier;
+    private Drawer result;
 
 
     public Util(Activity activity, Toolbar toolbar, int identifier) {
@@ -65,100 +81,123 @@ public class Util {
         return false;
     }
 
-//    public void addNavigation() {
-//        new DrawerBuilder().withActivity(activity).build();
-//        PrimaryDrawerItem mapsItem = new PrimaryDrawerItem().withName("Карта").withIdentifier(1).withTag("maps").withIcon(R.drawable.map_icon);
-//        SecondaryDrawerItem car_listItem = new SecondaryDrawerItem().withName("Список авто").withIdentifier(2).withTag("car_list").withSelectable(false).withIcon(R.drawable.my_cars);
-//        SecondaryDrawerItem record_listItem = new SecondaryDrawerItem().withName("Список заказов").withIdentifier(3).withTag("record_list").withSelectable(false).withIcon(R.drawable.orders);
-//        SecondaryDrawerItem profileItem = new SecondaryDrawerItem().withName("Мой Профиль").withIdentifier(4).withTag("profile").withSelectable(false).withIcon(R.drawable.profile);
-//        SecondaryDrawerItem logoutItem = new SecondaryDrawerItem().withName("Выйти").withIdentifier(5).withSelectable(false).withTag("logout").withSelectable(false).withIcon(R.drawable.logout);
-//        SecondaryDrawerItem loginItem = new SecondaryDrawerItem().withName("Вход").withIdentifier(6).withSelectable(false).withTag("login").withSelectable(false).withIcon(R.drawable.login);
-//
+    public void addNavigation() {
+        new DrawerBuilder().withActivity(activity).build();
+        PrimaryDrawerItem orders = new PrimaryDrawerItem().withName("Заказы").withIdentifier(1).withTag("orders").withIcon(R.drawable.ic_outline_monetization_on_24px).withIconTintingEnabled(true);
+        SecondaryDrawerItem clients = new SecondaryDrawerItem().withName("Клиенты").withIdentifier(2).withTag("clients").withSelectable(false).withIcon(R.drawable.ic_outline_monetization_on_24px).withIconTintingEnabled(true);
+        SecondaryDrawerItem logoutItem = new SecondaryDrawerItem().withName("Выйти").withIdentifier(3).withSelectable(false).withTag("logout").withSelectable(false).withIcon(R.drawable.ic_outline_monetization_on_24px).withIconTintingEnabled(true);
+        SecondaryDrawerItem loginItem = new SecondaryDrawerItem().withName("Вход").withIdentifier(4).withSelectable(false).withTag("login").withSelectable(false).withIcon(R.drawable.ic_outline_monetization_on_24px).withIconTintingEnabled(true);
+        SecondaryDrawerItem versionItem = new SecondaryDrawerItem().withName("v" + BuildConfig.VERSION_NAME + " beta").withIdentifier(5).withSelectable(false).withTag("version").withSelectable(false);
+
 //        if (!FastSave.getInstance().getBoolean(IS_LOGIN, false)) {
-//            car_listItem.withEnabled(false);
-//            record_listItem.withEnabled(false);
+//            myBusinesses.withEnabled(false);
+//            analytics.withEnabled(false);
+//            orders.withEnabled(false);
+//            settings.withEnabled(false);
 //            profileItem.withEnabled(false);
 //        }
-//
-//        AccountHeader headerResult = new AccountHeaderBuilder()
-//                .withActivity(activity)
-//                .withHeaderBackground(R.drawable.cover_karma)
-//                .addProfiles(
-//                        new ProfileDrawerItem().withName(FastSave.getInstance().getString(USER_NAME, "") + " " + FastSave.getInstance().getString(USER_SECOND_NAME, ""))
-//                                .withIcon(activity.getResources().getDrawable(R.mipmap.ic_launcher_round))
-//                )
-////                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-////                    @Override
-////                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-////                        return false;
-////                    }
-////                })
-//                .build();
-//
-//        DrawerBuilder drawerBuilder = new DrawerBuilder();
-//        drawerBuilder.withAccountHeader(headerResult);
-//        drawerBuilder.withActivity(activity);
-//        drawerBuilder.withToolbar(toolbar);
-//        drawerBuilder.withSelectedItem(identifier);
-//        drawerBuilder.addDrawerItems(
-//                mapsItem,
-//                new DividerDrawerItem(),
-//                car_listItem,
-//                record_listItem,
-//                profileItem
-//        );
-//        Drawer result = drawerBuilder.build();
-//        drawerBuilder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+
+//        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
 //            @Override
-//            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                switch (drawerItem.getTag().toString()) {
-//                    case "maps":
-//                        activity.startActivity(new Intent(activity.getApplicationContext(), MapsActivity.class));
-//                        activity.finish();
-//                        result.closeDrawer();
-//                        break;
-//                    case "car_list":
-//                        activity.startActivity(new Intent(activity.getApplicationContext(), CarListActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-//                        result.closeDrawer();
-//                        break;
-//                    case "record_list":
-//                        activity.startActivity(new Intent(activity.getApplicationContext(), RecordListActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-//                        result.closeDrawer();
-//                        break;
-//                    case "logout":
-//                        FastSave.getInstance().saveBoolean(IS_LOGIN, false);
-//                        FastSave.getInstance().deleteValue(USER_NAME);
-//                        FastSave.getInstance().deleteValue(USER_SECOND_NAME);
-//                        FastSave.getInstance().deleteValue(CAR_ID);
-//                        FastSave.getInstance().deleteValue(CAR_BRAND);
-//                        FastSave.getInstance().deleteValue(CAR_SERVICE_CLASS);
-//                        FastSave.getInstance().deleteValue(CAR_MODEL);
-//                        FastSave.getInstance().deleteValue(CAR_FILTER_LIST);
-//                        activity.startActivity(new Intent(activity.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-//                        activity.finish();
-//                        break;
-//                    case "profile":
-//                        activity.startActivity(new Intent(activity.getApplicationContext(), ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-//                        result.closeDrawer();
-//                        break;
-//                    case "login":
-//                        activity.startActivity(new Intent(activity.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-//                        activity.finish();
-//                        break;
-//                }
+//            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+//                Picasso.get().load(uri).placeholder(placeholder).transform(new CircleTransform()).into(imageView);
+//            }
 //
-//                return true;
+//            @Override
+//            public void cancel(ImageView imageView) {
+//                Picasso.get().cancelRequest(imageView);
 //            }
 //        });
-//
-//
+
+//        ProfileDrawerItem profileDrawerItem = new ProfileDrawerItem();
+//        profileDrawerItem.withName(FastSave.getInstance().getString(USER_NAME, "") + " " + FastSave.getInstance().getString(USER_SECOND_NAME, ""));
+//        if (FastSave.getInstance().getString(USER_AVATAR, "").equals("")) {
+//            profileDrawerItem.withIcon(activity.getResources().getDrawable(R.mipmap.ic_launcher_round));
+//        } else {
+//            profileDrawerItem.withIcon(FastSave.getInstance().getString(USER_AVATAR, ""));
+//        }
+
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(activity)
+                .withTextColorRes(R.color.black)
+                .withHeaderBackground(R.drawable.account_switcher_custom)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withCompactStyle(true)
+//                .addProfiles(profileDrawerItem)
+                .build();
+
+        DrawerBuilder drawerBuilder = new DrawerBuilder();
+        drawerBuilder.withAccountHeader(headerResult);
+        drawerBuilder.withActivity(activity);
+        drawerBuilder.withToolbar(toolbar);
+        drawerBuilder.withActionBarDrawerToggle(true);
+        drawerBuilder.withSelectedItem(identifier);
+        drawerBuilder.addDrawerItems(
+                orders,
+                clients,
+                logoutItem
+        );
+        result = drawerBuilder.build();
+        drawerBuilder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                switch (drawerItem.getTag().toString()) {
+                    case "orders":
+                        Toast.makeText(activity, "orders", Toast.LENGTH_SHORT).show();
+                        activity.startActivity(new Intent(activity.getApplicationContext(), RecordListActivity.class));
+                        result.closeDrawer();
+                        break;
+                    case "clients":
+                        Toast.makeText(activity, "clients", Toast.LENGTH_SHORT).show();
+                        activity.startActivity(new Intent(activity.getApplicationContext(), ClientsListActivity.class));
+//                        result.closeDrawer();
+                        break;
+                    case "logout":
+//                        if (result.isDrawerOpen()) {
+//                            result.closeDrawer();
+//                        }
+//                        alertDialog = new LottieAlertDialog.Builder(activity, DialogTypes.TYPE_QUESTION)
+//                                .setTitle("Выход")
+//                                .setDescription("Вы действительно хотите выйти со своего профиля?")
+//                                .setPositiveText("Да")
+//                                .setNegativeText("Нет")
+//                                .setPositiveButtonColor(activity.getResources().getColor(R.color.md_red_A200))
+//                                .setPositiveListener(new ClickListener() {
+//                                    @Override
+//                                    public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+//                                        deleteRegistrationToken();
+//                                        FastSave.getInstance().deleteValue(IS_LOGIN);
+//                                        FastSave.getInstance().deleteValue(USER_NAME);
+//                                        FastSave.getInstance().deleteValue(USER_SECOND_NAME);
+//                                        activity.startActivity(new Intent(activity.getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//                                        activity.finish();
+//                                    }
+//                                })
+//                                .setNegativeListener(new ClickListener() {
+//                                    @Override
+//                                    public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+//                                        alertDialog.dismiss();
+//                                    }
+//                                })
+//                                .build();
+//                        alertDialog.setCancelable(false);
+//                        alertDialog.show();
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+
+        result.addItem(new DividerDrawerItem());
 //        if (FastSave.getInstance().getBoolean(IS_LOGIN, false)) {
-//            result.addItem(logoutItem);
+        result.addItem(logoutItem);
 //        } else {
 //            result.addItem(loginItem);
 //        }
-//
-//    }
+        result.addItem(versionItem);
+    }
 
     public static boolean checkExpirationToken(Long localDateTime) {
         if (localDateTime > System.currentTimeMillis()) {

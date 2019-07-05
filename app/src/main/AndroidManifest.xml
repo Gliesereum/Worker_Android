@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.ClientsListActivity"></activity>
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -24,25 +24,25 @@
         </service>
 
         <activity
-            android:name="com.gliesereum.coupler_worker.ui.OrderNewActivity"
-            android:screenOrientation="landscape"></activity>
+            android:name=".ui.OrderNewActivity"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.gliesereum.coupler_worker.ui.OrderActivity"
-            android:screenOrientation="landscape"/>
+            android:name=".ui.OrderActivity"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.gliesereum.coupler_worker.ui.SingleRecordActivity"
-            android:screenOrientation="landscape"/>
+            android:name=".ui.SingleRecordActivity"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.gliesereum.coupler_worker.ui.RecordListActivity"
-            android:screenOrientation="landscape"/>
+            android:name=".ui.RecordListActivity"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.gliesereum.coupler_worker.ui.ChooseCarWash"
-            android:screenOrientation="landscape"/>
+            android:name=".ui.ChooseCarWash"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.gliesereum.coupler_worker.ui.LoginActivity"
-            android:screenOrientation="landscape"/>
+            android:name=".ui.LoginActivity"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.gliesereum.coupler_worker.SplashActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,6 +50,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

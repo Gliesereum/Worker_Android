@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,6 +98,8 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView fromLabel2;
     private TextView toLabel1;
     private TextView toLabel2;
+    private Toolbar toolbar;
+
 
 
     @SuppressLint("CheckResult")
@@ -104,6 +107,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_list_new);
+
         initView();
 //        subscribeToChanel();
         getAllRecord();
@@ -166,6 +170,10 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
     private void initView() {
         FastSave.init(getApplicationContext());
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        new Util(this, toolbar, 1).addNavigation();
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(this, this);
         errorHandler = new ErrorHandler(this, this);
@@ -396,45 +404,6 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
                     }
                 }));
-
-//        nDialog = new NDialog(RecordListActivity.this, ButtonType.NO_BUTTON);
-//        nDialog.isCancelable(true);
-//        nDialog.setCustomView(R.layout.edit_record_view);
-//        List<View> childViews = nDialog.getCustomViewChildren();
-//        for (View childView : childViews) {
-//            switch (childView.getId()) {
-//                case R.id.inProgresBtn:
-//                    Button inProgresBtn = childView.findViewById(R.id.inProgresBtn);
-//                    inProgresBtn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            recordInProgress(recordListAdapter.getItem(position).getId());
-//                        }
-//                    });
-//
-//                    break;
-//                case R.id.doneBtn:
-//                    Button doneBtn = childView.findViewById(R.id.doneBtn);
-//                    doneBtn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            recordDone(recordListAdapter.getItem(position).getId());
-//                        }
-//                    });
-//                    break;
-//                case R.id.cancelBtn:
-//                    Button cancelBtn = childView.findViewById(R.id.cancelBtn);
-//                    cancelBtn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                           recordCancele(recordListAdapter.getItem(position).getId());
-//                        }
-//                    });
-//                    break;
-//            }
-//        }
-//        nDialog.show();
-
     }
 
     private void recordCancele(String recordId) {
