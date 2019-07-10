@@ -85,19 +85,28 @@ public class CustomCallback {
     }
 
     private void showProgressDialog() {
-        if (alertDialog == null || !alertDialog.isShowing()) {
-            alertDialog = new LottieAlertDialog.Builder(context, DialogTypes.TYPE_LOADING)
-                    .setTitle("Загрузка")
-                    .setDescription("Загружается контент, подождите")
-                    .build();
-            alertDialog.setCancelable(false);
-            alertDialog.show();
+        try {
+            if (alertDialog == null || !alertDialog.isShowing()) {
+                alertDialog = new LottieAlertDialog.Builder(context, DialogTypes.TYPE_LOADING)
+                        .setTitle("Загрузка")
+                        .setDescription("Происходит загрузка, подождите")
+                        .build();
+                alertDialog.setCancelable(false);
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+
         }
+
     }
 
     private void closeProgressDialog() {
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        try {
+            if (alertDialog != null && alertDialog.isShowing()) {
+                alertDialog.dismiss();
+            }
+        } catch (Exception e) {
+
         }
     }
 }

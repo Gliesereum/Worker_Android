@@ -151,8 +151,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     getPhoneCode(ccp.getFullNumber() + phoneTextView.getText().toString());
                 }
-
-
                 break;
             case R.id.loginBtn:
                 signIn(new SigninBody(ccp.getFullNumber() + phoneTextView.getText().toString(), code, "PHONE"));
@@ -238,10 +236,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 200) {
                     countDownTimer.cancel();
-                    getRegToken(response.body());
-                    saveUserInfo(response.body());
-                    startActivity(new Intent(LoginActivity.this, ChooseCarWash.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                    finish();
+                    if (FastSave.getInstance().getBoolean(REG_NEW_CLIENT, false)) {
+
+                    } else {
+                        getRegToken(response.body());
+                        saveUserInfo(response.body());
+                        startActivity(new Intent(LoginActivity.this, ChooseCarWash.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        finish();
+                    }
                 } else {
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());

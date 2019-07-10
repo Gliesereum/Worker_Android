@@ -1,5 +1,6 @@
 package com.gliesereum.coupler_worker.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,8 +35,9 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
-public class ClientsListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener {
+public class ClientsListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, View.OnClickListener {
 
     private APIInterface API;
     private ErrorHandler errorHandler;
@@ -52,6 +54,7 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     private RecyclerView recyclerView;
     private ClientListAdapter clientListAdapter;
     private List<ClientResponse> clientsList;
+    private Button addNewClient;
 
 
     @Override
@@ -104,6 +107,8 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         clientListAdapter = new ClientListAdapter(ClientsListActivity.this);
         clientListAdapter.setClickListener(ClientsListActivity.this);
         recyclerView.setAdapter(clientListAdapter);
+        addNewClient = findViewById(R.id.addNewClient);
+        addNewClient.setOnClickListener(this);
     }
 
     @Override
@@ -113,5 +118,17 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
         FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
         finish();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.addNewClient:
+                FastSave.getInstance().saveBoolean(REG_NEW_CLIENT, true);
+                startActivity(new Intent(ClientsListActivity.this, LoginActivity.class));
+                finish();
+                break;
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/whiteTrue"
     android:orientation="vertical">
@@ -9,13 +9,12 @@
 
     <TextView
         android:id="@+id/textView11"
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-medium"
         android:text="Сортировать список"
+        android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -174,7 +173,7 @@
         android:layout_marginBottom="8dp"
         android:text="Сбросить"
         android:textColor="#9F9F9F"
-        android:textSize="24sp"
+        android:textSize="14sp"
         android:theme="@style/MyButtonCancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/acceptFilter"
@@ -192,7 +191,7 @@
         android:layout_marginBottom="8dp"
         android:text="Применить"
         android:textColor="@color/colorPrimaryGreen"
-        android:textSize="24sp"
+        android:textSize="14sp"
         android:theme="@style/MyButtonAccept"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

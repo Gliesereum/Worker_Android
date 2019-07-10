@@ -12,6 +12,8 @@
     <color name="black">#282828</color>
     <color name="blackBack">#272C31</color>
     <color name="blackPrimary">#383C42</color>
+    <color name="bottomTitleDivider">#272C31</color>
+    <color name="bottomDivider">#14FFFFFF</color>
     <color name="red">#FF5252</color>
     <color name="grey">#29ffffff</color>
     <color name="blacktrue">#000000</color>
@@ -19,4 +21,6 @@
     <color name="rose">#d92f7f</color>
     <color name="blue">#3b7adb</color>
     <color name="material_drawer_selected">#f1edc9</color>
+    <color name="unselect_chip_color">#64686B</color>
+    <color name="select_chip_color">#ffffff</color>
 </resources>

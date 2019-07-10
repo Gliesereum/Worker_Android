@@ -10,6 +10,18 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class AllRecordResponse {
 
+	@SerializedName("firstName")
+	private String firstName;
+
+	@SerializedName("lastName")
+	private String lastName;
+
+	@SerializedName("middleName")
+	private String middleName;
+
+	@SerializedName("phone")
+	private String phone;
+
 	@SerializedName("statusProcess")
 	private String statusProcess;
 
@@ -75,6 +87,38 @@ public class AllRecordResponse {
 
 	@SerializedName("notificationSend")
 	private boolean notificationSend;
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public void setStatusProcess(String statusProcess) {
 		this.statusProcess = statusProcess;

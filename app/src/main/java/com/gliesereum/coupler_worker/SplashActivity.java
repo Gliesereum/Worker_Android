@@ -215,16 +215,25 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
-        alertDialog = new LottieAlertDialog.Builder(this, DialogTypes.TYPE_LOADING)
-                .setTitle("Загрузка")
-                .setDescription("Загружается контент, подождите")
-                .build();
-        alertDialog.setCancelable(false);
-        alertDialog.show();
+        if (alertDialog == null || !alertDialog.isShowing()) {
+            alertDialog = new LottieAlertDialog.Builder(this, DialogTypes.TYPE_LOADING)
+                    .setTitle("Загрузка")
+                    .setDescription("Происходит загрузка, подождите")
+                    .build();
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+        }
+
 
     }
 
     public void closeProgressDialog() {
-        alertDialog.dismiss();
+        try {
+            if (alertDialog != null && alertDialog.isShowing()) {
+                alertDialog.dismiss();
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

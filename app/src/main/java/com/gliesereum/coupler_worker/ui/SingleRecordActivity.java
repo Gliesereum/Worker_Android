@@ -21,7 +21,6 @@ import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
-import com.google.android.material.button.MaterialButton;
 import com.labters.lottiealertdialoglibrary.ClickListener;
 import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
@@ -42,7 +41,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private APIInterface API;
     private CustomCallback customCallback;
     private AllRecordResponse record;
-    private MaterialButton progressBtn;
+    private Button progressBtn;
     private Button doneBtn;
     private Button cancelBtn;
     private TextView carName;
@@ -55,6 +54,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private LottieAlertDialog alertDialog;
     private TextView dataLabel;
     private ImageView backImg;
+    private TextView clientNameLabel;
 
 
     @Override
@@ -102,6 +102,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 onBackPressed();
             }
         });
+        clientNameLabel = findViewById(R.id.clientNameLabel);
     }
 
     private void fillActivity() {
@@ -123,8 +124,12 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             progressBtn.setEnabled(true);
             doneBtn.setEnabled(false);
         }
+        if (record.getFirstName() != null && record.getMiddleName() != null) {
+            clientNameLabel.setText(record.getFirstName() + " " + record.getMiddleName());
+        } else {
+            clientNameLabel.setText("");
+        }
         timeLabel.setText(Util.getStringTime(record.getBegin()));
-//        durationLabel.setText(String.valueOf((record.getFinish() - record.getBegin()) / 60000) + " мин");
         durationLabel.setText(Util.getStringTime(record.getFinish()));
         dataLabel.setText(Util.getStringFullDateTrue(record.getBegin()));
         moneyLabel.setText(String.valueOf(record.getPrice()) + " грн");
@@ -255,10 +260,20 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        FastSave.getInstance().saveBoolean(SINGLE_RECORD_ACTIVITY, true);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         FastSave.getInstance().saveBoolean(SINGLE_RECORD_ACTIVITY, false);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FastSave.getInstance().saveBoolean(SINGLE_RECORD_ACTIVITY, false);
+    }
 }

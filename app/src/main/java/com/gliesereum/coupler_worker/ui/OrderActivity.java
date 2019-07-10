@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import com.gliesereum.coupler_worker.R;
 import com.gliesereum.coupler_worker.network.APIClient;
@@ -36,7 +35,8 @@ import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.gohn.nativedialog.ButtonType;
 import com.gohn.nativedialog.NDialog;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,6 +70,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private ImageView backBtn;
     private ConstraintLayout packageBlock;
     private LinearLayout packageLianer;
+    private ChipGroup chipGroup;
     private TextView durationLabel;
     private TextView priceLabel;
     private TextView discountTextView;
@@ -77,6 +78,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private Button orderButton;
     private Button chooseClientBtn;
     private TextView clientNameTextView;
+    private ChipGroup packageChipGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         packageBlock = findViewById(R.id.packageBlock);
-        packageLianer = findViewById(R.id.packageLianer);
+//        packageLianer = findViewById(R.id.packageLianer);
         durationLabel = findViewById(R.id.durationLabel);
         priceLabel = findViewById(R.id.priceLabel);
         discountTextView = findViewById(R.id.discountTextView);
@@ -125,6 +127,10 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         clientNameTextView = findViewById(R.id.clientNameTextView);
+        packageChipGroup = findViewById(R.id.packageChipGroup);
+        priceLabel.setText("0");
+        durationLabel.setText("0");
+        discountTextView.setText("0%");
     }
 
 
@@ -192,64 +198,121 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
     private void setPackages(AllCarWashResponse carWash) {
         if (carWash.getPackages() != null && carWash.getPackages().size() != 0) {
-            View layout2 = LayoutInflater.from(this).inflate(R.layout.package_btn2, packageLianer, false);
-            MaterialButton packageBtn = layout2.findViewById(R.id.packageBtn);
-            packageBtn.setText("Не выбран");
-            packageBtn.setTag("default");
-            packageBtn.setOnClickListener(v -> {
-                for (int j = 0; j < packageLianer.getChildCount(); j++) {
-                    ConstraintLayout constraintLayout = ((ConstraintLayout) packageLianer.getChildAt(j));
-                    if (constraintLayout.getChildAt(0).getTag().equals(v.getTag())) {
-                        ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.grey));
-                    } else {
-                        ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.blackPrimary));
+//            View layout2 = LayoutInflater.from(this).inflate(R.layout.package_btn2, packageLianer, false);
+            View layout2 = LayoutInflater.from(this).inflate(R.layout.package_chip, null, false);
+            Chip chip = layout2.findViewById(R.id.chip);
+            chip.setChecked(true);
+            chip.setText("Не выбран");
+            chip.setTag("default");
+            chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) {
+                        for (int j = 0; j < packageChipGroup.getChildCount(); j++) {
+                            Chip constraintLayout = ((Chip) packageChipGroup.getChildAt(j));
+                            if (!constraintLayout.getTag().equals(compoundButton.getTag())) {
+                                constraintLayout.setChecked(false);
+                            }
+                        }
+                        serviceMap.clear();
+                        nameOfServiceList.clear();
+                        orderBody.setPackageId(null);
+                        priceLabel.setText("0");
+                        durationLabel.setText("0");
+                        discountTextView.setText("0%");
+                        Log.d(TAG, "setPackages: ");
+                        setServicePrices(carWash);
                     }
                 }
-                serviceMap.clear();
-                nameOfServiceList.clear();
-                orderBody.setPackageId(null);
-                priceLabel.setText("0");
-                durationLabel.setText("0");
-                discountTextView.setText("0%");
-                Log.d(TAG, "setPackages: ");
-                setServicePrices(carWash);
             });
-            packageLianer.addView(layout2);
+
+//            chip.setOnClickListener(v -> {
+//                for (int j = 0; j < packageLianer.getChildCount(); j++) {
+//                    ConstraintLayout constraintLayout = ((ConstraintLayout) packageLianer.getChildAt(j));
+//                    if (constraintLayout.getChildAt(0).getTag().equals(v.getTag())) {
+//                        ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.grey));
+//                    } else {
+//                        ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.blackPrimary));
+//                    }
+//                }
+//                serviceMap.clear();
+//                nameOfServiceList.clear();
+//                orderBody.setPackageId(null);
+//                priceLabel.setText("0");
+//                durationLabel.setText("0");
+//                discountTextView.setText("0%");
+//                Log.d(TAG, "setPackages: ");
+//                setServicePrices(carWash);
+//            });
+//            packageLianer.addView(layout2);
+            packageChipGroup.addView(layout2);
             for (int i = 0; i < carWash.getPackages().size(); i++) {
-                layout2 = LayoutInflater.from(this).inflate(R.layout.package_btn2, packageLianer, false);
-                packageBtn = layout2.findViewById(R.id.packageBtn);
-                packageBtn.setText(carWash.getPackages().get(i).getName());
-                packageBtn.setTag(carWash.getPackages().get(i).getId());
-                packageBtn.setOnClickListener(v -> {
-                    serviceMap.clear();
-                    nameOfServiceList.clear();
-                    orderBody.setPackageId((String) v.getTag());
-                    for (int j = 0; j < packageLianer.getChildCount(); j++) {
-                        ConstraintLayout constraintLayout = ((ConstraintLayout) packageLianer.getChildAt(j));
-                        if (constraintLayout.getChildAt(0).getTag().equals(v.getTag())) {
-                            ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.grey));
-                        } else {
-                            ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.blackPrimary));
+                layout2 = LayoutInflater.from(this).inflate(R.layout.package_chip, null, false);
+                chip = layout2.findViewById(R.id.chip);
+                chip.setText(carWash.getPackages().get(i).getName());
+                chip.setTag(carWash.getPackages().get(i).getId());
+                chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (b) {
+                            for (int j = 0; j < packageChipGroup.getChildCount(); j++) {
+                                Chip constraintLayout = ((Chip) packageChipGroup.getChildAt(j));
+                                if (!constraintLayout.getTag().equals(compoundButton.getTag())) {
+                                    constraintLayout.setChecked(false);
+                                }
+                            }
+                            serviceMap.clear();
+                            nameOfServiceList.clear();
+                            orderBody.setPackageId((String) compoundButton.getTag());
+                            for (int j = 0; j < packageMap.get(compoundButton.getTag()).getServices().size(); j++) {
+                                nameOfServiceList.add(packageMap.get(compoundButton.getTag()).getServices().get(j).getName());
+                                serviceMap.put(packageMap.get(compoundButton.getTag()).getServices().get(j).getId(), packageMap.get(compoundButton.getTag()).getServices().get(j));
+                            }
+                            discountTextView.setText(String.valueOf(packageMap.get(compoundButton.getTag()).getDiscount()) + "%");
+                            setServicePrices(carWash);
+                            String duration = String.valueOf(packageMap.get(compoundButton.getTag()).getDuration());
+                            durationLabel.setText(duration);
+                            double price = 0;
+                            for (int j = 0; j < packageMap.get(compoundButton.getTag()).getServices().size(); j++) {
+                                price += packageMap.get(compoundButton.getTag()).getServices().get(j).getPrice();
+                            }
+                            priceLabel.setText(String.valueOf((int) (price - ((price / 100) * packageMap.get(compoundButton.getTag()).getDiscount()))));
+                            packageBlock.setVisibility(View.VISIBLE);
                         }
                     }
-                    for (int j = 0; j < packageMap.get(v.getTag()).getServices().size(); j++) {
-                        nameOfServiceList.add(packageMap.get(v.getTag()).getServices().get(j).getName());
-                        serviceMap.put(packageMap.get(v.getTag()).getServices().get(j).getId(), packageMap.get(v.getTag()).getServices().get(j));
-                    }
-                    discountTextView.setText(String.valueOf(packageMap.get(v.getTag()).getDiscount()) + "%");
-                    setServicePrices(carWash);
-                    String duration = String.valueOf(packageMap.get(v.getTag()).getDuration());
-                    durationLabel.setText(duration);
-                    double price = 0;
-                    for (int j = 0; j < packageMap.get(v.getTag()).getServices().size(); j++) {
-                        price += packageMap.get(v.getTag()).getServices().get(j).getPrice();
-                    }
-                    priceLabel.setText(String.valueOf((int) (price - ((price / 100) * packageMap.get(v.getTag()).getDiscount()))));
-                    packageBlock.setVisibility(View.VISIBLE);
                 });
-                packageLianer.addView(layout2);
-                ConstraintLayout constraintLayout = ((ConstraintLayout) packageLianer.getChildAt(0));
-                ((MaterialButton) constraintLayout.getChildAt(0)).performClick();
+//                chip.setOnClickListener(v -> {
+//                    serviceMap.clear();
+//                    nameOfServiceList.clear();
+//                    orderBody.setPackageId((String) v.getTag());
+//                    for (int j = 0; j < packageLianer.getChildCount(); j++) {
+//                        ConstraintLayout constraintLayout = ((ConstraintLayout) packageLianer.getChildAt(j));
+//                        if (constraintLayout.getChildAt(0).getTag().equals(v.getTag())) {
+//                            ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.grey));
+//                        } else {
+//                            ((MaterialButton) constraintLayout.getChildAt(0)).setBackgroundTintList(ContextCompat.getColorStateList(OrderActivity.this, R.color.blackPrimary));
+//                        }
+//                    }
+//                    for (int j = 0; j < packageMap.get(v.getTag()).getServices().size(); j++) {
+//                        nameOfServiceList.add(packageMap.get(v.getTag()).getServices().get(j).getName());
+//                        serviceMap.put(packageMap.get(v.getTag()).getServices().get(j).getId(), packageMap.get(v.getTag()).getServices().get(j));
+//                    }
+//                    discountTextView.setText(String.valueOf(packageMap.get(v.getTag()).getDiscount()) + "%");
+//                    setServicePrices(carWash);
+//                    String duration = String.valueOf(packageMap.get(v.getTag()).getDuration());
+//                    durationLabel.setText(duration);
+//                    double price = 0;
+//                    for (int j = 0; j < packageMap.get(v.getTag()).getServices().size(); j++) {
+//                        price += packageMap.get(v.getTag()).getServices().get(j).getPrice();
+//                    }
+//                    priceLabel.setText(String.valueOf((int) (price - ((price / 100) * packageMap.get(v.getTag()).getDiscount()))));
+//                    packageBlock.setVisibility(View.VISIBLE);
+//                });
+//                packageLianer.addView(layout2);
+                packageChipGroup.addView(layout2);
+
+//                ConstraintLayout constraintLayout = ((ConstraintLayout) packageLianer.getChildAt(0));
+//                ((MaterialButton) constraintLayout.getChildAt(0)).performClick();
             }
             setServicePrices(carWash);
         } else {
@@ -259,6 +322,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             packageBlock.setVisibility(View.GONE);
             setServicePrices(carWash);
         }
+
     }
 
     public void showDateTimePicker() {

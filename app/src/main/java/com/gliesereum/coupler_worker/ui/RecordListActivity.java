@@ -535,6 +535,13 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, false);
