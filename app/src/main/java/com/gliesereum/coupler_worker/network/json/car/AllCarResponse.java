@@ -1,5 +1,6 @@
 package com.gliesereum.coupler_worker.network.json.car;
 
+import com.gliesereum.coupler_worker.network.json.carwash.ServiceClassItem;
 import com.gliesereum.coupler_worker.network.json.filter.AttributesItem;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,10 +24,21 @@ public class AllCarResponse {
     private String description;
 
     @SerializedName("services")
-    private List<ServicesItem> services;
+    private List<ServiceClassItem> services;
 
     @SerializedName("userId")
     private String userId;
+
+    @SerializedName("favorite")
+    private boolean favorite;
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     @SerializedName("yearId")
     private String yearId;
@@ -81,11 +93,11 @@ public class AllCarResponse {
         return description;
     }
 
-    public void setServices(List<ServicesItem> services) {
+    public void setServices(List<ServiceClassItem> services) {
         this.services = services;
     }
 
-    public List<ServicesItem> getServices() {
+    public List<ServiceClassItem> getServices() {
         return services;
     }
 

@@ -24,6 +24,7 @@ import com.gliesereum.coupler_worker.R;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
+import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
 import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.coupler_worker.network.json.carwash.PackagesItem;
 import com.gliesereum.coupler_worker.network.json.carwash.ServicePricesItem;
@@ -53,6 +54,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -79,6 +81,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private Button chooseClientBtn;
     private TextView clientNameTextView;
     private ChipGroup packageChipGroup;
+    private TextView carName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +134,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         priceLabel.setText("0");
         durationLabel.setText("0");
         discountTextView.setText("0%");
+        carName = findViewById(R.id.carName);
     }
 
 
@@ -534,10 +538,34 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         super.onResume();
         if (FastSave.getInstance().getBoolean(CHOOSE_CLIENT_DONE, false)) {
             chooseClientBtn.setVisibility(View.GONE);
+            getClientCar();
             clientNameTextView.setText(FastSave.getInstance().getString(CHOOSE_CLIENT_FIRST_NAME, "") + " " + FastSave.getInstance().getString(CHOOSE_CLIENT_SECOND_NAME, ""));
             clientNameTextView.setVisibility(View.VISIBLE);
             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_DONE);
 
         }
+    }
+
+    private void getClientCar() {
+        API.getClientCar(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CHOOSE_CLIENT_ID, ""), FastSave.getInstance().getString(CORPORATION_ID, ""))
+                .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<List<AllCarResponse>>() {
+                    @Override
+                    public void onSuccessful(Call<List<AllCarResponse>> call, Response<List<AllCarResponse>> response) {
+                        if (response.body().size() > 0) {
+                            for (int i = 0; i < response.body().size(); i++) {
+                                if (response.body().get(i).isFavorite()) {
+                                    carName.setText(response.body().get(i).getBrand() + " " + response.body().get(i).getModel());
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onEmpty(Call<List<AllCarResponse>> call, Response<List<AllCarResponse>> response) {
+
+                    }
+                }));
+
     }
 }

@@ -8,6 +8,7 @@ import com.gliesereum.coupler_worker.network.json.carwash.CommentsItem;
 import com.gliesereum.coupler_worker.network.json.carwash.Rating;
 import com.gliesereum.coupler_worker.network.json.classservices.ClassServiceResponse;
 import com.gliesereum.coupler_worker.network.json.client.ClientResponse;
+import com.gliesereum.coupler_worker.network.json.client_new.NewClientResponse;
 import com.gliesereum.coupler_worker.network.json.code.CodeResponse;
 import com.gliesereum.coupler_worker.network.json.code.SigninBody;
 import com.gliesereum.coupler_worker.network.json.filter.FilterResponse;
@@ -40,6 +41,12 @@ public interface APIInterface {
 
     @GET("karma/v1/business/customers")
     Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
+
+    @GET("karma/v1/business/customers/by-corporation-ids")
+    Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
+
+    @GET("karma/v1/business/customers/by-corporation-ids")
+    Call<NewClientResponse> searchClients(@Header("Authorization") String accessToken, @Query("ids") List<String> ids, @Query("query") String query);
 
     //STATUS
     @GET("status")
@@ -80,6 +87,10 @@ public interface APIInterface {
 
 
     //CAR
+    @GET("karma/v1/car/user/as-worker")
+    Call<List<AllCarResponse>> getClientCar(@Header("Authorization") String accessToken, @Query("clientId") String clientId, @Query("corporationId") String corporationId);
+
+
     @GET("karma/v1/car/brands")
     Call<List<BrandResponse>> getBrands(@Header("Authorization") String accessToken);
 

@@ -44,6 +44,7 @@ import retrofit2.Response;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_EXPIRATION_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN_WITHOUT_BEARER;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOGIN;
@@ -239,6 +240,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.code() == 200) {
                     countDownTimer.cancel();
                     if (FastSave.getInstance().getBoolean(REG_NEW_CLIENT, false)) {
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, response.body().getUser().getId());
                         FastSave.getInstance().saveString(CLIENT_ACCESS_TOKEN, "Bearer " + response.body().getTokenInfo().getAccessToken());
                         FastSave.getInstance().saveObject(NEW_CLIENT_OBJECT, response.body().getUser());
                         startActivity(new Intent(LoginActivity.this, RegisterClientActivity.class));

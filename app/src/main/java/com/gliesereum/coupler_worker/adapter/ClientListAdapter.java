@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.network.json.client.ClientResponse;
+import com.gliesereum.coupler_worker.network.json.client_new.ContentItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.ViewHolder> {
 
-    private List<ClientResponse> allClientsList = new ArrayList<>();
+    private List<ContentItem> allClientsList = new ArrayList<>();
     //    private Map<String, String> carWashNameMap = new HashMap<>();
     private Context context;
     private int i = 0;
@@ -58,14 +58,19 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Vi
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(ClientResponse recordInfo) {
+        public void bind(ContentItem recordInfo) {
             firstName.setText(recordInfo.getFirstName() + " " + recordInfo.getMiddleName());
             dataTextView.setText(recordInfo.getPhone());
         }
     }
 
-    public void setItems(List<ClientResponse> cars) {
+    public void setItems(List<ContentItem> cars) {
         allClientsList.addAll(cars);
+        notifyDataSetChanged();
+    }
+
+    public void clearItems() {
+        allClientsList.clear();
         notifyDataSetChanged();
     }
 
@@ -85,7 +90,7 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Vi
         void onItemClick(View view, int position);
     }
 
-    public ClientResponse getItem(int id) {
+    public ContentItem getItem(int id) {
         return allClientsList.get(id);
     }
 }

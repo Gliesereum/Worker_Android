@@ -72,6 +72,17 @@ public class AllCarWashResponse {
     @SerializedName("timeZone")
     private Integer timeZone;
 
+    @SerializedName("corporationId")
+    private String corporationId;
+
+    public String getCorporationId() {
+        return corporationId;
+    }
+
+    public void setCorporationId(String corporationId) {
+        this.corporationId = corporationId;
+    }
+
     public String getBusinessCategoryId() {
         return businessCategoryId;
     }

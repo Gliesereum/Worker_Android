@@ -2,8 +2,11 @@ package com.gliesereum.coupler_worker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +21,7 @@ import com.gliesereum.coupler_worker.adapter.ClientListAdapter;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
-import com.gliesereum.coupler_worker.network.json.client.ClientResponse;
+import com.gliesereum.coupler_worker.network.json.client_new.NewClientResponse;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
@@ -30,11 +33,11 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
-import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
 public class ClientsListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, View.OnClickListener {
@@ -53,8 +56,9 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     private CustomCallback customCallback;
     private RecyclerView recyclerView;
     private ClientListAdapter clientListAdapter;
-    private List<ClientResponse> clientsList;
+    private List<NewClientResponse> clientsList;
     private Button addNewClient;
+    private EditText searchTextView;
 
 
     @Override
@@ -66,18 +70,32 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     }
 
     private void getAllClients() {
-        API.getAllClientsByBusiness(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CARWASH_ID, "")))
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<ClientResponse>>() {
+        API.getAllClientsByCorporation(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CORPORATION_ID, "")))
+                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<NewClientResponse>() {
                     @Override
-                    public void onSuccessful(Call<List<ClientResponse>> call, Response<List<ClientResponse>> response) {
-                        clientsList = response.body();
-                        if (clientsList != null && clientsList.size() > 0) {
-                            clientListAdapter.setItems(clientsList);
-                        }
+                    public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+                        clientListAdapter.setItems(response.body().getContent());
                     }
 
                     @Override
-                    public void onEmpty(Call<List<ClientResponse>> call, Response<List<ClientResponse>> response) {
+                    public void onEmpty(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+
+                    }
+                }));
+
+    }
+
+    private void searchClients(String text) {
+        API.searchClients(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CORPORATION_ID, "")), text)
+                .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<NewClientResponse>() {
+                    @Override
+                    public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+                        clientListAdapter.clearItems();
+                        clientListAdapter.setItems(response.body().getContent());
+                    }
+
+                    @Override
+                    public void onEmpty(Call<NewClientResponse> call, Response<NewClientResponse> response) {
 
                     }
                 }));
@@ -109,11 +127,37 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         recyclerView.setAdapter(clientListAdapter);
         addNewClient = findViewById(R.id.addNewClient);
         addNewClient.setOnClickListener(this);
+        searchTextView = findViewById(R.id.searchTextView);
+        searchTextView.addTextChangedListener(searchWatcher);
     }
+
+    TextWatcher searchWatcher = new TextWatcher() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.length() >= 3) {
+                searchClients(String.valueOf(s));
+
+//                secondNameTextInputLayout.setError("Обязательное поле");
+//                firstNameFlag = false;
+//                checkButton();
+            } else {
+            }
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+    };
 
     @Override
     public void onItemClick(View view, int position) {
-        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
+        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getClientId());
         FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
         FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
         FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
