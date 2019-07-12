@@ -67,8 +67,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:visibility="w">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.rilixtech.CountryCodePicker
                         android:id="@+id/ccp"
@@ -143,7 +142,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Код был отправлен на номер"
-                    android:textAlignment="textEnd"
+                    android:textAlignment="textStart"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     android:visibility="gone"
@@ -160,7 +159,6 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:textAlignment="textStart"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     android:visibility="gone"

@@ -32,9 +32,16 @@ import retrofit2.Response;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_EXPIRATION_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN_WITHOUT_BEARER;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CLIENT_ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOGIN;
+import static com.gliesereum.coupler_worker.util.Constants.NEW_CLIENT_OBJECT;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_EXPIRATION_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.STATUS_UP;
 import static com.gliesereum.coupler_worker.util.Constants.USER_ID;
 import static com.gliesereum.coupler_worker.util.Constants.USER_NAME;
@@ -55,9 +62,20 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initData();
+        wipeClientData();
         initView();
         checkStatus();
 
+    }
+
+    private void wipeClientData() {
+        FastSave.getInstance().deleteValue(CHOOSE_CLIENT_ID);
+        FastSave.getInstance().deleteValue(CHOOSE_CLIENT_FIRST_NAME);
+        FastSave.getInstance().deleteValue(CHOOSE_CLIENT_SECOND_NAME);
+        FastSave.getInstance().deleteValue(CHOOSE_CLIENT_DONE);
+        FastSave.getInstance().deleteValue(REG_NEW_CLIENT);
+        FastSave.getInstance().deleteValue(NEW_CLIENT_OBJECT);
+        FastSave.getInstance().deleteValue(CLIENT_ACCESS_TOKEN);
     }
 
     private void initData() {

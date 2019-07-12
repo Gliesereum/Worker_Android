@@ -13,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.RegisterClientActivity"></activity>
-        <activity android:name=".ui.ClientsListActivity" />
+        <activity
+            android:name=".ui.RegisterClientActivity"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".ui.ClientsListActivity"
+            android:screenOrientation="landscape" />
 
         <service
             android:name=".MyFirebaseMessagingService"
