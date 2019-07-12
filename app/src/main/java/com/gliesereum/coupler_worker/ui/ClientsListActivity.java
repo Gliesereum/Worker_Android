@@ -157,7 +157,7 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
 
     @Override
     public void onItemClick(View view, int position) {
-        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getClientId());
+        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
         FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
         FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
         FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
