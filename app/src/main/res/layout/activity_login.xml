@@ -8,7 +8,7 @@
     tools:context=".ui.LoginActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,201 +18,189 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="384dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:enabled="false"
+                android:text="Получить код"
+                android:textColor="@color/white"
+                android:theme="@style/MyButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-                <Button
-                    android:id="@+id/registerBtn"
-                    android:layout_width="350dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="16dp"
-                    android:enabled="false"
-                    android:text="Получить код"
-                    android:textColor="@color/white"
-                    android:theme="@style/MyButton"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            <Button
+                android:id="@+id/loginBtn"
+                android:layout_width="384dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:enabled="false"
+                android:text="Вход"
+                android:textColor="@color/white"
+                android:theme="@style/MyButton"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-                <Button
-                    android:id="@+id/loginBtn"
-                    android:layout_width="350dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
-                    android:enabled="false"
-                    android:text="Вход"
-                    android:textColor="@color/white"
-                    android:theme="@style/MyButton"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="384dp"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView7">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
-                    android:layout_width="350dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="16dp"
+                    android:id="@+id/valueBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView7">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="w">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/valueBlock"
-                        android:layout_width="match_parent"
+                    <com.rilixtech.CountryCodePicker
+                        android:id="@+id/ccp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:animateLayoutChanges="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:ccp_textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/phoneTextInputLayout"
                         app:layout_constraintStart_toStartOf="parent"
+
+                        app:layout_constraintTop_toTopOf="@+id/phoneTextInputLayout" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phoneTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:focusableInTouchMode="true"
+                        android:textColorHint="#959CBB"
+                        app:boxStrokeColor="@color/colorPrimaryGreen"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ccp"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <com.rilixtech.CountryCodePicker
-                            android:id="@+id/ccp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:ccp_textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="@+id/phoneTextInputLayout"
-                            app:layout_constraintStart_toStartOf="parent"
-
-                            app:layout_constraintTop_toTopOf="@+id/phoneTextInputLayout" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/phoneTextInputLayout"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/phoneTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:focusableInTouchMode="true"
-                            android:textColorHint="#959CBB"
-                            app:boxStrokeColor="@color/colorPrimaryGreen"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ccp"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/phoneTextView"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:focusableInTouchMode="true"
-                                android:hint="Номер телефона"
-                                android:inputType="numberSigned"
-                                android:singleLine="true"
-                                android:textColor="@color/black"
-                                android:textColorHint="#959CBB" />
+                            android:hint="Номер телефона"
+                            android:inputType="numberSigned"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="#959CBB" />
 
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <com.chaos.view.PinView
-                        android:id="@+id/codeView"
-                        style="@style/PinWidget.PinView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:cursorVisible="false"
-                        android:inputType="numberSigned"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:visibility="gone"
-                        app:itemCount="6"
-                        app:itemHeight="45dp"
-                        app:itemRadius="8dp"
-                        app:itemSpacing="5dp"
-                        app:itemWidth="45dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/codeLabel2"
-                        app:lineColor="@color/colorPrimaryGreen"
-                        app:lineWidth="2dp"
-                        app:viewType="rectangle" />
-
-                    <TextView
-                        android:id="@+id/codeLabel1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="32dp"
-                        android:text="Код был отправлен на номер"
-                        android:textColor="@color/colorPrimary"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/codeLabel2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:textColor="@color/colorPrimary"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/codeLabel1" />
-
-                    <TextView
-                        android:id="@+id/timerLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="timer"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.501"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/codeView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="128dp"
-                    android:layout_height="168dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                <com.chaos.view.PinView
+                    android:id="@+id/codeView"
+                    style="@style/PinWidget.PinView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:cursorVisible="false"
+                    android:inputType="numberSigned"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    app:itemCount="6"
+                    app:itemHeight="45dp"
+                    app:itemRadius="8dp"
+                    app:itemSpacing="5dp"
+                    app:itemWidth="45dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/codeLabel2"
+                    app:lineColor="@color/colorPrimaryGreen"
+                    app:lineWidth="2dp"
+                    app:viewType="rectangle" />
+
+                <TextView
+                    android:id="@+id/codeLabel1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Код был отправлен на номер"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/codeLabel2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_worker_logo_group_simple" />
+                    tools:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/codeLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/codeLabel1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="PhoneNumber"
+                    tools:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/timerLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="timer"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/codeView"
+                    tools:visibility="gone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="120dp"
+                android:layout_height="160dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_worker_logo_group_simple" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

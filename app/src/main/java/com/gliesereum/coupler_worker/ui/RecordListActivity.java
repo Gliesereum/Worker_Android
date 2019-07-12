@@ -39,8 +39,6 @@ import com.gohn.nativedialog.NDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -404,120 +402,6 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
                     }
                 }));
-    }
-
-    private void recordCancele(String recordId) {
-        API = APIClient.getClient().create(APIInterface.class);
-        Call<AllRecordResponse> call = API.canceleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordId);
-        call.enqueue(new Callback<AllRecordResponse>() {
-            @Override
-            public void onResponse(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                if (response.code() == 200) {
-                    Toast.makeText(RecordListActivity.this, "recordCancele", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (response.code() == 204) {
-                        Toast.makeText(RecordListActivity.this, "204", Toast.LENGTH_SHORT).show();
-                    } else {
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            errorHandler.showError(jObjError.getInt("code"));
-                        } catch (Exception e) {
-                            errorHandler.showCustomError(e.getMessage());
-                            closeProgressDialog();
-                        }
-                    }
-                }
-                if (nDialog != null) {
-                    nDialog.dismiss();
-                }
-                closeProgressDialog();
-            }
-
-            @Override
-            public void onFailure(Call<AllRecordResponse> call, Throwable t) {
-                errorHandler.showCustomError(t.getMessage());
-                if (nDialog != null) {
-                    nDialog.dismiss();
-                }
-                closeProgressDialog();
-            }
-        });
-    }
-
-    private void recordDone(String recordId) {
-        API = APIClient.getClient().create(APIInterface.class);
-        Call<AllRecordResponse> call = API.changeRecordStatus(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordId, "COMPLETED");
-        call.enqueue(new Callback<AllRecordResponse>() {
-            @Override
-            public void onResponse(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                if (response.code() == 200) {
-                    Toast.makeText(RecordListActivity.this, "recordDone", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (response.code() == 204) {
-                        Toast.makeText(RecordListActivity.this, "204", Toast.LENGTH_SHORT).show();
-                    } else {
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            errorHandler.showError(jObjError.getInt("code"));
-                        } catch (Exception e) {
-                            errorHandler.showCustomError(e.getMessage());
-                            closeProgressDialog();
-                        }
-                    }
-                }
-                if (nDialog != null) {
-                    nDialog.dismiss();
-                }
-                closeProgressDialog();
-            }
-
-            @Override
-            public void onFailure(Call<AllRecordResponse> call, Throwable t) {
-                errorHandler.showCustomError(t.getMessage());
-                if (nDialog != null) {
-                    nDialog.dismiss();
-                }
-                closeProgressDialog();
-            }
-        });
-    }
-
-    private void recordInProgress(String recordId) {
-        API = APIClient.getClient().create(APIInterface.class);
-        Call<AllRecordResponse> call = API.changeRecordStatus(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordId, "IN_PROCESS");
-        call.enqueue(new Callback<AllRecordResponse>() {
-            @Override
-            public void onResponse(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                if (response.code() == 200) {
-                    Toast.makeText(RecordListActivity.this, "recordInProgress", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (response.code() == 204) {
-                        Toast.makeText(RecordListActivity.this, "204", Toast.LENGTH_SHORT).show();
-                    } else {
-                        try {
-                            JSONObject jObjError = new JSONObject(response.errorBody().string());
-                            errorHandler.showError(jObjError.getInt("code"));
-                        } catch (Exception e) {
-                            errorHandler.showCustomError(e.getMessage());
-                            closeProgressDialog();
-                        }
-                    }
-                }
-                if (nDialog != null) {
-                    nDialog.dismiss();
-                }
-                closeProgressDialog();
-            }
-
-            @Override
-            public void onFailure(Call<AllRecordResponse> call, Throwable t) {
-                errorHandler.showCustomError(t.getMessage());
-                if (nDialog != null) {
-                    nDialog.dismiss();
-                }
-                closeProgressDialog();
-            }
-        });
     }
 
     @Override

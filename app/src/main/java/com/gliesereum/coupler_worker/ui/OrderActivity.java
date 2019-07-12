@@ -494,6 +494,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 //                                                            startActivity(new Intent(OrderActivity.this, RecordListActivity.class));
                                                             FastSave.getInstance().saveObject("RECORD", response.body());
                                                             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_ID);
+                                                            FastSave.getInstance().deleteValue(CHOOSE_CLIENT_FIRST_NAME);
+                                                            FastSave.getInstance().deleteValue(CHOOSE_CLIENT_SECOND_NAME);
                                                             startActivity(new Intent(OrderActivity.this, SingleRecordActivity.class));
                                                             finish();
                                                         }

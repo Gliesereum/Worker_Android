@@ -154,7 +154,7 @@ public interface APIInterface {
     Call<AllRecordResponse> getSingleRecord(@Header("Authorization") String accessToken, @Path("recordId") String recordId);
 
     @PUT("karma/v1/record/record/canceled")
-    Call<AllRecordResponse> canceleRecord(@Header("Authorization") String accessToken, @Query("idRecord") String idRecord);
+    Call<AllRecordResponse> canceleRecord(@Header("Authorization") String accessToken, @Query("idRecord") String idRecord, @Query("message") String message);
 
     @PUT("karma/v1/record/status/process")
     Call<AllRecordResponse> changeRecordStatus (@Header("Authorization") String accessToken, @Query("idRecord") String idRecord, @Query("status") String status);

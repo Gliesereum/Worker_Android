@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,11 +22,9 @@ import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
-import com.labters.lottiealertdialoglibrary.ClickListener;
-import com.labters.lottiealertdialoglibrary.DialogTypes;
+import com.gohn.nativedialog.ButtonType;
+import com.gohn.nativedialog.NDialog;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private TextView dataLabel;
     private ImageView backImg;
     private TextView clientNameLabel;
+    private TextView commentTextView;
+
 
 
     @Override
@@ -171,39 +172,52 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 recordDone();
                 break;
             case R.id.cancelBtn:
-                alertDialog = new LottieAlertDialog.Builder(this, DialogTypes.TYPE_QUESTION)
-                        .setTitle("Отменить заказ")
-                        .setDescription("Вы действительно хотите отменить заказ?\n(Эту операцию нельзя отменить)")
-                        .setPositiveText("Да")
-                        .setNegativeText("Нет")
-                        .setPositiveButtonColor(getResources().getColor(R.color.red))
-                        .setNegativeButtonColor(getResources().getColor(R.color.colorPrimaryGreen))
-                        .setPositiveListener(new ClickListener() {
-                            @Override
-                            public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
-                                alertDialog.dismiss();
-                                recordCancel();
-                            }
-                        })
-                        .setNegativeListener(new ClickListener() {
-                            @Override
-                            public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
-                                alertDialog.dismiss();
-                            }
-                        })
-                        .build();
-                alertDialog.setCancelable(false);
-                alertDialog.show();
+                NDialog cancelDialog = new NDialog(SingleRecordActivity.this, ButtonType.NO_BUTTON);
+                cancelDialog.setCustomView(R.layout.cancele_dialog);
+                List<View> childViews = cancelDialog.getCustomViewChildren();
+                for (View childView : childViews) {
+                    switch (childView.getId()) {
+                        case R.id.commentTextView:
+                            commentTextView = childView.findViewById(R.id.commentTextView);
+                            break;
+                        case R.id.deleteRecord:
+                            Button deleteRecord = childView.findViewById(R.id.deleteRecord);
+                            deleteRecord.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (!commentTextView.getText().toString().equals("")) {
+                                        cancelRecord();
+                                        cancelDialog.dismiss();
+                                    } else {
+                                        Toast.makeText(SingleRecordActivity.this, "Введите причину отмены заказа", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            break;
+                        case R.id.cancelBtn:
+                            Button cancelBtn = childView.findViewById(R.id.cancelBtn);
+                            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    cancelDialog.dismiss();
+                                }
+                            });
+                            break;
+
+                    }
+                }
+                cancelDialog.show();
                 break;
         }
     }
 
-    private void recordCancel() {
-        API.canceleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), record.getId())
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
+    private void cancelRecord() {
+        API.canceleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), record.getId(), commentTextView.getText().toString())
+                .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<AllRecordResponse>() {
                     @Override
                     public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                        startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
+                        startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                        Toast.makeText(SingleRecordActivity.this, "Заказ отменен", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
@@ -213,6 +227,22 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                     }
                 }));
     }
+
+//    private void recordCancel() {
+//        API.canceleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), record.getId())
+//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
+//                    @Override
+//                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+//                        startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+//
+//                    }
+//                }));
+//    }
 
     private void recordDone() {
         API.changeRecordStatus(FastSave.getInstance().getString(ACCESS_TOKEN, ""), record.getId(), "COMPLETED")
