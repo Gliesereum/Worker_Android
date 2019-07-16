@@ -388,20 +388,23 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
     @Override
     public void onItemClick(View view, int position) {
-        API.getSingleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordListAdapter.getItem(position).getId())
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
-                    @Override
-                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-                        FastSave.getInstance().saveObject("RECORD", response.body());
-                        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
-                        finish();
-                    }
-
-                    @Override
-                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-
-                    }
-                }));
+        FastSave.getInstance().saveObject("RECORD", recordListAdapter.getItem(position));
+        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
+        finish();
+//        API.getSingleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordListAdapter.getItem(position).getId())
+//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
+//                    @Override
+//                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+//                        FastSave.getInstance().saveObject("RECORD", response.body());
+//                        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+//
+//                    }
+//                }));
     }
 
     @Override

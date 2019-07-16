@@ -17,9 +17,11 @@ import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
 import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
+import com.gliesereum.coupler_worker.util.CircleTransform;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.CLIENT_AVATAR_URL;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_RECORD;
 
 public class SingleClientRecordActivity extends AppCompatActivity {
@@ -47,6 +50,7 @@ public class SingleClientRecordActivity extends AppCompatActivity {
     private ImageView backImg;
     private TextView clientNameLabel;
     private TextView commentTextView;
+    private ImageView avatarImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +91,17 @@ public class SingleClientRecordActivity extends AppCompatActivity {
             }
         });
         clientNameLabel = findViewById(R.id.clientNameLabel);
+        avatarImg = findViewById(R.id.avatarImg);
     }
 
     private void fillActivity() {
+        if (!FastSave.getInstance().getString(CLIENT_AVATAR_URL, "").equals("")) {
+            Picasso.get().load(FastSave.getInstance().getString(CLIENT_AVATAR_URL, "")).transform(new CircleTransform()).into(avatarImg);
+            avatarImg.setVisibility(View.VISIBLE);
+            FastSave.getInstance().deleteValue(CLIENT_AVATAR_URL);
+        } else {
+            avatarImg.setVisibility(View.GONE);
+        }
         if (record.getFirstName() != null && record.getMiddleName() != null) {
             clientNameLabel.setText(record.getFirstName() + " " + record.getMiddleName());
         } else {

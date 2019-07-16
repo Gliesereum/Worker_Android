@@ -37,6 +37,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CLIENT_AVATAR_URL;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
@@ -167,11 +168,13 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
             FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
             FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
             FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
+            FastSave.getInstance().saveString(CLIENT_AVATAR_URL, clientListAdapter.getItem(position).getAvatarUrl());
             startActivity(new Intent(ClientsListActivity.this, ClientRecordListActivity.class));
         } else {
             FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
             FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
             FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
+            FastSave.getInstance().saveString(CLIENT_AVATAR_URL, clientListAdapter.getItem(position).getAvatarUrl());
             FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
             finish();
         }

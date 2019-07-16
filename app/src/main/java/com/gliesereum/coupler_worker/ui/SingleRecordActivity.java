@@ -20,11 +20,13 @@ import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
+import com.gliesereum.coupler_worker.util.CircleTransform;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.gohn.nativedialog.ButtonType;
 import com.gohn.nativedialog.NDialog;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.CLIENT_AVATAR_URL;
 import static com.gliesereum.coupler_worker.util.Constants.SINGLE_RECORD_ACTIVITY;
 
 public class SingleRecordActivity extends AppCompatActivity implements View.OnClickListener {
@@ -55,7 +58,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private ImageView backImg;
     private TextView clientNameLabel;
     private TextView commentTextView;
-
+    private ImageView avatarImg;
 
 
     @Override
@@ -104,9 +107,20 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             }
         });
         clientNameLabel = findViewById(R.id.clientNameLabel);
+        avatarImg = findViewById(R.id.avatarImg);
     }
 
     private void fillActivity() {
+        if (record.getClient() != null) {
+            if (record.getClient().getAvatarUrl() != null) {
+                Picasso.get().load(record.getClient().getAvatarUrl()).transform(new CircleTransform()).into(avatarImg);
+                avatarImg.setVisibility(View.VISIBLE);
+                FastSave.getInstance().deleteValue(CLIENT_AVATAR_URL);
+            } else {
+                avatarImg.setVisibility(View.GONE);
+            }
+        }
+
         if (record.getStatusProcess().equals("COMPLETED") || record.getStatusProcess().equals("CANCELED")) {
             progressBtn.setEnabled(false);
             progressBtn.setVisibility(View.GONE);

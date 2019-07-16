@@ -62,6 +62,7 @@ dependencies {
     //https://android-arsenal.com/details/1/7087
     implementation 'de.ehsun.coloredtimebar:coloredtimebar:1.0'
     //https://github.com/ehsunshine/colored-time-selector
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.1'
