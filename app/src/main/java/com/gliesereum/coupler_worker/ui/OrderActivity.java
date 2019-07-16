@@ -555,6 +555,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                             for (int i = 0; i < response.body().size(); i++) {
                                 if (response.body().get(i).isFavorite()) {
                                     carName.setText(response.body().get(i).getBrand().getName() + " " + response.body().get(i).getModel().getName());
+                                    orderBody.setTargetId(response.body().get(i).getId());
                                 }
                             }
                         }
