@@ -13,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.SingleClientRecordActivity"></activity>
+        <activity android:name=".ui.ClientRecordListActivity" />
         <activity
             android:name=".ui.RegisterClientActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".ui.ClientsListActivity"
             android:screenOrientation="landscape" />

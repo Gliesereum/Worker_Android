@@ -9,6 +9,7 @@ import com.gliesereum.coupler_worker.network.json.carwash.Rating;
 import com.gliesereum.coupler_worker.network.json.classservices.ClassServiceResponse;
 import com.gliesereum.coupler_worker.network.json.client.ClientResponse;
 import com.gliesereum.coupler_worker.network.json.client_new.NewClientResponse;
+import com.gliesereum.coupler_worker.network.json.client_record_new.ClientRecordNewResponse;
 import com.gliesereum.coupler_worker.network.json.code.CodeResponse;
 import com.gliesereum.coupler_worker.network.json.code.SigninBody;
 import com.gliesereum.coupler_worker.network.json.filter.FilterResponse;
@@ -44,6 +45,9 @@ public interface APIInterface {
 
     @GET("karma/v1/business/customers/by-corporation-ids")
     Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
+
+    @GET("karma/v1/record/business/by-client")
+    Call<ClientRecordNewResponse> getClientsRecord(@Header("Authorization") String accessToken, @Query("corporationIds") List<String> corporationIds, @Query("clientId") String clientId);
 
     @GET("karma/v1/business/customers/by-corporation-ids")
     Call<NewClientResponse> searchClients(@Header("Authorization") String accessToken, @Query("ids") List<String> ids, @Query("query") String query);

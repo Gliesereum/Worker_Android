@@ -11,6 +11,8 @@ public class Constants {
     public static final String CHOOSE_CLIENT_FIRST_NAME = "CHOOSE_CLIENT_FIRST_NAME";
     public static final String CHOOSE_CLIENT_SECOND_NAME = "CHOOSE_CLIENT_SECOND_NAME";
     public static final String CHOOSE_CLIENT_DONE = "CHOOSE_CLIENT_DONE";
+    public static final String ONLY_CLIENT = "ONLY_CLIENT";
+    public static final String CLIENT_RECORD = "CLIENT_RECORD";
 
     public static final String REG_NEW_CLIENT = "REG_NEW_CLIENT";
     public static final String NEW_CLIENT_OBJECT = "NEW_CLIENT_OBJECT";

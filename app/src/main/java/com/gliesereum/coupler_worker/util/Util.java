@@ -27,6 +27,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
+
 public class Util {
     private Activity activity;
     private Toolbar toolbar;
@@ -148,9 +150,9 @@ public class Util {
                         result.closeDrawer();
                         break;
                     case "clients":
-                        Toast.makeText(activity, "clients", Toast.LENGTH_SHORT).show();
+                        FastSave.getInstance().saveBoolean(ONLY_CLIENT, true);
                         activity.startActivity(new Intent(activity.getApplicationContext(), ClientsListActivity.class));
-//                        result.closeDrawer();
+                        result.closeDrawer();
                         break;
                     case "logout":
 //                        if (result.isDrawerOpen()) {

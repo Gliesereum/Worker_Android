@@ -38,6 +38,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_N
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
+import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
 public class ClientsListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, View.OnClickListener {
@@ -110,6 +111,7 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         new Util(this, toolbar, 2).addNavigation();
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(this, this);
+
         constraintLayout13 = findViewById(R.id.constraintLayout13);
         backBtn = findViewById(R.id.backBtn);
         bussinesName = findViewById(R.id.bussinesName);
@@ -129,6 +131,10 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         addNewClient.setOnClickListener(this);
         searchTextView = findViewById(R.id.searchTextView);
         searchTextView.addTextChangedListener(searchWatcher);
+
+        if (FastSave.getInstance().getBoolean(ONLY_CLIENT, false)) {
+            addNewClient.setVisibility(View.GONE);
+        }
     }
 
     TextWatcher searchWatcher = new TextWatcher() {
@@ -157,11 +163,18 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
 
     @Override
     public void onItemClick(View view, int position) {
-        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
-        FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
-        FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
-        FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
-        finish();
+        if (FastSave.getInstance().getBoolean(ONLY_CLIENT, false)) {
+            FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
+            FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
+            FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
+            startActivity(new Intent(ClientsListActivity.this, ClientRecordListActivity.class));
+        } else {
+            FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
+            FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
+            FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
+            FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
+            finish();
+        }
     }
 
     @Override
@@ -173,6 +186,13 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
                 finish();
                 break;
         }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FastSave.getInstance().deleteValue(ONLY_CLIENT);
 
     }
 }
