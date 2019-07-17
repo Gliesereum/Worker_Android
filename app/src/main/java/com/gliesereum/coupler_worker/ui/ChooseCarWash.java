@@ -21,7 +21,6 @@ import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
 import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationTokenDeleteResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
-import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 
@@ -55,7 +54,6 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private RecyclerView recyclerView;
     private APIInterface API;
     private CustomCallback customCallback;
-    private ErrorHandler errorHandler = new ErrorHandler(this, this);
     private List<AllCarWashResponse> carWashList;
     private MyRecyclerViewAdapter adapter;
     private Button logoutBtn;

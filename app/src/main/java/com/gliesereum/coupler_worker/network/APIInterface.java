@@ -25,6 +25,7 @@ import com.gliesereum.coupler_worker.network.json.status.StatusRegistration;
 import com.gliesereum.coupler_worker.network.json.status.StatusResponse;
 import com.gliesereum.coupler_worker.network.json.user.User;
 import com.gliesereum.coupler_worker.network.json.user.UserResponse;
+import com.gliesereum.coupler_worker.network.json.worker.WorkerResponse;
 
 import java.util.List;
 
@@ -39,6 +40,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIInterface {
+
+    @GET("karma/v1/working-space/workers/by-business")
+    Call<List<WorkerResponse>> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
 
     @GET("karma/v1/business/customers")
     Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);

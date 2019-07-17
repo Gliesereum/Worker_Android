@@ -82,6 +82,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private TextView clientNameTextView;
     private ChipGroup packageChipGroup;
     private TextView carName;
+    private Button chooseMasterBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +136,13 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         durationLabel.setText("0");
         discountTextView.setText("0%");
         carName = findViewById(R.id.carName);
+        chooseMasterBtn = findViewById(R.id.chooseMasterBtn);
+        chooseMasterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OrderActivity.this, MasterListActivity.class));
+            }
+        });
     }
 
 
