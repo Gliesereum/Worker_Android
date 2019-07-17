@@ -25,6 +25,11 @@ import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_DONE;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_ID;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 
 public class MasterListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, WorkerListAdapter.ItemClickListener {
 
@@ -79,7 +84,13 @@ public class MasterListActivity extends AppCompatActivity implements ClientListA
 
     @Override
     public void onItemClick(View view, int position) {
-        workerListAdapter.getItem(position).getId();
+        FastSave.getInstance().saveString(CHOOSE_WORKER_ID, workerListAdapter.getItem(position).getId());
+        FastSave.getInstance().saveString(CHOOSE_WORKER_SPACE, workerListAdapter.getItem(position).getWorkingSpaceId());
+        FastSave.getInstance().saveString(CHOOSE_WORKER_FIRST_NAME, workerListAdapter.getItem(position).getUser().getFirstName());
+        FastSave.getInstance().saveString(CHOOSE_WORKER_SECOND_NAME, workerListAdapter.getItem(position).getUser().getMiddleName());
+        FastSave.getInstance().saveBoolean(CHOOSE_WORKER_DONE, true);
+        finish();
+
     }
 
 }

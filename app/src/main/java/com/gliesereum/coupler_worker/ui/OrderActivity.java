@@ -54,6 +54,10 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_DONE;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
@@ -83,6 +87,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private ChipGroup packageChipGroup;
     private TextView carName;
     private Button chooseMasterBtn;
+    private TextView masterNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +148,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(OrderActivity.this, MasterListActivity.class));
             }
         });
+        masterNameTextView = findViewById(R.id.masterNameTextView);
     }
 
 
@@ -551,6 +557,13 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             clientNameTextView.setVisibility(View.VISIBLE);
             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_DONE);
 
+        }
+        if (FastSave.getInstance().getBoolean(CHOOSE_WORKER_DONE, false)) {
+            chooseMasterBtn.setVisibility(View.GONE);
+            masterNameTextView.setText(FastSave.getInstance().getString(CHOOSE_WORKER_FIRST_NAME, "") + " " + FastSave.getInstance().getString(CHOOSE_WORKER_SECOND_NAME, ""));
+            masterNameTextView.setVisibility(View.VISIBLE);
+            orderBody.setWorkingSpaceId(FastSave.getInstance().getString(CHOOSE_WORKER_SPACE, ""));
+            FastSave.getInstance().deleteValue(CHOOSE_WORKER_DONE);
         }
     }
 

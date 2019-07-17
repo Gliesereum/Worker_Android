@@ -7,10 +7,18 @@ public class Constants {
     public static final String SINGLE_RECORD_ACTIVITY = "SINGLE_RECORD_ACTIVITY";
     public static final String RECORD_LIST_ACTIVITY = "RECORD_LIST_ACTIVITY";
 
+    public static final String CHOOSE_WORKER_ID = "CHOOSE_WORKER_ID";
+    public static final String CHOOSE_WORKER_SPACE = "CHOOSE_WORKER_SPACE";
+    public static final String CHOOSE_WORKER_FIRST_NAME = "CHOOSE_WORKER_FIRST_NAME";
+    public static final String CHOOSE_WORKER_SECOND_NAME = "CHOOSE_WORKER_SECOND_NAME";
+    public static final String CHOOSE_WORKER_DONE = "CHOOSE_WORKER_DONE";
+
     public static final String CHOOSE_CLIENT_ID = "CHOOSE_CLIENT_ID";
     public static final String CHOOSE_CLIENT_FIRST_NAME = "CHOOSE_CLIENT_FIRST_NAME";
     public static final String CHOOSE_CLIENT_SECOND_NAME = "CHOOSE_CLIENT_SECOND_NAME";
     public static final String CHOOSE_CLIENT_DONE = "CHOOSE_CLIENT_DONE";
+
+
     public static final String ONLY_CLIENT = "ONLY_CLIENT";
     public static final String CLIENT_RECORD = "CLIENT_RECORD";
     public static final String CLIENT_AVATAR_URL = "CLIENT_AVATAR_URL";

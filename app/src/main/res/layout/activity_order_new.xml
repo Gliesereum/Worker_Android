@@ -350,7 +350,8 @@
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView34"
                 app:layout_constraintStart_toStartOf="@+id/durationLabel"
-                app:layout_constraintTop_toTopOf="@+id/textView34" />
+                app:layout_constraintTop_toTopOf="@+id/textView34"
+                tools:visibility="gone" />
 
             <Button
                 android:id="@+id/chooseMasterBtn"
@@ -360,7 +361,8 @@
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView8"
                 app:layout_constraintStart_toStartOf="@+id/chooseClientBtn"
-                app:layout_constraintTop_toTopOf="@+id/textView8" />
+                app:layout_constraintTop_toTopOf="@+id/textView8"
+                tools:visibility="gone" />
 
             <TextView
                 android:id="@+id/clientNameTextView"
@@ -374,7 +376,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/durationLabel"
                 app:layout_constraintTop_toTopOf="@+id/textView34"
-                tools:text="clientName" />
+                tools:text="clientName"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/masterNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/durationLabel"
+                app:layout_constraintTop_toTopOf="@+id/textView8"
+                tools:text="clientName"
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
