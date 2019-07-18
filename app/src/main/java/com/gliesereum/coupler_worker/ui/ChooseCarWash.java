@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,8 @@ import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationToken
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
+import com.gohn.nativedialog.ButtonType;
+import com.gohn.nativedialog.NDialog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +62,8 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private List<AllCarWashResponse> carWashList;
     private MyRecyclerViewAdapter adapter;
     private Button logoutBtn;
+    private ImageView imageView3;
+    private ImageButton lockBtn;
 
 
     @Override
@@ -72,6 +79,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
 
 
     }
+
 
     private void cleanRecordFilter() {
         FastSave.getInstance().saveLong(FROM_DATE, Util.startOfDay(System.currentTimeMillis()));
@@ -91,6 +99,43 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
                 logout();
             }
         });
+
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lockScreen();
+            }
+        });
+    }
+
+    private void lockScreen() {
+        NDialog nDialog = new NDialog(ChooseCarWash.this, ButtonType.NO_BUTTON);
+        nDialog.isCancelable(false);
+        nDialog.setCustomView(R.layout.order_view);
+        List<View> childViews = nDialog.getCustomViewChildren();
+        for (View childView : childViews) {
+            switch (childView.getId()) {
+                case R.id.time:
+                    TextView time = childView.findViewById(R.id.time);
+//                    time.setText(Util.getStringTime(response.body().getBegin()));
+                    break;
+                case R.id.okBtn:
+                    Button okBtn = childView.findViewById(R.id.okBtn);
+
+                    break;
+                case R.id.backBtn:
+                    Button backBtn = childView.findViewById(R.id.backBtn);
+                    backBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            nDialog.dismiss();
+                        }
+                    });
+                    break;
+            }
+        }
+        nDialog.show();
     }
 
     private void logout() {

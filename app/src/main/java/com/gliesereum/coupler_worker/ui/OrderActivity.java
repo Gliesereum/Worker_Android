@@ -151,7 +151,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         masterNameTextView = findViewById(R.id.masterNameTextView);
     }
 
-
     private void setServicePrices(AllCarWashResponse carWash) {
         Log.d(TAG, "setServicePrices: ");
         serviceLianear.removeAllViews();
