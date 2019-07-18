@@ -18,6 +18,7 @@ import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationToken
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.order.OrderBody;
 import com.gliesereum.coupler_worker.network.json.order.OrderResponse;
+import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.network.json.service.ServiceResponse;
@@ -40,6 +41,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIInterface {
+
+    @GET("karma/v1/user-pin-code")
+    Call<PinResponse> getPinCode(@Header("Authorization") String accessToken);
 
     @GET("karma/v1/working-space/workers/by-business")
     Call<List<WorkerResponse>> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);

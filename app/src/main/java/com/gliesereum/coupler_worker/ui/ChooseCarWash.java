@@ -2,18 +2,21 @@ package com.gliesereum.coupler_worker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chaos.view.PinView;
 import com.gliesereum.coupler_worker.MyFirebaseMessagingService;
 import com.gliesereum.coupler_worker.R;
 import com.gliesereum.coupler_worker.adapter.MyRecyclerViewAdapter;
@@ -24,6 +27,7 @@ import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
 import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationTokenDeleteResponse;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
+import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.gohn.nativedialog.ButtonType;
@@ -46,8 +50,11 @@ import static com.gliesereum.coupler_worker.util.Constants.CARWASH_TIME_ZONE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FROM_DATE;
+import static com.gliesereum.coupler_worker.util.Constants.IS_EXIST_PIN;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOGIN;
 import static com.gliesereum.coupler_worker.util.Constants.KARMA_BUSINESS_RECORD;
+import static com.gliesereum.coupler_worker.util.Constants.PIN_CODE;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_EXPIRATION_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.STATUS_FILTER;
@@ -64,6 +71,9 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private Button logoutBtn;
     private ImageView imageView3;
     private ImageButton lockBtn;
+    private PinView codeView;
+    private String pin = "";
+    private Button enterPinBtn;
 
 
     @Override
@@ -76,7 +86,30 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         getAllCarWash();
         startService(new Intent(this, MyFirebaseMessagingService.class));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        checkPin();
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            lockScreen();
+        }
 
+
+    }
+
+    private void checkPin() {
+        API.getPinCode(FastSave.getInstance().getString(ACCESS_TOKEN, ""))
+                .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<PinResponse>() {
+                    @Override
+                    public void onSuccessful(Call<PinResponse> call, Response<PinResponse> response) {
+                        FastSave.getInstance().saveBoolean(IS_EXIST_PIN, true);
+                        FastSave.getInstance().saveString(PIN_CODE, response.body().getPinCode());
+                    }
+
+                    @Override
+                    public void onEmpty(Call<PinResponse> call, Response<PinResponse> response) {
+                        FastSave.getInstance().deleteValue(IS_EXIST_PIN);
+                        FastSave.getInstance().deleteValue(PIN_CODE);
+
+                    }
+                }));
 
     }
 
@@ -110,32 +143,60 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     }
 
     private void lockScreen() {
-        NDialog nDialog = new NDialog(ChooseCarWash.this, ButtonType.NO_BUTTON);
-        nDialog.isCancelable(false);
-        nDialog.setCustomView(R.layout.order_view);
-        List<View> childViews = nDialog.getCustomViewChildren();
-        for (View childView : childViews) {
-            switch (childView.getId()) {
-                case R.id.time:
-                    TextView time = childView.findViewById(R.id.time);
-//                    time.setText(Util.getStringTime(response.body().getBegin()));
-                    break;
-                case R.id.okBtn:
-                    Button okBtn = childView.findViewById(R.id.okBtn);
+        if (FastSave.getInstance().getBoolean(IS_EXIST_PIN, false)) {
+            FastSave.getInstance().saveBoolean(IS_LOCK, true);
+            NDialog nDialog = new NDialog(ChooseCarWash.this, ButtonType.NO_BUTTON);
+            nDialog.isCancelable(false);
+            nDialog.setCustomView(R.layout.lock_dialod);
+            List<View> childViews = nDialog.getCustomViewChildren();
+            for (View childView : childViews) {
+                switch (childView.getId()) {
+                    case R.id.codeView:
+                        codeView = childView.findViewById(R.id.codeView);
+                        codeView.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
 
-                    break;
-                case R.id.backBtn:
-                    Button backBtn = childView.findViewById(R.id.backBtn);
-                    backBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            nDialog.dismiss();
-                        }
-                    });
-                    break;
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                pin = String.valueOf(s);
+                                Log.d("PIN", "onTextChanged: " + pin);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                if (s.length() < 4) {
+                                    enterPinBtn.setEnabled(false);
+                                } else {
+                                    enterPinBtn.setEnabled(true);
+                                }
+
+                            }
+                        });
+                        break;
+                    case R.id.enterPinBtn:
+                        enterPinBtn = childView.findViewById(R.id.enterPinBtn);
+                        enterPinBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (FastSave.getInstance().getString(PIN_CODE, "").equals(pin)) {
+                                    pin = "";
+                                    FastSave.getInstance().saveBoolean(IS_LOCK, false);
+                                    nDialog.dismiss();
+                                } else {
+                                    Toast.makeText(ChooseCarWash.this, "Неверный PIN код", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        break;
+                }
             }
+            nDialog.show();
+        } else {
+
         }
-        nDialog.show();
+
     }
 
     private void logout() {
