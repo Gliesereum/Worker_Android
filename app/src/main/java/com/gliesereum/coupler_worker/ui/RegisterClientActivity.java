@@ -31,7 +31,6 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.NEW_CLIENT_OBJECT;
-import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
 public class RegisterClientActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -115,7 +114,6 @@ public class RegisterClientActivity extends AppCompatActivity implements View.On
                             FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, response.body().getFirstName());
                             FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, response.body().getMiddleName());
                             FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
-                            FastSave.getInstance().deleteValue(REG_NEW_CLIENT);
                             finish();
                         }
 

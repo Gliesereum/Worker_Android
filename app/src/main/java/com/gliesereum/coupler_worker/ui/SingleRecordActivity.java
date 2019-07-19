@@ -36,6 +36,7 @@ import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_AVATAR_URL;
+import static com.gliesereum.coupler_worker.util.Constants.RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.SINGLE_RECORD_ACTIVITY;
 
 public class SingleRecordActivity extends AppCompatActivity implements View.OnClickListener {
@@ -80,7 +81,7 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private void initData() {
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(this, this);
-        record = FastSave.getInstance().getObject("RECORD", AllRecordResponse.class);
+        record = FastSave.getInstance().getObject(RECORD, AllRecordResponse.class);
     }
 
     private void initView() {
@@ -139,8 +140,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             progressBtn.setEnabled(true);
             doneBtn.setEnabled(false);
         }
-        if (record.getFirstName() != null && record.getMiddleName() != null) {
-            clientNameLabel.setText(record.getFirstName() + " " + record.getMiddleName());
+        if (record.getClient().getFirstName() != null && record.getClient().getMiddleName() != null) {
+            clientNameLabel.setText(record.getClient().getFirstName() + " " + record.getClient().getMiddleName());
         } else {
             clientNameLabel.setText("");
         }

@@ -26,7 +26,6 @@ import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -72,7 +71,7 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     }
 
     private void getAllClients() {
-        API.getAllClientsByCorporation(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CORPORATION_ID, "")))
+        API.getAllClientsByCorporation(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CORPORATION_ID, ""))
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<NewClientResponse>() {
                     @Override
                     public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
@@ -88,7 +87,7 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     }
 
     private void searchClients(String text) {
-        API.searchClients(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CORPORATION_ID, "")), text)
+        API.searchClients(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CORPORATION_ID, ""), text)
                 .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<NewClientResponse>() {
                     @Override
                     public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {

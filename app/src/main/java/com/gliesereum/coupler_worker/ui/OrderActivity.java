@@ -59,6 +59,8 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_N
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
+import static com.gliesereum.coupler_worker.util.Constants.RECORD;
+import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -509,7 +511,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                                                             nDialog.dismiss();
                                                             Toast.makeText(OrderActivity.this, "Запись добавленна в список", Toast.LENGTH_SHORT).show();
 //                                                            startActivity(new Intent(OrderActivity.this, RecordListActivity.class));
-                                                            FastSave.getInstance().saveObject("RECORD", response.body());
+                                                            FastSave.getInstance().saveObject(RECORD, response.body());
                                                             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_ID);
                                                             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_FIRST_NAME);
                                                             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_SECOND_NAME);
@@ -550,8 +552,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         if (FastSave.getInstance().getBoolean(CHOOSE_CLIENT_DONE, false)) {
+            if (FastSave.getInstance().getBoolean(REG_NEW_CLIENT, false)) {
+                FastSave.getInstance().deleteValue(REG_NEW_CLIENT);
+            } else {
+                getClientCar();
+            }
             chooseClientBtn.setVisibility(View.GONE);
-            getClientCar();
             clientNameTextView.setText(FastSave.getInstance().getString(CHOOSE_CLIENT_FIRST_NAME, "") + " " + FastSave.getInstance().getString(CHOOSE_CLIENT_SECOND_NAME, ""));
             clientNameTextView.setVisibility(View.VISIBLE);
             FastSave.getInstance().deleteValue(CHOOSE_CLIENT_DONE);

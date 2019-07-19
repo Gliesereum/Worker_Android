@@ -230,7 +230,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
 
     private void getAllCarWash() {
 
-        API.getAllCarWash(FastSave.getInstance().getString(ACCESS_TOKEN, ""))
+        API.getAllBusiness(FastSave.getInstance().getString(ACCESS_TOKEN, ""))
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<AllCarWashResponse>>() {
                     @Override
                     public void onSuccessful(Call<List<AllCarWashResponse>> call, Response<List<AllCarWashResponse>> response) {
