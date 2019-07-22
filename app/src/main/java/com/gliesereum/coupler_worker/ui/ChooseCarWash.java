@@ -257,6 +257,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         FastSave.getInstance().saveString(CARWASH_NAME, adapter.getItem(position).getName());
         FastSave.getInstance().saveString(BUSINESS_CATEGORY_ID, adapter.getItem(position).getBusinessCategoryId());
         FastSave.getInstance().saveInt(CARWASH_TIME_ZONE, adapter.getItem(position).getTimeZone());
+//        FastSave.getInstance().saveString(BUSINESS_CATEGORY, adapter.getItem(position).getB);
         subscribeToChanel();
         startActivity(new Intent(ChooseCarWash.this, RecordListActivity.class));
     }

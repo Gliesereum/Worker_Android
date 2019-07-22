@@ -243,22 +243,6 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 }));
     }
 
-//    private void recordCancel() {
-//        API.canceleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), record.getId())
-//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
-//                    @Override
-//                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-//                        startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class));
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-//
-//                    }
-//                }));
-//    }
-
     private void recordDone() {
         API.changeRecordStatus(FastSave.getInstance().getString(ACCESS_TOKEN, ""), record.getId(), "COMPLETED")
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {

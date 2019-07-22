@@ -20,7 +20,6 @@ import java.util.List;
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.ViewHolder> {
 
     private List<AllRecordResponse> allRecordList = new ArrayList<>();
-    //    private Map<String, String> carWashNameMap = new HashMap<>();
     private Context context;
     private int i = 0;
     private ItemClickListener mClickListener;
