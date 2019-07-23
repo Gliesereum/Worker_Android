@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -23,8 +22,8 @@ import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
 import com.gliesereum.coupler_worker.network.json.pin.PinBody;
 import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
-import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
 import com.gliesereum.coupler_worker.ui.ClientsListActivity;
+import com.gliesereum.coupler_worker.ui.LockActivity;
 import com.gliesereum.coupler_worker.ui.RecordListActivity;
 import com.gohn.nativedialog.ButtonType;
 import com.gohn.nativedialog.NDialog;
@@ -85,65 +84,7 @@ public class Util {
         customCallback = new CustomCallback(context, activity);
         if (FastSave.getInstance().getBoolean(IS_EXIST_PIN, false)) {
             FastSave.getInstance().saveBoolean(IS_LOCK, true);
-            lockBtn.setImageResource(R.drawable.ic_lock_close_black_24dp);
-            NDialog pinDialog = new NDialog(context, ButtonType.NO_BUTTON);
-            pinDialog.isCancelable(false);
-            pinDialog.setCustomView(R.layout.lock_dialod);
-            List<View> childViews = pinDialog.getCustomViewChildren();
-            for (View childView : childViews) {
-                switch (childView.getId()) {
-                    case R.id.codeView:
-                        codeView = childView.findViewById(R.id.codeView);
-                        codeView.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                pin = String.valueOf(s);
-                                Log.d("PIN", "onTextChanged: " + pin);
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                if (s.length() == 4) {
-                                    if (FastSave.getInstance().getString(PIN_CODE, "").equals(pin)) {
-                                        pin = "";
-                                        FastSave.getInstance().saveBoolean(IS_LOCK, false);
-                                        lockBtn.setImageResource(R.drawable.ic_lock_open_black_24dp);
-                                        pinDialog.dismiss();
-                                    } else {
-                                        Toast.makeText(context, "Неверный PIN код", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }
-                        });
-                        break;
-                    case R.id.remindMe:
-                        TextView remindMe = childView.findViewById(R.id.remindMe);
-                        remindMe.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                API.remindPinCode(FastSave.getInstance().getString(ACCESS_TOKEN, ""))
-                                        .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<RemindPinCodeResponse>() {
-                                            @Override
-                                            public void onSuccessful(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
-                                                Toast.makeText(context, "PIN код был отправлен Вам на телефон", Toast.LENGTH_LONG).show();
-                                            }
-
-                                            @Override
-                                            public void onEmpty(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
-
-                                            }
-                                        }));
-
-                            }
-                        });
-                        break;
-                }
-            }
-            pinDialog.show();
+            activity.startActivity(new Intent(context, LockActivity.class));
         } else {
             NDialog newPinCodeDialog = new NDialog(context, ButtonType.NO_BUTTON);
             newPinCodeDialog.isCancelable(true);
@@ -234,6 +175,7 @@ public class Util {
         }
 
     }
+
 
     public static boolean checkCarWashWorkTime(AllCarWashResponse carWash) {
         String dayOfWeek = "";

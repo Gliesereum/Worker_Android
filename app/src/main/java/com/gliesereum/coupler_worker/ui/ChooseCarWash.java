@@ -67,6 +67,9 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private ImageView imageView3;
     private ImageButton lockBtn;
 
+
+    private static final int REQUEST_CODE_ENABLE = 11;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,18 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
             new Util().lockScreen(this, this, lockBtn);
         }
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE_ENABLE:
+                Toast.makeText(this, "PinCode enabled", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private void checkPin() {
