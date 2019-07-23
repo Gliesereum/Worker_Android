@@ -1,11 +1,17 @@
-package com.gliesereum.coupler_worker.network.json.car;
+package com.gliesereum.coupler_worker.network.json.carwash;
 
 import com.google.gson.annotations.SerializedName;
 
 import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
-public class ServicesItem {
+public class BusinessCategory {
+
+    @SerializedName("code")
+    private String code;
+
+    @SerializedName("imageUrl")
+    private String imageUrl;
 
     @SerializedName("name")
     private String name;
@@ -13,14 +19,36 @@ public class ServicesItem {
     @SerializedName("description")
     private String description;
 
+    @SerializedName("active")
+    private boolean active;
+
     @SerializedName("orderIndex")
     private int orderIndex;
 
     @SerializedName("id")
     private String id;
 
+    @SerializedName("businessType")
+    private String businessType;
+
     @SerializedName("descriptions")
     private Object descriptions;
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -38,6 +66,14 @@ public class ServicesItem {
         return description;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
     public void setOrderIndex(int orderIndex) {
         this.orderIndex = orderIndex;
     }
@@ -52,6 +88,14 @@ public class ServicesItem {
 
     public String getId() {
         return id;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getBusinessType() {
+        return businessType;
     }
 
     public void setDescriptions(Object descriptions) {

@@ -2,9 +2,6 @@ package com.gliesereum.coupler_worker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chaos.view.PinView;
 import com.gliesereum.coupler_worker.MyFirebaseMessagingService;
 import com.gliesereum.coupler_worker.R;
 import com.gliesereum.coupler_worker.adapter.MyRecyclerViewAdapter;
@@ -30,8 +26,6 @@ import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
-import com.gohn.nativedialog.ButtonType;
-import com.gohn.nativedialog.NDialog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +38,7 @@ import static com.gliesereum.coupler_worker.util.Constants.ACCESS_EXPIRATION_DAT
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN_WITHOUT_BEARER;
 import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_CATEGORY_ID;
+import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_TYPE;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_TIME_ZONE;
@@ -71,10 +66,6 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private Button logoutBtn;
     private ImageView imageView3;
     private ImageButton lockBtn;
-    private PinView codeView;
-    private String pin = "";
-    private Button enterPinBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +79,8 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         checkPin();
         if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
-            lockScreen();
+            new Util().lockScreen(this, this, lockBtn);
         }
-
 
     }
 
@@ -112,7 +102,6 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
                 }));
 
     }
-
 
     private void cleanRecordFilter() {
         FastSave.getInstance().saveLong(FROM_DATE, Util.startOfDay(System.currentTimeMillis()));
@@ -137,66 +126,9 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         lockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lockScreen();
+                new Util().lockScreen(ChooseCarWash.this, ChooseCarWash.this, lockBtn);
             }
         });
-    }
-
-    private void lockScreen() {
-        if (FastSave.getInstance().getBoolean(IS_EXIST_PIN, false)) {
-            FastSave.getInstance().saveBoolean(IS_LOCK, true);
-            NDialog nDialog = new NDialog(ChooseCarWash.this, ButtonType.NO_BUTTON);
-            nDialog.isCancelable(false);
-            nDialog.setCustomView(R.layout.lock_dialod);
-            List<View> childViews = nDialog.getCustomViewChildren();
-            for (View childView : childViews) {
-                switch (childView.getId()) {
-                    case R.id.codeView:
-                        codeView = childView.findViewById(R.id.codeView);
-                        codeView.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                pin = String.valueOf(s);
-                                Log.d("PIN", "onTextChanged: " + pin);
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                if (s.length() < 4) {
-                                    enterPinBtn.setEnabled(false);
-                                } else {
-                                    enterPinBtn.setEnabled(true);
-                                }
-
-                            }
-                        });
-                        break;
-                    case R.id.enterPinBtn:
-                        enterPinBtn = childView.findViewById(R.id.enterPinBtn);
-                        enterPinBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (FastSave.getInstance().getString(PIN_CODE, "").equals(pin)) {
-                                    pin = "";
-                                    FastSave.getInstance().saveBoolean(IS_LOCK, false);
-                                    nDialog.dismiss();
-                                } else {
-                                    Toast.makeText(ChooseCarWash.this, "Неверный PIN код", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                        break;
-                }
-            }
-            nDialog.show();
-        } else {
-
-        }
-
     }
 
     private void logout() {
@@ -257,7 +189,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
         FastSave.getInstance().saveString(CARWASH_NAME, adapter.getItem(position).getName());
         FastSave.getInstance().saveString(BUSINESS_CATEGORY_ID, adapter.getItem(position).getBusinessCategoryId());
         FastSave.getInstance().saveInt(CARWASH_TIME_ZONE, adapter.getItem(position).getTimeZone());
-//        FastSave.getInstance().saveString(BUSINESS_CATEGORY, adapter.getItem(position).getB);
+        FastSave.getInstance().saveString(BUSINESS_TYPE, adapter.getItem(position).getBusinessCategory().getBusinessType());
         subscribeToChanel();
         startActivity(new Intent(ChooseCarWash.this, RecordListActivity.class));
     }

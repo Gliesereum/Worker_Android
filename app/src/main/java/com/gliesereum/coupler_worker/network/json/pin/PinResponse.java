@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
-public class PinBody {
+public class PinResponse {
 
     @SerializedName("pinCode")
     private String pinCode;
@@ -38,9 +38,5 @@ public class PinBody {
 
     public String getUserId() {
         return userId;
-    }
-
-    public PinBody(String pinCode) {
-        this.pinCode = pinCode;
     }
 }

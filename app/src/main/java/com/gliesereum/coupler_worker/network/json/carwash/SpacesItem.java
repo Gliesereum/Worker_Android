@@ -2,22 +2,27 @@ package com.gliesereum.coupler_worker.network.json.carwash;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
 public class SpacesItem {
 
-    @SerializedName("workerId")
-    private Object workerId;
-
     @SerializedName("statusSpace")
     private Object statusSpace;
 
-    @SerializedName("carServiceType")
-    private String carServiceType;
+    @SerializedName("name")
+    private String name;
 
-    @SerializedName("corporationServiceId")
-    private String corporationServiceId;
+    @SerializedName("businessId")
+    private String businessId;
+
+    @SerializedName("businessCategoryId")
+    private String businessCategoryId;
+
+    @SerializedName("description")
+    private String description;
 
     @SerializedName("id")
     private String id;
@@ -25,13 +30,11 @@ public class SpacesItem {
     @SerializedName("indexNumber")
     private int indexNumber;
 
-    public void setWorkerId(Object workerId) {
-        this.workerId = workerId;
-    }
+    @SerializedName("workers")
+    private List<WorkersItem> workers;
 
-    public Object getWorkerId() {
-        return workerId;
-    }
+    @SerializedName("descriptions")
+    private Object descriptions;
 
     public void setStatusSpace(Object statusSpace) {
         this.statusSpace = statusSpace;
@@ -41,20 +44,36 @@ public class SpacesItem {
         return statusSpace;
     }
 
-    public void setCarServiceType(String carServiceType) {
-        this.carServiceType = carServiceType;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCarServiceType() {
-        return carServiceType;
+    public String getName() {
+        return name;
     }
 
-    public void setCorporationServiceId(String corporationServiceId) {
-        this.corporationServiceId = corporationServiceId;
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 
-    public String getCorporationServiceId() {
-        return corporationServiceId;
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessCategoryId(String businessCategoryId) {
+        this.businessCategoryId = businessCategoryId;
+    }
+
+    public String getBusinessCategoryId() {
+        return businessCategoryId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setId(String id) {
@@ -71,5 +90,21 @@ public class SpacesItem {
 
     public int getIndexNumber() {
         return indexNumber;
+    }
+
+    public void setWorkers(List<WorkersItem> workers) {
+        this.workers = workers;
+    }
+
+    public List<WorkersItem> getWorkers() {
+        return workers;
+    }
+
+    public void setDescriptions(Object descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public Object getDescriptions() {
+        return descriptions;
     }
 }

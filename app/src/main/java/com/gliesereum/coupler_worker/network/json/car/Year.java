@@ -8,16 +8,16 @@ import javax.annotation.Generated;
 public class Year {
 
     @SerializedName("name")
-    private String name;
+    private int name;
 
     @SerializedName("id")
     private String id;
 
-    public void setName(String name) {
+    public void setName(int name) {
         this.name = name;
     }
 
-    public String getName() {
+    public int getName() {
         return name;
     }
 

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_N
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
@@ -90,6 +92,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private TextView carName;
     private Button chooseMasterBtn;
     private TextView masterNameTextView;
+    private ImageButton lockBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,10 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         initData();
         initView();
         setPackages(carWash);
+
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            new Util().lockScreen(this, this, lockBtn);
+        }
     }
 
 
@@ -151,6 +158,13 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         masterNameTextView = findViewById(R.id.masterNameTextView);
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Util().lockScreen(OrderActivity.this, OrderActivity.this, lockBtn);
+            }
+        });
     }
 
     private void setServicePrices(AllCarWashResponse carWash) {

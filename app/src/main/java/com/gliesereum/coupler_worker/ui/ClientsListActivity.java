@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_AVATAR_URL;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
@@ -60,6 +62,7 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     private List<NewClientResponse> clientsList;
     private Button addNewClient;
     private EditText searchTextView;
+    private ImageButton lockBtn;
 
 
     @Override
@@ -68,6 +71,10 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         setContentView(R.layout.activity_clients_list);
         initView();
         getAllClients();
+
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            new Util().lockScreen(this, this, lockBtn);
+        }
     }
 
     private void getAllClients() {
@@ -135,6 +142,13 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         if (FastSave.getInstance().getBoolean(ONLY_CLIENT, false)) {
             addNewClient.setVisibility(View.GONE);
         }
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Util().lockScreen(ClientsListActivity.this, ClientsListActivity.this, lockBtn);
+            }
+        });
     }
 
     TextWatcher searchWatcher = new TextWatcher() {

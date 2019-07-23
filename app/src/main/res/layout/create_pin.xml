@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/preOrderLabel1"
         android:layout_width="wrap_content"
@@ -13,7 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Для доступа к приложению введите PIN код"
+        android:text="Введите новый PIN код"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -23,15 +22,14 @@
 
 
     <com.chaos.view.PinView
-        android:id="@+id/codeView"
+        android:id="@+id/newPinCode"
         style="@style/PinWidget.PinView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:cursorVisible="false"
-        android:inputType="numberSigned|numberPassword"
+        android:inputType="numberSigned"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:itemCount="4"
@@ -52,14 +50,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Подтвердите PIN код"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPinCode" />
+
+    <com.chaos.view.PinView
+        android:id="@+id/confirmPinCode"
+        style="@style/PinWidget.PinView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:inputType="numberSigned"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:itemCount="4"
+        app:itemHeight="45dp"
+        app:itemRadius="8dp"
+        app:itemSpacing="5dp"
+        app:itemWidth="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remindMe"
+        app:lineColor="@color/colorPrimaryGreen"
+        app:lineWidth="2dp"
+        app:viewType="rectangle" />
+
+    <Button
+        android:id="@+id/createPinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="Забыл PIN код?"
+        android:text="Создать PIN код"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/codeView" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmPinCode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

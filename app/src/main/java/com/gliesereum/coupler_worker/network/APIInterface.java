@@ -12,7 +12,9 @@ import com.gliesereum.coupler_worker.network.json.notificatoin.RegistrationToken
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.order.OrderBody;
 import com.gliesereum.coupler_worker.network.json.order.OrderResponse;
+import com.gliesereum.coupler_worker.network.json.pin.PinBody;
 import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
+import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.network.json.status.StatusRegistration;
@@ -35,8 +37,14 @@ import retrofit2.http.Query;
 
 public interface APIInterface {
 
+    @POST("karma/v1/user-pin-code/remind-me")
+    Call<RemindPinCodeResponse> remindPinCode(@Header("Authorization") String accessToken);
+
     @GET("karma/v1/user-pin-code")
     Call<PinResponse> getPinCode(@Header("Authorization") String accessToken);
+
+    @POST("karma/v1/user-pin-code")
+    Call<PinResponse> savePinCode(@Header("Authorization") String accessToken, @Body PinBody pinBody);
 
     @GET("karma/v1/working-space/workers/by-business")
     Call<List<WorkerResponse>> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);

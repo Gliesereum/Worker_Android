@@ -13,11 +13,8 @@ public class WorkTimesItem {
     @SerializedName("dayOfWeek")
     private String dayOfWeek;
 
-    @SerializedName("carServiceType")
-    private String carServiceType;
-
-    @SerializedName("corporationServiceId")
-    private String corporationServiceId;
+    @SerializedName("businessCategoryId")
+    private String businessCategoryId;
 
     @SerializedName("from")
     private long from;
@@ -27,6 +24,9 @@ public class WorkTimesItem {
 
     @SerializedName("to")
     private long to;
+
+    @SerializedName("objectId")
+    private String objectId;
 
     public void setIsWork(boolean isWork) {
         this.isWork = isWork;
@@ -44,20 +44,12 @@ public class WorkTimesItem {
         return dayOfWeek;
     }
 
-    public void setCarServiceType(String carServiceType) {
-        this.carServiceType = carServiceType;
+    public void setBusinessCategoryId(String businessCategoryId) {
+        this.businessCategoryId = businessCategoryId;
     }
 
-    public String getCarServiceType() {
-        return carServiceType;
-    }
-
-    public void setCorporationServiceId(String corporationServiceId) {
-        this.corporationServiceId = corporationServiceId;
-    }
-
-    public String getCorporationServiceId() {
-        return corporationServiceId;
+    public String getBusinessCategoryId() {
+        return businessCategoryId;
     }
 
     public void setFrom(long from) {
@@ -82,5 +74,13 @@ public class WorkTimesItem {
 
     public long getTo() {
         return to;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public String getObjectId() {
+        return objectId;
     }
 }

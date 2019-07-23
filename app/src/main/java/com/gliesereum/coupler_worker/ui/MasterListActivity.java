@@ -2,6 +2,7 @@ package com.gliesereum.coupler_worker.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +31,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_N
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 
 public class MasterListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, WorkerListAdapter.ItemClickListener {
 
@@ -38,6 +40,7 @@ public class MasterListActivity extends AppCompatActivity implements ClientListA
     private CustomCallback customCallback;
     private RecyclerView recyclerView;
     private WorkerListAdapter workerListAdapter;
+    private ImageButton lockBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,10 @@ public class MasterListActivity extends AppCompatActivity implements ClientListA
         setContentView(R.layout.activity_master_list);
         initView();
         getAllWorkers();
+
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            new Util().lockScreen(this, this, lockBtn);
+        }
 
     }
 
@@ -80,6 +87,13 @@ public class MasterListActivity extends AppCompatActivity implements ClientListA
         workerListAdapter = new WorkerListAdapter(MasterListActivity.this);
         workerListAdapter.setClickListener(MasterListActivity.this);
         recyclerView.setAdapter(workerListAdapter);
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Util().lockScreen(MasterListActivity.this, MasterListActivity.this, lockBtn);
+            }
+        });
     }
 
     @Override

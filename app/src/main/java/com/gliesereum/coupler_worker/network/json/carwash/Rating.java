@@ -8,17 +8,17 @@ import javax.annotation.Generated;
 public class Rating {
 
     @SerializedName("rating")
-    private Float rating;
+    private double rating;
 
     @SerializedName("count")
     private int count;
 
-    public float getRating() {
-        return rating;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
+    public double getRating() {
+        return rating;
     }
 
     public void setCount(int count) {

@@ -9,20 +9,17 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class AllCarWashResponse {
 
-    @SerializedName("id")
-    private String id;
-
-    @SerializedName("businessCategoryId")
-    private String businessCategoryId;
-
-    @SerializedName("businessId")
-    private String businessId;
-
     @SerializedName("address")
     private String address;
 
     @SerializedName("comments")
-    private List<CommentsItem> comments;
+    private List<Object> comments;
+
+    @SerializedName("corporationId")
+    private String corporationId;
+
+    @SerializedName("objectState")
+    private String objectState;
 
     @SerializedName("servicePrices")
     private List<ServicePricesItem> servicePrices;
@@ -33,20 +30,29 @@ public class AllCarWashResponse {
     @SerializedName("latitude")
     private double latitude;
 
+    @SerializedName("businessId")
+    private String businessId;
+
     @SerializedName("rating")
     private Rating rating;
 
     @SerializedName("description")
     private String description;
 
+    @SerializedName("timeZone")
+    private int timeZone;
+
     @SerializedName("media")
-    private List<MediaItem> media;
+    private List<Object> media;
 
     @SerializedName("packages")
     private List<PackagesItem> packages;
 
+    @SerializedName("descriptions")
+    private List<Object> descriptions;
+
     @SerializedName("logoUrl")
-    private Object logoUrl;
+    private String logoUrl;
 
     @SerializedName("addPhone")
     private Object addPhone;
@@ -60,60 +66,20 @@ public class AllCarWashResponse {
     @SerializedName("name")
     private String name;
 
+    @SerializedName("businessCategoryId")
+    private String businessCategoryId;
+
+    @SerializedName("businessCategory")
+    private BusinessCategory businessCategory;
+
     @SerializedName("spaces")
     private List<SpacesItem> spaces;
 
-    @SerializedName("carWashId")
-    private String carWashId;
+    @SerializedName("id")
+    private String id;
 
     @SerializedName("longitude")
     private double longitude;
-
-    @SerializedName("timeZone")
-    private Integer timeZone;
-
-    @SerializedName("corporationId")
-    private String corporationId;
-
-    public String getCorporationId() {
-        return corporationId;
-    }
-
-    public void setCorporationId(String corporationId) {
-        this.corporationId = corporationId;
-    }
-
-    public String getBusinessCategoryId() {
-        return businessCategoryId;
-    }
-
-    public void setBusinessCategoryId(String businessCategoryId) {
-        this.businessCategoryId = businessCategoryId;
-    }
-
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
-
-    public Integer getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(Integer timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setAddress(String address) {
         this.address = address;
@@ -123,12 +89,28 @@ public class AllCarWashResponse {
         return address;
     }
 
-    public List<CommentsItem> getComments() {
+    public void setComments(List<Object> comments) {
+        this.comments = comments;
+    }
+
+    public List<Object> getComments() {
         return comments;
     }
 
-    public void setComments(List<CommentsItem> comments) {
-        this.comments = comments;
+    public void setCorporationId(String corporationId) {
+        this.corporationId = corporationId;
+    }
+
+    public String getCorporationId() {
+        return corporationId;
+    }
+
+    public void setObjectState(String objectState) {
+        this.objectState = objectState;
+    }
+
+    public String getObjectState() {
+        return objectState;
     }
 
     public void setServicePrices(List<ServicePricesItem> servicePrices) {
@@ -155,6 +137,14 @@ public class AllCarWashResponse {
         return latitude;
     }
 
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
     public void setRating(Rating rating) {
         this.rating = rating;
     }
@@ -171,12 +161,20 @@ public class AllCarWashResponse {
         return description;
     }
 
-    public List<MediaItem> getMedia() {
-        return media;
+    public void setTimeZone(int timeZone) {
+        this.timeZone = timeZone;
     }
 
-    public void setMedia(List<MediaItem> media) {
+    public int getTimeZone() {
+        return timeZone;
+    }
+
+    public void setMedia(List<Object> media) {
         this.media = media;
+    }
+
+    public List<Object> getMedia() {
+        return media;
     }
 
     public void setPackages(List<PackagesItem> packages) {
@@ -187,11 +185,19 @@ public class AllCarWashResponse {
         return packages;
     }
 
-    public void setLogoUrl(Object logoUrl) {
+    public void setDescriptions(List<Object> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public List<Object> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
 
-    public Object getLogoUrl() {
+    public String getLogoUrl() {
         return logoUrl;
     }
 
@@ -227,6 +233,22 @@ public class AllCarWashResponse {
         return name;
     }
 
+    public void setBusinessCategoryId(String businessCategoryId) {
+        this.businessCategoryId = businessCategoryId;
+    }
+
+    public String getBusinessCategoryId() {
+        return businessCategoryId;
+    }
+
+    public void setBusinessCategory(BusinessCategory businessCategory) {
+        this.businessCategory = businessCategory;
+    }
+
+    public BusinessCategory getBusinessCategory() {
+        return businessCategory;
+    }
+
     public void setSpaces(List<SpacesItem> spaces) {
         this.spaces = spaces;
     }
@@ -235,12 +257,12 @@ public class AllCarWashResponse {
         return spaces;
     }
 
-    public void setCarWashId(String carWashId) {
-        this.carWashId = carWashId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getCarWashId() {
-        return carWashId;
+    public String getId() {
+        return id;
     }
 
     public void setLongitude(double longitude) {

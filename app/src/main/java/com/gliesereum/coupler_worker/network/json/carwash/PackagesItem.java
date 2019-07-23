@@ -12,11 +12,17 @@ public class PackagesItem {
     @SerializedName("duration")
     private int duration;
 
-    @SerializedName("businessServiceId")
-    private String businessServiceId;
+    @SerializedName("objectState")
+    private String objectState;
+
+    @SerializedName("servicesIds")
+    private List<Object> servicesIds;
 
     @SerializedName("name")
     private String name;
+
+    @SerializedName("businessId")
+    private String businessId;
 
     @SerializedName("discount")
     private int discount;
@@ -27,6 +33,9 @@ public class PackagesItem {
     @SerializedName("services")
     private List<ServicesItem> services;
 
+    @SerializedName("descriptions")
+    private Object descriptions;
+
     public void setDuration(int duration) {
         this.duration = duration;
     }
@@ -35,12 +44,20 @@ public class PackagesItem {
         return duration;
     }
 
-    public void setBusinessServiceId(String businessServiceId) {
-        this.businessServiceId = businessServiceId;
+    public void setObjectState(String objectState) {
+        this.objectState = objectState;
     }
 
-    public String getBusinessServiceId() {
-        return businessServiceId;
+    public String getObjectState() {
+        return objectState;
+    }
+
+    public void setServicesIds(List<Object> servicesIds) {
+        this.servicesIds = servicesIds;
+    }
+
+    public List<Object> getServicesIds() {
+        return servicesIds;
     }
 
     public void setName(String name) {
@@ -49,6 +66,14 @@ public class PackagesItem {
 
     public String getName() {
         return name;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getBusinessId() {
+        return businessId;
     }
 
     public void setDiscount(int discount) {
@@ -73,5 +98,13 @@ public class PackagesItem {
 
     public List<ServicesItem> getServices() {
         return services;
+    }
+
+    public void setDescriptions(Object descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public Object getDescriptions() {
+        return descriptions;
     }
 }

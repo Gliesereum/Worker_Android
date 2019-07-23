@@ -2,6 +2,7 @@ package com.gliesereum.coupler_worker.network;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.labters.lottiealertdialoglibrary.DialogTypes;
@@ -73,6 +74,7 @@ public class CustomCallback {
             @Override
             public void onFailure(Call<T> call, Throwable t) {
                 errorHandler.showCustomError(t.getMessage());
+                Log.e("TAG", "onFailure: " + t.getMessage());
                 closeProgressDialog();
             }
         };

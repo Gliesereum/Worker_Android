@@ -24,6 +24,8 @@ public class Constants {
     public static final String CHOOSE_CLIENT_SECOND_NAME = "CHOOSE_CLIENT_SECOND_NAME";
     public static final String CHOOSE_CLIENT_DONE = "CHOOSE_CLIENT_DONE";
 
+    public static final String BUSINESS_TYPE = "BUSINESS_TYPE";
+
 
     public static final String ONLY_CLIENT = "ONLY_CLIENT";
     public static final String CLIENT_RECORD = "CLIENT_RECORD";

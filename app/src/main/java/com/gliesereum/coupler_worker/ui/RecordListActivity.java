@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -56,6 +57,7 @@ import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FROM_DATE;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.KARMA_BUSINESS_RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.RECORD_LIST_ACTIVITY;
 import static com.gliesereum.coupler_worker.util.Constants.STATUS_FILTER;
@@ -97,7 +99,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView toLabel1;
     private TextView toLabel2;
     private Toolbar toolbar;
-
+    private ImageButton lockBtn;
 
 
     @SuppressLint("CheckResult")
@@ -107,9 +109,12 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         setContentView(R.layout.activity_record_list_new);
 
         initView();
-//        subscribeToChanel();
         getAllRecord();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            new Util().lockScreen(this, this, lockBtn);
+        }
     }
 
     private void subscribeToChanel() {
@@ -206,6 +211,13 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
             }
         });
         moneyCount = findViewById(R.id.moneyCount);
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Util().lockScreen(RecordListActivity.this, RecordListActivity.this, lockBtn);
+            }
+        });
     }
 
     View.OnClickListener fromDateListener = new View.OnClickListener() {

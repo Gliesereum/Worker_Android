@@ -1,7 +1,5 @@
 package com.gliesereum.coupler_worker.network.json.car;
 
-import com.gliesereum.coupler_worker.network.json.carwash.ServiceClassItem;
-import com.gliesereum.coupler_worker.network.json.filter.AttributesItem;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -24,21 +22,10 @@ public class AllCarResponse {
     private String description;
 
     @SerializedName("services")
-    private List<ServiceClassItem> services;
+    private List<ServicesItem> services;
 
     @SerializedName("userId")
     private String userId;
-
-    @SerializedName("favorite")
-    private boolean favorite;
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
 
     @SerializedName("yearId")
     private String yearId;
@@ -60,6 +47,9 @@ public class AllCarResponse {
 
     @SerializedName("brand")
     private Brand brand;
+
+    @SerializedName("favorite")
+    private boolean favorite;
 
     public void setNote(Object note) {
         this.note = note;
@@ -93,11 +83,11 @@ public class AllCarResponse {
         return description;
     }
 
-    public void setServices(List<ServiceClassItem> services) {
+    public void setServices(List<ServicesItem> services) {
         this.services = services;
     }
 
-    public List<ServiceClassItem> getServices() {
+    public List<ServicesItem> getServices() {
         return services;
     }
 
@@ -165,11 +155,11 @@ public class AllCarResponse {
         return brand;
     }
 
-    public AllCarResponse(String brandId, String modelId, String yearId, String registrationNumber, String description) {
-        this.brandId = brandId;
-        this.modelId = modelId;
-        this.yearId = yearId;
-        this.registrationNumber = registrationNumber;
-        this.description = description;
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
     }
 }

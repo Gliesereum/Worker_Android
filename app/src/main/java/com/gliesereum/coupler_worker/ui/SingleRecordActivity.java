@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,9 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_TYPE;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_AVATAR_URL;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.SINGLE_RECORD_ACTIVITY;
 
@@ -60,6 +63,9 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private TextView clientNameLabel;
     private TextView commentTextView;
     private ImageView avatarImg;
+    private ImageView imageView8;
+    private TextView textView21;
+    private ImageButton lockBtn;
 
 
     @Override
@@ -69,12 +75,22 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         initData();
         initView();
         fillActivity();
-        if (record.getTargetId() != null) {
-            getCar(record.getTargetId());
+        if (FastSave.getInstance().getString(BUSINESS_TYPE, "").equals("HUMAN")) {
+            imageView8.setVisibility(View.GONE);
+            textView21.setVisibility(View.GONE);
+            carName.setVisibility(View.GONE);
         } else {
-            carName.setText("");
+            if (record.getTargetId() != null) {
+                getCar(record.getTargetId());
+            } else {
+                carName.setText("");
+            }
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            new Util().lockScreen(this, this, lockBtn);
+        }
 
     }
 
@@ -109,6 +125,15 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         });
         clientNameLabel = findViewById(R.id.clientNameLabel);
         avatarImg = findViewById(R.id.avatarImg);
+        imageView8 = findViewById(R.id.imageView8);
+        textView21 = findViewById(R.id.textView21);
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Util().lockScreen(SingleRecordActivity.this, SingleRecordActivity.this, lockBtn);
+            }
+        });
     }
 
     private void fillActivity() {

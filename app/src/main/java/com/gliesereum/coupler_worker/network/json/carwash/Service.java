@@ -7,8 +7,14 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class Service {
 
+    @SerializedName("objectState")
+    private String objectState;
+
     @SerializedName("name")
     private String name;
+
+    @SerializedName("businessCategoryId")
+    private String businessCategoryId;
 
     @SerializedName("description")
     private String description;
@@ -16,8 +22,16 @@ public class Service {
     @SerializedName("id")
     private String id;
 
-    @SerializedName("serviceType")
-    private String serviceType;
+    @SerializedName("descriptions")
+    private Object descriptions;
+
+    public void setObjectState(String objectState) {
+        this.objectState = objectState;
+    }
+
+    public String getObjectState() {
+        return objectState;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -25,6 +39,14 @@ public class Service {
 
     public String getName() {
         return name;
+    }
+
+    public void setBusinessCategoryId(String businessCategoryId) {
+        this.businessCategoryId = businessCategoryId;
+    }
+
+    public String getBusinessCategoryId() {
+        return businessCategoryId;
     }
 
     public void setDescription(String description) {
@@ -43,11 +65,11 @@ public class Service {
         return id;
     }
 
-    public String getServiceType() {
-        return serviceType;
+    public void setDescriptions(Object descriptions) {
+        this.descriptions = descriptions;
     }
 
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
+    public Object getDescriptions() {
+        return descriptions;
     }
 }

@@ -1,18 +1,33 @@
 package com.gliesereum.coupler_worker.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.chaos.view.PinView;
 import com.gliesereum.coupler_worker.BuildConfig;
 import com.gliesereum.coupler_worker.R;
+import com.gliesereum.coupler_worker.network.APIClient;
+import com.gliesereum.coupler_worker.network.APIInterface;
+import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
+import com.gliesereum.coupler_worker.network.json.pin.PinBody;
+import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
+import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
 import com.gliesereum.coupler_worker.ui.ClientsListActivity;
 import com.gliesereum.coupler_worker.ui.RecordListActivity;
+import com.gohn.nativedialog.ButtonType;
+import com.gohn.nativedialog.NDialog;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -25,9 +40,17 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
+import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.IS_EXIST_PIN;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
+import static com.gliesereum.coupler_worker.util.Constants.PIN_CODE;
 
 public class Util {
     private Activity activity;
@@ -35,11 +58,180 @@ public class Util {
     private int identifier;
     private Drawer result;
 
+    private PinView codeView;
+    private PinView newPinCode;
+    private PinView confirmPinCode;
+    private String pin = "";
+    private String newPin = "";
+    private String confirmPin = "";
+    private Button createPinBtn;
+
+    private APIInterface API;
+    private CustomCallback customCallback;
+
 
     public Util(Activity activity, Toolbar toolbar, int identifier) {
         this.activity = activity;
         this.toolbar = toolbar;
         this.identifier = identifier;
+    }
+
+    public Util() {
+    }
+
+    public void lockScreen(Context context, Activity activity, ImageButton lockBtn) {
+        Log.d("TAG", "lockScreen: ");
+        API = APIClient.getClient().create(APIInterface.class);
+        customCallback = new CustomCallback(context, activity);
+        if (FastSave.getInstance().getBoolean(IS_EXIST_PIN, false)) {
+            FastSave.getInstance().saveBoolean(IS_LOCK, true);
+            lockBtn.setImageResource(R.drawable.ic_lock_close_black_24dp);
+            NDialog pinDialog = new NDialog(context, ButtonType.NO_BUTTON);
+            pinDialog.isCancelable(false);
+            pinDialog.setCustomView(R.layout.lock_dialod);
+            List<View> childViews = pinDialog.getCustomViewChildren();
+            for (View childView : childViews) {
+                switch (childView.getId()) {
+                    case R.id.codeView:
+                        codeView = childView.findViewById(R.id.codeView);
+                        codeView.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                pin = String.valueOf(s);
+                                Log.d("PIN", "onTextChanged: " + pin);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                if (s.length() == 4) {
+                                    if (FastSave.getInstance().getString(PIN_CODE, "").equals(pin)) {
+                                        pin = "";
+                                        FastSave.getInstance().saveBoolean(IS_LOCK, false);
+                                        lockBtn.setImageResource(R.drawable.ic_lock_open_black_24dp);
+                                        pinDialog.dismiss();
+                                    } else {
+                                        Toast.makeText(context, "Неверный PIN код", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    case R.id.remindMe:
+                        TextView remindMe = childView.findViewById(R.id.remindMe);
+                        remindMe.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                API.remindPinCode(FastSave.getInstance().getString(ACCESS_TOKEN, ""))
+                                        .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<RemindPinCodeResponse>() {
+                                            @Override
+                                            public void onSuccessful(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
+                                                Toast.makeText(context, "PIN код был отправлен Вам на телефон", Toast.LENGTH_LONG).show();
+                                            }
+
+                                            @Override
+                                            public void onEmpty(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
+
+                                            }
+                                        }));
+
+                            }
+                        });
+                        break;
+                }
+            }
+            pinDialog.show();
+        } else {
+            NDialog newPinCodeDialog = new NDialog(context, ButtonType.NO_BUTTON);
+            newPinCodeDialog.isCancelable(true);
+            newPinCodeDialog.setCustomView(R.layout.create_pin);
+            List<View> childViews = newPinCodeDialog.getCustomViewChildren();
+            for (View childView : childViews) {
+                switch (childView.getId()) {
+                    case R.id.confirmPinCode:
+                        confirmPinCode = childView.findViewById(R.id.confirmPinCode);
+                        confirmPinCode.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                confirmPin = String.valueOf(s);
+                                Log.d("PIN", "onTextChanged: " + confirmPin);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+                        break;
+                    case R.id.newPinCode:
+                        newPinCode = childView.findViewById(R.id.newPinCode);
+                        newPinCode.setFocusable(true);
+                        newPinCode.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                newPin = String.valueOf(s);
+                                Log.d("PIN", "onTextChanged: " + newPin);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+                        break;
+
+                    case R.id.createPinBtn:
+                        createPinBtn = childView.findViewById(R.id.createPinBtn);
+                        createPinBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                createPinBtn.setEnabled(false);
+                                if (newPin.equals(confirmPin)) {
+                                    API.savePinCode(FastSave.getInstance().getString(ACCESS_TOKEN, ""), new PinBody(newPin))
+                                            .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<PinResponse>() {
+                                                @Override
+                                                public void onSuccessful(Call<PinResponse> call, Response<PinResponse> response) {
+                                                    newPinCodeDialog.dismiss();
+                                                    Toast.makeText(context, "PIN код установлен", Toast.LENGTH_SHORT).show();
+                                                    FastSave.getInstance().saveBoolean(IS_EXIST_PIN, true);
+                                                    FastSave.getInstance().saveString(PIN_CODE, confirmPin);
+                                                    FastSave.getInstance().saveBoolean(IS_LOCK, true);
+                                                    lockScreen(context, activity, lockBtn);
+                                                }
+
+                                                @Override
+                                                public void onEmpty(Call<PinResponse> call, Response<PinResponse> response) {
+
+                                                }
+                                            }));
+
+                                } else {
+                                    createPinBtn.setEnabled(true);
+                                    newPin = "";
+                                    confirmPin = "";
+                                    newPinCode.setText("");
+                                    confirmPinCode.setText("");
+                                    Toast.makeText(context, "PIN коды не совпадают", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        break;
+                }
+            }
+            newPinCodeDialog.show();
+        }
 
     }
 

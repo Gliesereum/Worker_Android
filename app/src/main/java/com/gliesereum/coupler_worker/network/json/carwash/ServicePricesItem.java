@@ -1,6 +1,5 @@
 package com.gliesereum.coupler_worker.network.json.carwash;
 
-import com.gliesereum.coupler_worker.network.json.filter.AttributesItem;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -13,20 +12,14 @@ public class ServicePricesItem {
     @SerializedName("duration")
     private int duration;
 
-    @SerializedName("serviceClass")
-    private List<ServiceClassItem> serviceClass;
+    @SerializedName("objectState")
+    private String objectState;
 
-    @SerializedName("attributes")
-    private List<AttributesItem> attributes;
+    @SerializedName("serviceClass")
+    private List<Object> serviceClass;
 
     @SerializedName("price")
     private int price;
-
-    @SerializedName("corporationServiceId")
-    private String corporationServiceId;
-
-    @SerializedName("description")
-    private String description;
 
     @SerializedName("service")
     private Service service;
@@ -34,44 +27,23 @@ public class ServicePricesItem {
     @SerializedName("name")
     private String name;
 
+    @SerializedName("businessId")
+    private String businessId;
+
+    @SerializedName("description")
+    private String description;
+
+    @SerializedName("attributes")
+    private List<Object> attributes;
+
     @SerializedName("id")
     private String id;
 
     @SerializedName("serviceId")
     private String serviceId;
 
-    @SerializedName("businessId")
-    private String businessId;
-
-    @SerializedName("carBodies")
-    private List<String> carBodies;
-
-    @SerializedName("interiorTypes")
-    private List<String> interiorTypes;
-
-    public List<AttributesItem> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<AttributesItem> attributes) {
-        this.attributes = attributes;
-    }
-
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @SerializedName("descriptions")
+    private Object descriptions;
 
     public void setDuration(int duration) {
         this.duration = duration;
@@ -81,11 +53,19 @@ public class ServicePricesItem {
         return duration;
     }
 
-    public void setServiceClass(List<ServiceClassItem> serviceClass) {
+    public void setObjectState(String objectState) {
+        this.objectState = objectState;
+    }
+
+    public String getObjectState() {
+        return objectState;
+    }
+
+    public void setServiceClass(List<Object> serviceClass) {
         this.serviceClass = serviceClass;
     }
 
-    public List<ServiceClassItem> getServiceClass() {
+    public List<Object> getServiceClass() {
         return serviceClass;
     }
 
@@ -95,14 +75,6 @@ public class ServicePricesItem {
 
     public int getPrice() {
         return price;
-    }
-
-    public void setCorporationServiceId(String corporationServiceId) {
-        this.corporationServiceId = corporationServiceId;
-    }
-
-    public String getCorporationServiceId() {
-        return corporationServiceId;
     }
 
     public void setService(Service service) {
@@ -121,6 +93,30 @@ public class ServicePricesItem {
         return name;
     }
 
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setAttributes(List<Object> attributes) {
+        this.attributes = attributes;
+    }
+
+    public List<Object> getAttributes() {
+        return attributes;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -137,19 +133,11 @@ public class ServicePricesItem {
         return serviceId;
     }
 
-    public void setCarBodies(List<String> carBodies) {
-        this.carBodies = carBodies;
+    public void setDescriptions(Object descriptions) {
+        this.descriptions = descriptions;
     }
 
-    public List<String> getCarBodies() {
-        return carBodies;
-    }
-
-    public void setInteriorTypes(List<String> interiorTypes) {
-        this.interiorTypes = interiorTypes;
-    }
-
-    public List<String> getInteriorTypes() {
-        return interiorTypes;
+    public Object getDescriptions() {
+        return descriptions;
     }
 }

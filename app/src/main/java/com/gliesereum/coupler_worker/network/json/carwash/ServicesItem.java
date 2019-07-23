@@ -12,14 +12,14 @@ public class ServicesItem {
     @SerializedName("duration")
     private int duration;
 
+    @SerializedName("objectState")
+    private String objectState;
+
     @SerializedName("serviceClass")
     private List<Object> serviceClass;
 
     @SerializedName("price")
     private int price;
-
-    @SerializedName("businessServiceId")
-    private String businessServiceId;
 
     @SerializedName("service")
     private Service service;
@@ -27,17 +27,23 @@ public class ServicesItem {
     @SerializedName("name")
     private String name;
 
+    @SerializedName("businessId")
+    private String businessId;
+
+    @SerializedName("description")
+    private String description;
+
+    @SerializedName("attributes")
+    private List<Object> attributes;
+
     @SerializedName("id")
     private String id;
 
     @SerializedName("serviceId")
     private String serviceId;
 
-    @SerializedName("carBodies")
-    private List<Object> carBodies;
-
-    @SerializedName("interiorTypes")
-    private List<Object> interiorTypes;
+    @SerializedName("descriptions")
+    private Object descriptions;
 
     public void setDuration(int duration) {
         this.duration = duration;
@@ -45,6 +51,14 @@ public class ServicesItem {
 
     public int getDuration() {
         return duration;
+    }
+
+    public void setObjectState(String objectState) {
+        this.objectState = objectState;
+    }
+
+    public String getObjectState() {
+        return objectState;
     }
 
     public void setServiceClass(List<Object> serviceClass) {
@@ -63,14 +77,6 @@ public class ServicesItem {
         return price;
     }
 
-    public void setBusinessServiceId(String businessServiceId) {
-        this.businessServiceId = businessServiceId;
-    }
-
-    public String getBusinessServiceId() {
-        return businessServiceId;
-    }
-
     public void setService(Service service) {
         this.service = service;
     }
@@ -85,6 +91,30 @@ public class ServicesItem {
 
     public String getName() {
         return name;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setAttributes(List<Object> attributes) {
+        this.attributes = attributes;
+    }
+
+    public List<Object> getAttributes() {
+        return attributes;
     }
 
     public void setId(String id) {
@@ -103,19 +133,11 @@ public class ServicesItem {
         return serviceId;
     }
 
-    public void setCarBodies(List<Object> carBodies) {
-        this.carBodies = carBodies;
+    public void setDescriptions(Object descriptions) {
+        this.descriptions = descriptions;
     }
 
-    public List<Object> getCarBodies() {
-        return carBodies;
-    }
-
-    public void setInteriorTypes(List<Object> interiorTypes) {
-        this.interiorTypes = interiorTypes;
-    }
-
-    public List<Object> getInteriorTypes() {
-        return interiorTypes;
+    public Object getDescriptions() {
+        return descriptions;
     }
 }

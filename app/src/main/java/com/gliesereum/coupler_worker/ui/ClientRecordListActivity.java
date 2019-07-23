@@ -3,6 +3,7 @@ package com.gliesereum.coupler_worker.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
+import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 
 public class ClientRecordListActivity extends AppCompatActivity implements ClientRecordListAdapter.ItemClickListener {
 
@@ -39,6 +41,7 @@ public class ClientRecordListActivity extends AppCompatActivity implements Clien
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private ClientRecordListAdapter clientRecordListAdapter;
+    private ImageButton lockBtn;
 
 
     @Override
@@ -49,6 +52,9 @@ public class ClientRecordListActivity extends AppCompatActivity implements Clien
         initData();
         initView();
         getAllRecord();
+        if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
+            new Util().lockScreen(this, this, lockBtn);
+        }
     }
 
     private void initData() {
@@ -69,6 +75,13 @@ public class ClientRecordListActivity extends AppCompatActivity implements Clien
         clientRecordListAdapter = new ClientRecordListAdapter(ClientRecordListActivity.this);
         clientRecordListAdapter.setClickListener(ClientRecordListActivity.this);
         recyclerView.setAdapter(clientRecordListAdapter);
+        lockBtn = findViewById(R.id.lockBtn);
+        lockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Util().lockScreen(ClientRecordListActivity.this, ClientRecordListActivity.this, lockBtn);
+            }
+        });
     }
 
     private void getAllRecord() {
