@@ -37,6 +37,12 @@ import retrofit2.http.Query;
 
 public interface APIInterface {
 
+    @GET("karma/v1/business-administrator/for-business")
+    Call<RemindPinCodeResponse> isAdministrator(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
+
+    @PUT("karma/v1/record/time/record")
+    Call<AllRecordResponse> updateTimeRecord(@Header("Authorization") String accessToken, @Query("beginTime") Long beginTime, @Query("idRecord") String idRecord);
+
     @POST("karma/v1/user-pin-code/remind-me")
     Call<RemindPinCodeResponse> remindPinCode(@Header("Authorization") String accessToken);
 

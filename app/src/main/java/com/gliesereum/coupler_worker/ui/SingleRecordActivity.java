@@ -1,13 +1,17 @@
 package com.gliesereum.coupler_worker.ui;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +34,9 @@ import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -66,6 +72,11 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private ImageView imageView8;
     private TextView textView21;
     private ImageButton lockBtn;
+    private ImageButton updateTimeBtn;
+    private Calendar date;
+    private Long begin = 0L;
+
+
 
 
     @Override
@@ -134,7 +145,49 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 new Util().lockScreen(SingleRecordActivity.this, SingleRecordActivity.this, lockBtn);
             }
         });
+        updateTimeBtn = findViewById(R.id.updateTimeBtn);
+        updateTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateTimePicker();
+            }
+        });
     }
+
+    public void showDateTimePicker() {
+        final Calendar currentDate = Calendar.getInstance();
+        date = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        new DatePickerDialog(SingleRecordActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                date.set(year, monthOfYear, dayOfMonth);
+                new TimePickerDialog(SingleRecordActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        date.set(Calendar.MINUTE, minute);
+                        begin = date.getTimeInMillis();
+                        API.updateTimeRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), begin, record.getId())
+                                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
+                                    @Override
+                                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+                                        startActivity(new Intent(SingleRecordActivity.this, RecordListActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+
+                                    }
+                                }));
+                    }
+                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), true).show();
+            }
+        },
+                currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
+    }
+
+
 
     private void fillActivity() {
         if (record.getClient() != null) {

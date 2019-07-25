@@ -60,6 +60,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_N
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
+import static com.gliesereum.coupler_worker.util.Constants.IS_ADMIN;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
@@ -93,6 +94,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private Button chooseMasterBtn;
     private TextView masterNameTextView;
     private ImageButton lockBtn;
+    private ImageView imageView15;
+    private TextView textView8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,13 +154,21 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         discountTextView.setText("0%");
         carName = findViewById(R.id.carName);
         chooseMasterBtn = findViewById(R.id.chooseMasterBtn);
+        masterNameTextView = findViewById(R.id.masterNameTextView);
+        imageView15 = findViewById(R.id.imageView15);
+        textView8 = findViewById(R.id.textView8);
         chooseMasterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(OrderActivity.this, MasterListActivity.class));
             }
         });
-        masterNameTextView = findViewById(R.id.masterNameTextView);
+        if (!FastSave.getInstance().getBoolean(IS_ADMIN, false)) {
+            chooseMasterBtn.setVisibility(View.GONE);
+            masterNameTextView.setVisibility(View.GONE);
+            imageView15.setVisibility(View.GONE);
+            textView8.setVisibility(View.GONE);
+        }
         lockBtn = findViewById(R.id.lockBtn);
         lockBtn.setOnClickListener(new View.OnClickListener() {
             @Override

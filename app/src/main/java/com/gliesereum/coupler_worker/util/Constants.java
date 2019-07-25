@@ -25,6 +25,7 @@ public class Constants {
     public static final String CHOOSE_CLIENT_DONE = "CHOOSE_CLIENT_DONE";
 
     public static final String BUSINESS_TYPE = "BUSINESS_TYPE";
+    public static final String IS_ADMIN = "IS_ADMIN";
 
 
     public static final String ONLY_CLIENT = "ONLY_CLIENT";

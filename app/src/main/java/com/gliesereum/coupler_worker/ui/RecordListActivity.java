@@ -30,6 +30,7 @@ import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
+import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
@@ -57,6 +58,7 @@ import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FROM_DATE;
+import static com.gliesereum.coupler_worker.util.Constants.IS_ADMIN;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.KARMA_BUSINESS_RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.RECORD_LIST_ACTIVITY;
@@ -115,6 +117,23 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
             new Util().lockScreen(this, this, lockBtn);
         }
+        checkIsAdmin();
+
+    }
+
+    private void checkIsAdmin() {
+        API.isAdministrator(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CARWASH_ID, ""))
+                .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<RemindPinCodeResponse>() {
+                    @Override
+                    public void onSuccessful(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
+                        FastSave.getInstance().saveBoolean(IS_ADMIN, response.body().getResult());
+                    }
+
+                    @Override
+                    public void onEmpty(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
+
+                    }
+                }));
     }
 
     private void subscribeToChanel() {
