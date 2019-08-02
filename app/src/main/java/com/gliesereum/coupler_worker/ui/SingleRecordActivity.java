@@ -218,8 +218,12 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             progressBtn.setEnabled(true);
             doneBtn.setEnabled(false);
         }
-        if (record.getClient().getFirstName() != null && record.getClient().getMiddleName() != null) {
-            clientNameLabel.setText(record.getClient().getFirstName() + " " + record.getClient().getMiddleName());
+        if (record.getClient() != null) {
+            if (record.getClient().getFirstName() != null && record.getClient().getMiddleName() != null) {
+                clientNameLabel.setText(record.getClient().getFirstName() + " " + record.getClient().getMiddleName());
+            } else {
+                clientNameLabel.setText("");
+            }
         } else {
             clientNameLabel.setText("");
         }

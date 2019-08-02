@@ -27,6 +27,7 @@ public class Constants {
     public static final String BUSINESS_TYPE = "BUSINESS_TYPE";
     public static final String IS_ADMIN = "IS_ADMIN";
 
+    public static final String USER_AVATAR = "USER_AVATAR";
 
     public static final String ONLY_CLIENT = "ONLY_CLIENT";
     public static final String CLIENT_RECORD = "CLIENT_RECORD";

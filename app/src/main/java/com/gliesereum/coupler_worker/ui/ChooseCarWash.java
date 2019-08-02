@@ -26,6 +26,11 @@ import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
+import com.labters.lottiealertdialoglibrary.ClickListener;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
+import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +71,8 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private Button logoutBtn;
     private ImageView imageView3;
     private ImageButton lockBtn;
+    private LottieAlertDialog alertDialog;
+
 
 
     private static final int REQUEST_CODE_ENABLE = 11;
@@ -147,16 +154,36 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     }
 
     private void logout() {
-        deleteRegistrationToken();
-        FastSave.getInstance().deleteValue(IS_LOGIN);
-        FastSave.getInstance().deleteValue(USER_ID);
-        FastSave.getInstance().deleteValue(ACCESS_TOKEN);
-        FastSave.getInstance().deleteValue(ACCESS_TOKEN_WITHOUT_BEARER);
-        FastSave.getInstance().deleteValue(REFRESH_TOKEN);
-        FastSave.getInstance().deleteValue(ACCESS_EXPIRATION_DATE);
-        FastSave.getInstance().deleteValue(REFRESH_EXPIRATION_DATE);
-        startActivity(new Intent(ChooseCarWash.this, LoginActivity.class));
-        finish();
+        alertDialog = new LottieAlertDialog.Builder(this, DialogTypes.TYPE_QUESTION)
+                .setTitle("Выход")
+                .setDescription("Вы действительно хотите выйти со своего профиля?")
+                .setPositiveText("Да")
+                .setNegativeText("Нет")
+                .setPositiveButtonColor(getResources().getColor(R.color.md_red_A200))
+                .setPositiveListener(new ClickListener() {
+                    @Override
+                    public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                        deleteRegistrationToken();
+                        FastSave.getInstance().deleteValue(IS_LOGIN);
+                        FastSave.getInstance().deleteValue(USER_ID);
+                        FastSave.getInstance().deleteValue(ACCESS_TOKEN);
+                        FastSave.getInstance().deleteValue(ACCESS_TOKEN_WITHOUT_BEARER);
+                        FastSave.getInstance().deleteValue(REFRESH_TOKEN);
+                        FastSave.getInstance().deleteValue(ACCESS_EXPIRATION_DATE);
+                        FastSave.getInstance().deleteValue(REFRESH_EXPIRATION_DATE);
+                        startActivity(new Intent(ChooseCarWash.this, LoginActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeListener(new ClickListener() {
+                    @Override
+                    public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                        alertDialog.dismiss();
+                    }
+                })
+                .build();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     private void deleteRegistrationToken() {
@@ -176,7 +203,6 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     }
 
     private void getAllCarWash() {
-
         API.getAllBusiness(FastSave.getInstance().getString(ACCESS_TOKEN, ""))
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<AllCarWashResponse>>() {
                     @Override

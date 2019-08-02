@@ -112,6 +112,10 @@
     <string name="error_1513">Multipart file type not compatible</string>
     <string name="error_1514">Maximum upload size exceeded</string>
 
+    <string name="error_1491">Работник не работает в это время</string>
+    <string name="error_1492">Бизнес не имеет работников</string>
+    <string name="error_1493">Недостаточно времени для создания записи на этого работника, выберите другое время</string>
+
     <string name="moneyUNICODE">&#128176;</string>
     <string name="timeUNICODE">&#8987;</string>
     <string name="tagKeyDuration">tagKeyDuration</string>

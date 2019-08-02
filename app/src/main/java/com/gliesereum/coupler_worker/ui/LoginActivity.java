@@ -52,6 +52,7 @@ import static com.gliesereum.coupler_worker.util.Constants.NEW_CLIENT_OBJECT;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_EXPIRATION_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.REFRESH_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
+import static com.gliesereum.coupler_worker.util.Constants.USER_AVATAR;
 import static com.gliesereum.coupler_worker.util.Constants.USER_ID;
 import static com.gliesereum.coupler_worker.util.Constants.USER_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.USER_SECOND_NAME;
@@ -200,6 +201,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void saveUserInfo(UserResponse user) {
         FastSave.getInstance().saveBoolean(IS_LOGIN, true);
+        FastSave.getInstance().saveString(USER_AVATAR, user.getUser().getAvatarUrl());
         FastSave.getInstance().saveString(USER_NAME, user.getUser().getFirstName());
         FastSave.getInstance().saveString(USER_SECOND_NAME, user.getUser().getLastName());
         FastSave.getInstance().saveString(USER_ID, user.getUser().getId());

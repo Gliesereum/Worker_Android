@@ -51,17 +51,20 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_TYPE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.IS_ADMIN;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
+import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
@@ -96,6 +99,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private ImageButton lockBtn;
     private ImageView imageView15;
     private TextView textView8;
+    private ImageView imageView14;
+    private TextView textView6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +118,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
     private void initData() {
         FastSave.init(getApplicationContext());
+        FastSave.getInstance().deleteValue(ONLY_CLIENT);
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(this, this);
         carWash = FastSave.getInstance().getObject("carWash", AllCarWashResponse.class);
@@ -176,6 +182,15 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 new Util().lockScreen(OrderActivity.this, OrderActivity.this, lockBtn);
             }
         });
+
+        imageView14 = findViewById(R.id.imageView14);
+        textView6 = findViewById(R.id.textView6);
+        if (FastSave.getInstance().getString(BUSINESS_TYPE, "").equals("HUMAN")) {
+            imageView14.setVisibility(View.GONE);
+            textView6.setVisibility(View.GONE);
+            carName.setVisibility(View.GONE);
+        }
+
     }
 
     private void setServicePrices(AllCarWashResponse carWash) {
@@ -510,6 +525,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onSuccessful(Call<OrderResponse> call, Response<OrderResponse> response) {
                         orderBody.setWorkingSpaceId(response.body().getWorkingSpaceId());
+                        orderBody.setWorkerId(response.body().getWorkerId());
                         orderBody.setBegin(response.body().getBegin());
                         NDialog nDialog = new NDialog(OrderActivity.this, ButtonType.NO_BUTTON);
                         nDialog.isCancelable(false);
@@ -580,7 +596,9 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             if (FastSave.getInstance().getBoolean(REG_NEW_CLIENT, false)) {
                 FastSave.getInstance().deleteValue(REG_NEW_CLIENT);
             } else {
-                getClientCar();
+                if (!FastSave.getInstance().getString(BUSINESS_TYPE, "").equals("HUMAN")) {
+                    getClientCar();
+                }
             }
             chooseClientBtn.setVisibility(View.GONE);
             clientNameTextView.setText(FastSave.getInstance().getString(CHOOSE_CLIENT_FIRST_NAME, "") + " " + FastSave.getInstance().getString(CHOOSE_CLIENT_SECOND_NAME, ""));
@@ -593,6 +611,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             masterNameTextView.setText(FastSave.getInstance().getString(CHOOSE_WORKER_FIRST_NAME, "") + " " + FastSave.getInstance().getString(CHOOSE_WORKER_SECOND_NAME, ""));
             masterNameTextView.setVisibility(View.VISIBLE);
             orderBody.setWorkingSpaceId(FastSave.getInstance().getString(CHOOSE_WORKER_SPACE, ""));
+            orderBody.setWorkerId(FastSave.getInstance().getString(CHOOSE_WORKER_ID, ""));
             FastSave.getInstance().deleteValue(CHOOSE_WORKER_DONE);
         }
     }

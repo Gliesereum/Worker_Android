@@ -52,7 +52,7 @@ public interface APIInterface {
     @POST("karma/v1/user-pin-code")
     Call<PinResponse> savePinCode(@Header("Authorization") String accessToken, @Body PinBody pinBody);
 
-    @GET("karma/v1/working-space/workers/by-business")
+    @GET("karma/v1/worker/by-business")
     Call<List<WorkerResponse>> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
 
     @GET("karma/v1/business/customers")
@@ -82,7 +82,7 @@ public interface APIInterface {
     Call<RegistrationTokenDeleteResponse> deleteRegistrationToken(@Header("Authorization") String accessToken, @Query("registrationToken") String registrationToken);
 
     //ACCOUNT
-    @GET("karma/v1/working-space/worker/exist/byPhone")
+    @GET("karma/v1/worker/exist/byPhone")
     Call<StatusRegistration> checkExist(@Query("phone") String phone);
 
     @GET("account/v1/phone/code")

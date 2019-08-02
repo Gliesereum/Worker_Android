@@ -68,11 +68,16 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         public void bind(AllRecordResponse recordInfo) {
             dataTextView.setText(Util.getStringFullDateTrue(recordInfo.getBegin()));
             timeTextView.setText(Util.getStringTime(recordInfo.getBegin()));
-            if (recordInfo.getClient().getFirstName() != null && !recordInfo.getClient().getFirstName().equals("")) {
-                firstName.setText(recordInfo.getClient().getFirstName() + " " + recordInfo.getClient().getMiddleName());
+            if (recordInfo.getClient() != null) {
+                if (recordInfo.getClient().getFirstName() != null && !recordInfo.getClient().getFirstName().equals("")) {
+                    firstName.setText(recordInfo.getClient().getFirstName() + " " + recordInfo.getClient().getMiddleName());
+                } else {
+                    firstName.setText("");
+                }
             } else {
-                firstName.setText("");
+                firstName.setText("Клиент");
             }
+
 
             if (recordInfo.getStatusRecord().equals("CANCELED")) {
                 statusTextView.setText("Отменена");
