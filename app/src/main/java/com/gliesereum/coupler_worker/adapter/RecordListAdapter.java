@@ -11,18 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
+import com.gliesereum.coupler_worker.network.json.carwash.WorkersItem;
+import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
+import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.gliesereum.coupler_worker.util.Constants.WORKERS_MAP;
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.ViewHolder> {
 
-    private List<AllRecordResponse> allRecordList = new ArrayList<>();
+    private List<ContentItem> allRecordList = new ArrayList<>();
     private Context context;
     private int i = 0;
     private ItemClickListener mClickListener;
+
 
     @NonNull
     @Override
@@ -47,7 +54,9 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         private TextView timeTextView;
         private TextView statusTextView;
         private TextView firstName;
+        private TextView masterTextView;
         private ImageView statusImg;
+
 
 
         public ViewHolder(View itemView) {
@@ -55,6 +64,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
             dataTextView = itemView.findViewById(R.id.dataTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
             statusTextView = itemView.findViewById(R.id.statusTextView);
+            masterTextView = itemView.findViewById(R.id.masterTextView);
             firstName = itemView.findViewById(R.id.firstName);
             statusImg = itemView.findViewById(R.id.statusImg);
             itemView.setOnClickListener(this);
@@ -65,9 +75,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(AllRecordResponse recordInfo) {
+        public void bind(ContentItem recordInfo) {
             dataTextView.setText(Util.getStringFullDateTrue(recordInfo.getBegin()));
             timeTextView.setText(Util.getStringTime(recordInfo.getBegin()));
+            Map<String, WorkersItem> workersMap = FastSave.getInstance().getObject(WORKERS_MAP, new TypeToken<Map<String, WorkersItem>>() {
+            });
+            WorkersItem workersItem = workersMap.get(recordInfo.getWorkerId());
+            if (workersItem != null && workersItem.getUser() != null && workersItem.getUser().getFirstName() != null) {
+                masterTextView.setText(workersItem.getUser().getFirstName());
+            } else {
+                masterTextView.setText("");
+            }
+
             if (recordInfo.getClient() != null) {
                 if (recordInfo.getClient().getFirstName() != null && !recordInfo.getClient().getFirstName().equals("")) {
                     firstName.setText(recordInfo.getClient().getFirstName() + " " + recordInfo.getClient().getMiddleName());
@@ -106,7 +125,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         }
     }
 
-    public void setItems(List<AllRecordResponse> cars) {
+    public void setItems(List<ContentItem> cars) {
         allRecordList.addAll(cars);
         notifyDataSetChanged();
     }
@@ -127,7 +146,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         void onItemClick(View view, int position);
     }
 
-    public AllRecordResponse getItem(int id) {
+    public ContentItem getItem(int id) {
         return allRecordList.get(id);
     }
 }

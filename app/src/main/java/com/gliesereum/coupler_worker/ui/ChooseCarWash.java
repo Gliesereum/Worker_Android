@@ -44,8 +44,8 @@ import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN_WITHOUT_BEARER;
 import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_CATEGORY_ID;
 import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_TYPE;
-import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
-import static com.gliesereum.coupler_worker.util.Constants.CARWASH_NAME;
+import static com.gliesereum.coupler_worker.util.Constants.BUSSINES_ID;
+import static com.gliesereum.coupler_worker.util.Constants.BUSSINES_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CARWASH_TIME_ZONE;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
@@ -60,6 +60,7 @@ import static com.gliesereum.coupler_worker.util.Constants.REFRESH_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.STATUS_FILTER;
 import static com.gliesereum.coupler_worker.util.Constants.TO_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.USER_ID;
+import static com.gliesereum.coupler_worker.util.Constants.WORKERS_LIST;
 
 public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
 
@@ -225,9 +226,10 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     @Override
     public void onItemClick(View view, int position) {
         FastSave.getInstance().saveObject("carWash", adapter.getItem(position));
-        FastSave.getInstance().saveString(CARWASH_ID, adapter.getItem(position).getBusinessId());
+        FastSave.getInstance().saveObjectsList(WORKERS_LIST, adapter.getItem(position).getWorkers());
+        FastSave.getInstance().saveString(BUSSINES_ID, adapter.getItem(position).getBusinessId());
         FastSave.getInstance().saveString(CORPORATION_ID, adapter.getItem(position).getCorporationId());
-        FastSave.getInstance().saveString(CARWASH_NAME, adapter.getItem(position).getName());
+        FastSave.getInstance().saveString(BUSSINES_NAME, adapter.getItem(position).getName());
         FastSave.getInstance().saveString(BUSINESS_CATEGORY_ID, adapter.getItem(position).getBusinessCategoryId());
         FastSave.getInstance().saveInt(CARWASH_TIME_ZONE, adapter.getItem(position).getTimeZone());
         FastSave.getInstance().saveString(BUSINESS_TYPE, adapter.getItem(position).getBusinessCategory().getBusinessType());
@@ -237,7 +239,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
 
     private void subscribeToChanel() {
         UserSubscribe userSubscribe = new UserSubscribe(true, KARMA_BUSINESS_RECORD);
-        userSubscribe.setObjectId(FastSave.getInstance().getString(CARWASH_ID, ""));
+        userSubscribe.setObjectId(FastSave.getInstance().getString(BUSSINES_ID, ""));
         NotificatoinBody notificatoinBody = new NotificatoinBody(FastSave.getInstance().getString(FIREBASE_TOKEN, ""), true, Arrays.asList(userSubscribe));
         API.subscribeToChanel(FastSave.getInstance().getString(ACCESS_TOKEN, ""), notificatoinBody, true)
                 .enqueue(new Callback<List<UserSubscribe>>() {

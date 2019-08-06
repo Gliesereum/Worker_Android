@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +126,15 @@ public class FastSave {
         return null;
     }
 
+    public <T> T getObject(String key, TypeToken<T> typeToken) {
+        if (isKeyExists(key)) {
+            String objectString = mSharedPreferences.getString(key, null);
+            if (objectString != null) {
+                return new Gson().fromJson(objectString, typeToken.getType());
+            }
+        }
+        return null;
+    }
 
     public <T> void saveObjectsList(String key, List<T> objectList) {
         String objectString = new Gson().toJson(objectList);

@@ -28,10 +28,12 @@ import com.gliesereum.coupler_worker.adapter.RecordListAdapter;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
+import com.gliesereum.coupler_worker.network.json.carwash.WorkersItem;
+import com.gliesereum.coupler_worker.network.json.client_record_new.ClientRecordNewResponse;
+import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
-import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
 import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
@@ -54,8 +56,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
-import static com.gliesereum.coupler_worker.util.Constants.BUSINESS_CATEGORY_ID;
-import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
+import static com.gliesereum.coupler_worker.util.Constants.BUSSINES_ID;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FROM_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.IS_ADMIN;
@@ -64,12 +65,14 @@ import static com.gliesereum.coupler_worker.util.Constants.KARMA_BUSINESS_RECORD
 import static com.gliesereum.coupler_worker.util.Constants.RECORD_LIST_ACTIVITY;
 import static com.gliesereum.coupler_worker.util.Constants.STATUS_FILTER;
 import static com.gliesereum.coupler_worker.util.Constants.TO_DATE;
+import static com.gliesereum.coupler_worker.util.Constants.WORKERS_LIST;
+import static com.gliesereum.coupler_worker.util.Constants.WORKERS_MAP;
 
 public class RecordListActivity extends AppCompatActivity implements RecordListAdapter.ItemClickListener {
 
     private RecyclerView recyclerView;
     private RecordListAdapter recordListAdapter;
-    private List<AllRecordResponse> recordsList = new ArrayList<>();
+    private List<ContentItem> recordsList = new ArrayList<>();
     private Map<String, String> carWashNameMap = new HashMap<>();
     private APIInterface API;
     private ErrorHandler errorHandler;
@@ -122,7 +125,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     }
 
     private void checkIsAdmin() {
-        API.isAdministrator(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CARWASH_ID, ""))
+        API.isAdministrator(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(BUSSINES_ID, ""))
                 .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<RemindPinCodeResponse>() {
                     @Override
                     public void onSuccessful(Call<RemindPinCodeResponse> call, Response<RemindPinCodeResponse> response) {
@@ -138,7 +141,7 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
     private void subscribeToChanel() {
         UserSubscribe userSubscribe = new UserSubscribe(true, KARMA_BUSINESS_RECORD);
-        userSubscribe.setObjectId(FastSave.getInstance().getString(CARWASH_ID, ""));
+        userSubscribe.setObjectId(FastSave.getInstance().getString(BUSSINES_ID, ""));
         NotificatoinBody notificatoinBody = new NotificatoinBody(FastSave.getInstance().getString(FIREBASE_TOKEN, ""), true, Arrays.asList(userSubscribe));
         API.subscribeToChanel(FastSave.getInstance().getString(ACCESS_TOKEN, ""), notificatoinBody, true)
                 .enqueue(new Callback<List<UserSubscribe>>() {
@@ -156,17 +159,24 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 
     private void getAllRecord() {
         recordsSearchBody = new RecordsSearchBody();
-        recordsSearchBody.setBusinessCategoryId(FastSave.getInstance().getString(BUSINESS_CATEGORY_ID, ""));
         recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
         recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
-        recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(CARWASH_ID, "")));
+        recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(BUSSINES_ID, "")));
         recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
+        recordsSearchBody.setSize(50);
+
+        List<WorkersItem> workersItemList = FastSave.getInstance().getObjectsList(WORKERS_LIST, WorkersItem.class);
+        Map<String, WorkersItem> workersMap = new HashMap<>();
+        for (int i = 0; i < workersItemList.size(); i++) {
+            workersMap.put(workersItemList.get(i).getId(), workersItemList.get(i));
+        }
+        FastSave.getInstance().saveObject(WORKERS_MAP, workersMap);
 
         API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<AllRecordResponse>>() {
+                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<ClientRecordNewResponse>() {
                     @Override
-                    public void onSuccessful(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
-                        recordsList = response.body();
+                    public void onSuccessful(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+                        recordsList = response.body().getContent();
                         if (recordsList != null && recordsList.size() > 0) {
                             bussinesName.setText("Список заказов: " + recordsList.get(0).getBusiness().getName());
                             recordListAdapter.setItems(recordsList);
@@ -183,12 +193,55 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
                     }
 
                     @Override
-                    public void onEmpty(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
-                        Toast.makeText(RecordListActivity.this, "204", Toast.LENGTH_SHORT).show();
+                    public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+                        Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
                         FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
                     }
                 }));
     }
+
+//    private void getAllRecord() {
+//        recordsSearchBody = new RecordsSearchBody();
+//        recordsSearchBody.setBusinessCategoryId(FastSave.getInstance().getString(BUSINESS_CATEGORY_ID, ""));
+//        recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
+//        recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
+//        recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(BUSSINES_ID, "")));
+//        recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
+//
+//        List<WorkersItem>workersItemList = FastSave.getInstance().getObjectsList(WORKERS_LIST, WorkersItem.class);
+//        Map<String, WorkersItem> workersMap = new HashMap<>();
+//        for (int i = 0; i < workersItemList.size(); i++) {
+//            workersMap.put(workersItemList.get(i).getId(), workersItemList.get(i));
+//        }
+//        FastSave.getInstance().saveObject(WORKERS_MAP, workersMap);
+//
+//        API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
+//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<AllRecordResponse>>() {
+//                    @Override
+//                    public void onSuccessful(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
+//                        recordsList = response.body();
+//                        if (recordsList != null && recordsList.size() > 0) {
+//                            bussinesName.setText("Список заказов: " + recordsList.get(0).getBusiness().getName());
+//                            recordListAdapter.setItems(recordsList);
+//                            int count = 0;
+//                            for (int i = 0; i < recordsList.size(); i++) {
+//                                if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
+//                                    count += recordsList.get(i).getPrice();
+//                                }
+//                            }
+//                            moneyCount.setText("Касса: " + count + " грн");
+//                        }
+//                        Log.d(TAG, "onSuccessful: ");
+//                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+//                    }
+//
+//                    @Override
+//                    public void onEmpty(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
+//                        Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
+//                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+//                    }
+//                }));
+//    }
 
     private void initView() {
         FastSave.init(getApplicationContext());

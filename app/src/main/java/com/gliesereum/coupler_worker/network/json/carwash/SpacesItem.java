@@ -31,7 +31,7 @@ public class SpacesItem {
     private int indexNumber;
 
     @SerializedName("workers")
-    private List<WorkersItem> workers;
+    private List<Object> workers;
 
     @SerializedName("descriptions")
     private Object descriptions;
@@ -92,11 +92,11 @@ public class SpacesItem {
         return indexNumber;
     }
 
-    public void setWorkers(List<WorkersItem> workers) {
+    public void setWorkers(List<Object> workers) {
         this.workers = workers;
     }
 
-    public List<WorkersItem> getWorkers() {
+    public List<Object> getWorkers() {
         return workers;
     }
 

@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.network.json.worker.WorkerResponse;
+import com.gliesereum.coupler_worker.network.json.worker_new.WorkerItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkerListAdapter extends RecyclerView.Adapter<WorkerListAdapter.ViewHolder> {
 
-    private List<WorkerResponse> allWorkerList = new ArrayList<>();
+    private List<WorkerItem> allWorkerList = new ArrayList<>();
     //    private Map<String, String> carWashNameMap = new HashMap<>();
     private Context context;
     private int i = 0;
@@ -58,13 +58,13 @@ public class WorkerListAdapter extends RecyclerView.Adapter<WorkerListAdapter.Vi
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(WorkerResponse recordInfo) {
+        public void bind(WorkerItem recordInfo) {
             firstName.setText(recordInfo.getUser().getFirstName() + " " + recordInfo.getUser().getMiddleName());
             dataTextView.setText(recordInfo.getUser().getPhone());
         }
     }
 
-    public void setItems(List<WorkerResponse> workers) {
+    public void setItems(List<WorkerItem> workers) {
         allWorkerList.addAll(workers);
         notifyDataSetChanged();
     }
@@ -90,7 +90,7 @@ public class WorkerListAdapter extends RecyclerView.Adapter<WorkerListAdapter.Vi
         void onItemClick(View view, int position);
     }
 
-    public WorkerResponse getItem(int id) {
+    public WorkerItem getItem(int id) {
         return allWorkerList.get(id);
     }
 }

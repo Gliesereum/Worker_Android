@@ -37,7 +37,7 @@ public class ContentItem {
     private int price;
 
     @SerializedName("client")
-    private Object client;
+    private Client client;
 
     @SerializedName("finish")
     private long finish;
@@ -165,12 +165,12 @@ public class ContentItem {
         return price;
     }
 
-    public void setClient(Object client) {
-        this.client = client;
+    public Client getClient() {
+        return client;
     }
 
-    public Object getClient() {
-        return client;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void setFinish(long finish) {

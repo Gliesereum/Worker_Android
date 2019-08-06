@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,19 +19,18 @@ import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.client_record_new.ClientRecordNewResponse;
+import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
-
-import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
-import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
+import static com.gliesereum.coupler_worker.util.Constants.STATUS_FILTER;
 
 public class ClientRecordListActivity extends AppCompatActivity implements ClientRecordListAdapter.ItemClickListener {
 
@@ -42,6 +42,7 @@ public class ClientRecordListActivity extends AppCompatActivity implements Clien
     private RecyclerView recyclerView;
     private ClientRecordListAdapter clientRecordListAdapter;
     private ImageButton lockBtn;
+    private RecordsSearchBody recordsSearchBody;
 
 
     @Override
@@ -85,20 +86,42 @@ public class ClientRecordListActivity extends AppCompatActivity implements Clien
     }
 
     private void getAllRecord() {
-        API.getClientsRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CORPORATION_ID, "")), FastSave.getInstance().getString(CHOOSE_CLIENT_ID, ""))
+        recordsSearchBody = new RecordsSearchBody();
+//        recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
+//        recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
+        recordsSearchBody.setCorporationId(FastSave.getInstance().getString(CORPORATION_ID, ""));
+        recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
+        recordsSearchBody.setSize(50);
+
+        API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
                 .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<ClientRecordNewResponse>() {
                     @Override
                     public void onSuccessful(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
                         clientRecordListAdapter.setItems(response.body().getContent());
-
                     }
 
                     @Override
                     public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
-
+                        Toast.makeText(ClientRecordListActivity.this, "Список заказов пуст", Toast.LENGTH_SHORT).show();
                     }
                 }));
     }
+
+//    private void getAllRecord() {
+//        API.getClientsRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), Arrays.asList(FastSave.getInstance().getString(CORPORATION_ID, "")), FastSave.getInstance().getString(CHOOSE_CLIENT_ID, ""))
+//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<ClientRecordNewResponse>() {
+//                    @Override
+//                    public void onSuccessful(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+//                        clientRecordListAdapter.setItems(response.body().getContent());
+//
+//                    }
+//
+//                    @Override
+//                    public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+//
+//                    }
+//                }));
+//    }
 
     @Override
     public void onItemClick(View view, int position) {

@@ -1,4 +1,4 @@
-package com.gliesereum.coupler_worker.network.json.carwash;
+package com.gliesereum.coupler_worker.network.json.worker_new;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -26,7 +26,7 @@ public class WorkTimesItem {
     private long to;
 
     @SerializedName("type")
-    private Object type;
+    private String type;
 
     @SerializedName("objectId")
     private String objectId;
@@ -79,11 +79,11 @@ public class WorkTimesItem {
         return to;
     }
 
-    public void setType(Object type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public Object getType() {
+    public String getType() {
         return type;
     }
 

@@ -2,7 +2,6 @@ package com.gliesereum.coupler_worker.network;
 
 import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
 import com.gliesereum.coupler_worker.network.json.carwash.AllCarWashResponse;
-import com.gliesereum.coupler_worker.network.json.client.ClientResponse;
 import com.gliesereum.coupler_worker.network.json.client_new.NewClientResponse;
 import com.gliesereum.coupler_worker.network.json.client_record_new.ClientRecordNewResponse;
 import com.gliesereum.coupler_worker.network.json.code.CodeResponse;
@@ -21,7 +20,7 @@ import com.gliesereum.coupler_worker.network.json.status.StatusRegistration;
 import com.gliesereum.coupler_worker.network.json.status.StatusResponse;
 import com.gliesereum.coupler_worker.network.json.user.User;
 import com.gliesereum.coupler_worker.network.json.user.UserResponse;
-import com.gliesereum.coupler_worker.network.json.worker.WorkerResponse;
+import com.gliesereum.coupler_worker.network.json.worker_new.WorkerResponse;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public interface APIInterface {
     @GET("karma/v1/business-administrator/for-business")
     Call<RemindPinCodeResponse> isAdministrator(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
 
-    @PUT("karma/v1/record/time/record")
+    @PUT("karma/v1/record/update-time")
     Call<AllRecordResponse> updateTimeRecord(@Header("Authorization") String accessToken, @Query("beginTime") Long beginTime, @Query("idRecord") String idRecord);
 
     @POST("karma/v1/user-pin-code/remind-me")
@@ -53,19 +52,19 @@ public interface APIInterface {
     Call<PinResponse> savePinCode(@Header("Authorization") String accessToken, @Body PinBody pinBody);
 
     @GET("karma/v1/worker/by-business")
-    Call<List<WorkerResponse>> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
+    Call<WorkerResponse> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
+
+//    @GET("karma/v1/business/customers")
+//    Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
 
     @GET("karma/v1/business/customers")
-    Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
+    Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("corporationId") String corporationId);
 
-    @GET("karma/v1/business/customers/by-corporation-id")
-    Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("id") String id);
-
-    @GET("karma/v1/record/business/by-client")
+    @GET("karma/v1/record/by-client-for-corporation")
     Call<ClientRecordNewResponse> getClientsRecord(@Header("Authorization") String accessToken, @Query("corporationIds") List<String> corporationIds, @Query("clientId") String clientId);
 
-    @GET("karma/v1/business/customers/by-corporation-id")
-    Call<NewClientResponse> searchClients(@Header("Authorization") String accessToken, @Query("id") String id, @Query("query") String query);
+    @GET("karma/v1/business/customers")
+    Call<NewClientResponse> searchClients(@Header("Authorization") String accessToken, @Query("corporationId") String corporationId, @Query("query") String query);
 
     //STATUS
     @GET("status")
@@ -108,23 +107,23 @@ public interface APIInterface {
     Call<AllCarResponse> getCarById(@Header("Authorization") String accessToken, @Path("carId") String id);
 
     //CARWASH
-    @GET("karma/v1/business/full-model/by-current-user")
+    @GET("karma/v1/business/by-current-user/like-worker/full-model")
     Call<List<AllCarWashResponse>> getAllBusiness(@Header("Authorization") String accessToken);
 
     //RECORD
     @POST("karma/v1/record/free-time")
     Call<OrderResponse> preOrder(@Header("Authorization") String accessToken, @Body OrderBody orderBody);
 
-    @POST("karma/v1/record/create/from-business")
+    @POST("karma/v1/record/create-for-business")
     Call<AllRecordResponse> doOrder(@Header("Authorization") String accessToken, @Body OrderBody orderBody);
 
-    @POST("karma/v1/record/business/params")
-    Call<List<AllRecordResponse>> getAllRecord(@Header("Authorization") String accessToken, @Body RecordsSearchBody recordsSearchBody);
+    @POST("karma/v1/record/by-params-for-business")
+    Call<ClientRecordNewResponse> getAllRecord(@Header("Authorization") String accessToken, @Body RecordsSearchBody recordsSearchBody);
 
-    @PUT("karma/v1/record/record/canceled")
+    @PUT("karma/v1/record/canceled-record")
     Call<AllRecordResponse> canceleRecord(@Header("Authorization") String accessToken, @Query("idRecord") String idRecord, @Query("message") String message);
 
-    @PUT("karma/v1/record/status/process")
+    @PUT("karma/v1/record/update-status-process")
     Call<AllRecordResponse> changeRecordStatus (@Header("Authorization") String accessToken, @Query("idRecord") String idRecord, @Query("status") String status);
 
 }

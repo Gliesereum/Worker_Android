@@ -18,8 +18,8 @@ public class RecordsSearchBody {
     @SerializedName("targetIds")
     private List<String> targetIds;
 
-    @SerializedName("businessCategoryId")
-    private String businessCategoryId;
+//    @SerializedName("businessCategoryId")
+//    private String businessCategoryId;
 
     @SerializedName("from")
     private Long from;
@@ -27,8 +27,41 @@ public class RecordsSearchBody {
     @SerializedName("to")
     private Long to;
 
+    @SerializedName("corporationId")
+    private String corporationId;
+
     @SerializedName("businessIds")
     private List<String> businessIds;
+
+    @SerializedName("size")
+    private Integer size;
+
+    @SerializedName("page")
+    private Integer page;
+
+    public String getCorporationId() {
+        return corporationId;
+    }
+
+    public void setCorporationId(String corporationId) {
+        this.corporationId = corporationId;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
 
     public List<String> getStatus() {
         return status;
@@ -62,13 +95,13 @@ public class RecordsSearchBody {
         this.targetIds = targetIds;
     }
 
-    public String getBusinessCategoryId() {
-        return businessCategoryId;
-    }
-
-    public void setBusinessCategoryId(String businessCategoryId) {
-        this.businessCategoryId = businessCategoryId;
-    }
+//    public String getBusinessCategoryId() {
+//        return businessCategoryId;
+//    }
+//
+//    public void setBusinessCategoryId(String businessCategoryId) {
+//        this.businessCategoryId = businessCategoryId;
+//    }
 
     public Long getFrom() {
         return from;

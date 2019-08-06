@@ -15,17 +15,15 @@ import com.gliesereum.coupler_worker.adapter.WorkerListAdapter;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
-import com.gliesereum.coupler_worker.network.json.worker.WorkerResponse;
+import com.gliesereum.coupler_worker.network.json.worker_new.WorkerResponse;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
-import static com.gliesereum.coupler_worker.util.Constants.CARWASH_ID;
+import static com.gliesereum.coupler_worker.util.Constants.BUSSINES_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_DONE;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_FIRST_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_ID;
@@ -56,15 +54,15 @@ public class MasterListActivity extends AppCompatActivity implements ClientListA
     }
 
     private void getAllWorkers() {
-        API.getAllWorkersByBusiness(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CARWASH_ID, ""))
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<WorkerResponse>>() {
+        API.getAllWorkersByBusiness(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(BUSSINES_ID, ""))
+                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<WorkerResponse>() {
                     @Override
-                    public void onSuccessful(Call<List<WorkerResponse>> call, Response<List<WorkerResponse>> response) {
-                        workerListAdapter.setItems(response.body());
+                    public void onSuccessful(Call<WorkerResponse> call, Response<WorkerResponse> response) {
+                        workerListAdapter.setItems(response.body().getContent());
                     }
 
                     @Override
-                    public void onEmpty(Call<List<WorkerResponse>> call, Response<List<WorkerResponse>> response) {
+                    public void onEmpty(Call<WorkerResponse> call, Response<WorkerResponse> response) {
 
                     }
                 }));

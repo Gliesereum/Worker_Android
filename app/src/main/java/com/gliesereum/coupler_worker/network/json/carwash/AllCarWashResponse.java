@@ -9,23 +9,17 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class AllCarWashResponse {
 
-    @SerializedName("address")
-    private String address;
-
-    @SerializedName("comments")
-    private List<Object> comments;
+    @SerializedName("updateDate")
+    private long updateDate;
 
     @SerializedName("corporationId")
     private String corporationId;
-
-    @SerializedName("objectState")
-    private String objectState;
 
     @SerializedName("servicePrices")
     private List<ServicePricesItem> servicePrices;
 
     @SerializedName("records")
-    private List<RecordsItem> records;
+    private List<Object> records;
 
     @SerializedName("latitude")
     private double latitude;
@@ -39,17 +33,41 @@ public class AllCarWashResponse {
     @SerializedName("description")
     private String description;
 
-    @SerializedName("timeZone")
-    private int timeZone;
-
     @SerializedName("media")
     private List<Object> media;
 
-    @SerializedName("packages")
-    private List<PackagesItem> packages;
-
     @SerializedName("descriptions")
     private List<Object> descriptions;
+
+    @SerializedName("workTimes")
+    private List<WorkTimesItem> workTimes;
+
+    @SerializedName("id")
+    private String id;
+
+    @SerializedName("workers")
+    private List<WorkersItem> workers;
+
+    @SerializedName("longitude")
+    private double longitude;
+
+    @SerializedName("createDate")
+    private long createDate;
+
+    @SerializedName("address")
+    private String address;
+
+    @SerializedName("comments")
+    private List<CommentsItem> comments;
+
+    @SerializedName("objectState")
+    private String objectState;
+
+    @SerializedName("timeZone")
+    private int timeZone;
+
+    @SerializedName("packages")
+    private List<PackagesItem> packages;
 
     @SerializedName("logoUrl")
     private String logoUrl;
@@ -59,9 +77,6 @@ public class AllCarWashResponse {
 
     @SerializedName("phone")
     private String phone;
-
-    @SerializedName("workTimes")
-    private List<WorkTimesItem> workTimes;
 
     @SerializedName("name")
     private String name;
@@ -75,26 +90,12 @@ public class AllCarWashResponse {
     @SerializedName("spaces")
     private List<SpacesItem> spaces;
 
-    @SerializedName("id")
-    private String id;
-
-    @SerializedName("longitude")
-    private double longitude;
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setUpdateDate(long updateDate) {
+        this.updateDate = updateDate;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setComments(List<Object> comments) {
-        this.comments = comments;
-    }
-
-    public List<Object> getComments() {
-        return comments;
+    public long getUpdateDate() {
+        return updateDate;
     }
 
     public void setCorporationId(String corporationId) {
@@ -105,14 +106,6 @@ public class AllCarWashResponse {
         return corporationId;
     }
 
-    public void setObjectState(String objectState) {
-        this.objectState = objectState;
-    }
-
-    public String getObjectState() {
-        return objectState;
-    }
-
     public void setServicePrices(List<ServicePricesItem> servicePrices) {
         this.servicePrices = servicePrices;
     }
@@ -121,11 +114,11 @@ public class AllCarWashResponse {
         return servicePrices;
     }
 
-    public void setRecords(List<RecordsItem> records) {
+    public void setRecords(List<Object> records) {
         this.records = records;
     }
 
-    public List<RecordsItem> getRecords() {
+    public List<Object> getRecords() {
         return records;
     }
 
@@ -161,14 +154,6 @@ public class AllCarWashResponse {
         return description;
     }
 
-    public void setTimeZone(int timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public int getTimeZone() {
-        return timeZone;
-    }
-
     public void setMedia(List<Object> media) {
         this.media = media;
     }
@@ -177,20 +162,92 @@ public class AllCarWashResponse {
         return media;
     }
 
-    public void setPackages(List<PackagesItem> packages) {
-        this.packages = packages;
-    }
-
-    public List<PackagesItem> getPackages() {
-        return packages;
-    }
-
     public void setDescriptions(List<Object> descriptions) {
         this.descriptions = descriptions;
     }
 
     public List<Object> getDescriptions() {
         return descriptions;
+    }
+
+    public void setWorkTimes(List<WorkTimesItem> workTimes) {
+        this.workTimes = workTimes;
+    }
+
+    public List<WorkTimesItem> getWorkTimes() {
+        return workTimes;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setWorkers(List<WorkersItem> workers) {
+        this.workers = workers;
+    }
+
+    public List<WorkersItem> getWorkers() {
+        return workers;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setCreateDate(long createDate) {
+        this.createDate = createDate;
+    }
+
+    public long getCreateDate() {
+        return createDate;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setComments(List<CommentsItem> comments) {
+        this.comments = comments;
+    }
+
+    public List<CommentsItem> getComments() {
+        return comments;
+    }
+
+    public void setObjectState(String objectState) {
+        this.objectState = objectState;
+    }
+
+    public String getObjectState() {
+        return objectState;
+    }
+
+    public void setTimeZone(int timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public int getTimeZone() {
+        return timeZone;
+    }
+
+    public void setPackages(List<PackagesItem> packages) {
+        this.packages = packages;
+    }
+
+    public List<PackagesItem> getPackages() {
+        return packages;
     }
 
     public void setLogoUrl(String logoUrl) {
@@ -215,14 +272,6 @@ public class AllCarWashResponse {
 
     public String getPhone() {
         return phone;
-    }
-
-    public void setWorkTimes(List<WorkTimesItem> workTimes) {
-        this.workTimes = workTimes;
-    }
-
-    public List<WorkTimesItem> getWorkTimes() {
-        return workTimes;
     }
 
     public void setName(String name) {
@@ -255,21 +304,5 @@ public class AllCarWashResponse {
 
     public List<SpacesItem> getSpaces() {
         return spaces;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
     }
 }
