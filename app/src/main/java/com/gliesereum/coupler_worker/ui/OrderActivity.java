@@ -514,7 +514,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         orderBody.setDescription("Android");
         List<String> list = new ArrayList<>();
         for (int i = 0; i < serviceLianear.getChildCount(); i++) {
-            if (((CheckBox) ((ConstraintLayout) serviceLianear.getChildAt(i)).getChildAt(0)).isChecked()) {
+            if (((CheckBox) ((ConstraintLayout) serviceLianear.getChildAt(i)).getChildAt(0)).isChecked() && ((CheckBox) ((ConstraintLayout) serviceLianear.getChildAt(i)).getChildAt(0)).isEnabled()) {
                 list.add((String) ((CheckBox) ((ConstraintLayout) serviceLianear.getChildAt(i)).getChildAt(0)).getTag());
             }
             Log.d(TAG, "getRecordFreeTime: ");

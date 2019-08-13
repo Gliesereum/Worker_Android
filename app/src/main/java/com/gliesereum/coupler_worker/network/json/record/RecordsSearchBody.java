@@ -18,6 +18,9 @@ public class RecordsSearchBody {
     @SerializedName("targetIds")
     private List<String> targetIds;
 
+    @SerializedName("clientIds")
+    private List<String> clientIds;
+
 //    @SerializedName("businessCategoryId")
 //    private String businessCategoryId;
 
@@ -38,6 +41,14 @@ public class RecordsSearchBody {
 
     @SerializedName("page")
     private Integer page;
+
+    public List<String> getClientIds() {
+        return clientIds;
+    }
+
+    public void setClientIds(List<String> clientIds) {
+        this.clientIds = clientIds;
+    }
 
     public String getCorporationId() {
         return corporationId;

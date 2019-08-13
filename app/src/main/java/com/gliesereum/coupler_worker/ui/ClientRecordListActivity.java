@@ -23,14 +23,16 @@ import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 
+import java.util.Arrays;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
+import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_CLIENT_ID;
 import static com.gliesereum.coupler_worker.util.Constants.CLIENT_RECORD;
 import static com.gliesereum.coupler_worker.util.Constants.CORPORATION_ID;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
-import static com.gliesereum.coupler_worker.util.Constants.STATUS_FILTER;
 
 public class ClientRecordListActivity extends AppCompatActivity implements ClientRecordListAdapter.ItemClickListener {
 
@@ -89,8 +91,9 @@ public class ClientRecordListActivity extends AppCompatActivity implements Clien
         recordsSearchBody = new RecordsSearchBody();
 //        recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
 //        recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
+        recordsSearchBody.setClientIds(Arrays.asList(FastSave.getInstance().getString(CHOOSE_CLIENT_ID, "")));
         recordsSearchBody.setCorporationId(FastSave.getInstance().getString(CORPORATION_ID, ""));
-        recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
+//        recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
         recordsSearchBody.setSize(50);
 
         API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)

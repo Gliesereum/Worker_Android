@@ -13,12 +13,16 @@ public class Rating {
     @SerializedName("count")
     private double count;
 
-    public void setRating(int rating) {
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
-    public double getRating() {
-        return rating;
+    public void setCount(double count) {
+        this.count = count;
     }
 
     public void setCount(int count) {
