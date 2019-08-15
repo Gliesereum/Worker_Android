@@ -20,17 +20,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.adapter.RecordListAdapter;
+import com.gliesereum.coupler_worker.adapter.NewRecordListAdapter;
+import com.gliesereum.coupler_worker.adapter.customadapterrecycleview.listener.OnClickItemListener;
+import com.gliesereum.coupler_worker.adapter.customadapterrecycleview.listener.OnLoadMoreListener;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.carwash.WorkersItem;
 import com.gliesereum.coupler_worker.network.json.client_record_new.ClientRecordNewResponse;
-import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
+import com.gliesereum.coupler_worker.network.json.client_record_new.RecordItem;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
@@ -57,6 +60,7 @@ import retrofit2.Response;
 
 import static com.gliesereum.coupler_worker.util.Constants.ACCESS_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.BUSSINES_ID;
+import static com.gliesereum.coupler_worker.util.Constants.BUSSINES_NAME;
 import static com.gliesereum.coupler_worker.util.Constants.FIREBASE_TOKEN;
 import static com.gliesereum.coupler_worker.util.Constants.FROM_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.IS_ADMIN;
@@ -68,11 +72,12 @@ import static com.gliesereum.coupler_worker.util.Constants.TO_DATE;
 import static com.gliesereum.coupler_worker.util.Constants.WORKERS_LIST;
 import static com.gliesereum.coupler_worker.util.Constants.WORKERS_MAP;
 
-public class RecordListActivity extends AppCompatActivity implements RecordListAdapter.ItemClickListener {
+public class RecordListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecordListAdapter recordListAdapter;
-    private List<ContentItem> recordsList = new ArrayList<>();
+    //    private RecordListAdapter recordListAdapter;
+    private NewRecordListAdapter newRecordListAdapter;
+    private List<RecordItem> recordsList = new ArrayList<>();
     private Map<String, String> carWashNameMap = new HashMap<>();
     private APIInterface API;
     private ErrorHandler errorHandler;
@@ -105,6 +110,11 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     private TextView toLabel2;
     private Toolbar toolbar;
     private ImageButton lockBtn;
+    private Integer page = 0;
+    private boolean loadingFlag = true;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+
 
 
     @SuppressLint("CheckResult")
@@ -158,46 +168,98 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
     }
 
     private void getAllRecord() {
-        recordsSearchBody = new RecordsSearchBody();
-        recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
-        recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
-        recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(BUSSINES_ID, "")));
-        recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
-        recordsSearchBody.setSize(50);
+        if (page == 0) {
+            recordsSearchBody = new RecordsSearchBody();
+            recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
+            recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
+            recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(BUSSINES_ID, "")));
+            recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
+            recordsSearchBody.setSize(20);
+            recordsSearchBody.setPage(page);
 
-        List<WorkersItem> workersItemList = FastSave.getInstance().getObjectsList(WORKERS_LIST, WorkersItem.class);
-        Map<String, WorkersItem> workersMap = new HashMap<>();
-        for (int i = 0; i < workersItemList.size(); i++) {
-            workersMap.put(workersItemList.get(i).getId(), workersItemList.get(i));
-        }
-        FastSave.getInstance().saveObject(WORKERS_MAP, workersMap);
+            List<WorkersItem> workersItemList = FastSave.getInstance().getObjectsList(WORKERS_LIST, WorkersItem.class);
+            Map<String, WorkersItem> workersMap = new HashMap<>();
+            for (int i = 0; i < workersItemList.size(); i++) {
+                workersMap.put(workersItemList.get(i).getId(), workersItemList.get(i));
+            }
+            FastSave.getInstance().saveObject(WORKERS_MAP, workersMap);
 
-        API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<ClientRecordNewResponse>() {
-                    @Override
-                    public void onSuccessful(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
-                        recordsList = response.body().getContent();
-                        if (recordsList != null && recordsList.size() > 0) {
-                            bussinesName.setText("Список заказов: " + recordsList.get(0).getBusiness().getName());
-                            recordListAdapter.setItems(recordsList);
-                            int count = 0;
-                            for (int i = 0; i < recordsList.size(); i++) {
-                                if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
-                                    count += recordsList.get(i).getPrice();
+            API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
+                    .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<ClientRecordNewResponse>() {
+                        @Override
+                        public void onSuccessful(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+                            recordsList = response.body().getContent();
+                            if (recordsList != null && recordsList.size() > 0) {
+                                bussinesName.setText("Список заказов: " + FastSave.getInstance().getString(BUSSINES_NAME, ""));
+//                            recordListAdapter.setItems(recordsList);
+                                newRecordListAdapter.addItems(recordsList);
+                                loadingFlag = true;
+                                int count = 0;
+                                for (int i = 0; i < recordsList.size(); i++) {
+                                    if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
+                                        count += recordsList.get(i).getPrice();
+                                    }
                                 }
+                                moneyCount.setText("Касса: " + count + " грн");
                             }
-                            moneyCount.setText("Касса: " + count + " грн");
+                            Log.d(TAG, "onSuccessful: ");
+                            FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
                         }
-                        Log.d(TAG, "onSuccessful: ");
-                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
-                    }
 
-                    @Override
-                    public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
-                        Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
-                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
-                    }
-                }));
+                        @Override
+                        public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+                            Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
+                            newRecordListAdapter.hiddenLoading();
+                            FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+                        }
+                    }));
+        } else {
+            recordsSearchBody = new RecordsSearchBody();
+            recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
+            recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
+            recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(BUSSINES_ID, "")));
+            recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
+            recordsSearchBody.setSize(20);
+            recordsSearchBody.setPage(page);
+
+            List<WorkersItem> workersItemList = FastSave.getInstance().getObjectsList(WORKERS_LIST, WorkersItem.class);
+            Map<String, WorkersItem> workersMap = new HashMap<>();
+            for (int i = 0; i < workersItemList.size(); i++) {
+                workersMap.put(workersItemList.get(i).getId(), workersItemList.get(i));
+            }
+            FastSave.getInstance().saveObject(WORKERS_MAP, workersMap);
+
+            API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
+                    .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<ClientRecordNewResponse>() {
+                        @Override
+                        public void onSuccessful(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+                            recordsList = response.body().getContent();
+                            if (recordsList != null && recordsList.size() > 0) {
+                                bussinesName.setText("Список заказов: " + FastSave.getInstance().getString(BUSSINES_NAME, ""));
+//                            recordListAdapter.setItems(recordsList);
+                                newRecordListAdapter.addItems(recordsList);
+                                loadingFlag = true;
+                                int count = 0;
+                                for (int i = 0; i < recordsList.size(); i++) {
+                                    if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
+                                        count += recordsList.get(i).getPrice();
+                                    }
+                                }
+                                moneyCount.setText("Касса: " + count + " грн");
+                            }
+                            Log.d(TAG, "onSuccessful: ");
+                            FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+                        }
+
+                        @Override
+                        public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
+                            Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
+                            newRecordListAdapter.hiddenLoading();
+                            FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+                        }
+                    }));
+        }
+
     }
 
 //    private void getAllRecord() {
@@ -253,10 +315,60 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
         customCallback = new CustomCallback(this, this);
         errorHandler = new ErrorHandler(this, this);
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recordListAdapter = new RecordListAdapter(RecordListActivity.this);
-        recordListAdapter.setClickListener(RecordListActivity.this);
-        recyclerView.setAdapter(recordListAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recordListAdapter = new RecordListAdapter(RecordListActivity.this);
+//        recordListAdapter.setClickListener(RecordListActivity.this);
+//        recyclerView.setAdapter(recordListAdapter);
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+//                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                newRecordListAdapter.removeAll();
+                page = 0;
+                getAllRecord();
+//                finish();
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        newRecordListAdapter = new NewRecordListAdapter(this);
+        newRecordListAdapter.endLessScrolled(recyclerView);
+        recyclerView.setAdapter(newRecordListAdapter);
+
+        newRecordListAdapter.setOnClickItemListener(recyclerView, new OnClickItemListener<RecordItem>() {
+            @Override
+            public void onClickItem(int position, RecordItem element) {
+                if (element != null) {
+                    FastSave.getInstance().saveObject("RECORD", element);
+                    startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onLongClickItem(int position, RecordItem element) {
+
+            }
+        });
+
+        newRecordListAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                loadingFlag = false;
+                newRecordListAdapter.showLoading();
+                ++page;
+                getAllRecord();
+            }
+        });
+
+
         addRecord = findViewById(R.id.addRecord);
         addRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -470,26 +582,26 @@ public class RecordListActivity extends AppCompatActivity implements RecordListA
 //        mStompClient.disconnect();
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        FastSave.getInstance().saveObject("RECORD", recordListAdapter.getItem(position));
-        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
-        finish();
-//        API.getSingleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordListAdapter.getItem(position).getId())
-//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
-//                    @Override
-//                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-//                        FastSave.getInstance().saveObject("RECORD", response.body());
-//                        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
-//
-//                    }
-//                }));
-    }
+//    @Override
+//    public void onItemClick(View view, int position) {
+//        FastSave.getInstance().saveObject("RECORD", recordListAdapter.getItem(position));
+//        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
+//        finish();
+////        API.getSingleRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordListAdapter.getItem(position).getId())
+////                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<AllRecordResponse>() {
+////                    @Override
+////                    public void onSuccessful(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+////                        FastSave.getInstance().saveObject("RECORD", response.body());
+////                        startActivity(new Intent(RecordListActivity.this, SingleRecordActivity.class));
+////                        finish();
+////                    }
+////
+////                    @Override
+////                    public void onEmpty(Call<AllRecordResponse> call, Response<AllRecordResponse> response) {
+////
+////                    }
+////                }));
+//    }
 
     @Override
     public void onBackPressed() {

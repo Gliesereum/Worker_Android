@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gliesereum.coupler_worker.R;
 import com.gliesereum.coupler_worker.network.json.carwash.WorkersItem;
-import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
+import com.gliesereum.coupler_worker.network.json.client_record_new.RecordItem;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.google.gson.reflect.TypeToken;
@@ -25,7 +25,7 @@ import static com.gliesereum.coupler_worker.util.Constants.WORKERS_MAP;
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.ViewHolder> {
 
-    private List<ContentItem> allRecordList = new ArrayList<>();
+    private List<RecordItem> allRecordList = new ArrayList<>();
     private Context context;
     private int i = 0;
     private ItemClickListener mClickListener;
@@ -75,7 +75,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(ContentItem recordInfo) {
+        public void bind(RecordItem recordInfo) {
             dataTextView.setText(Util.getStringFullDateTrue(recordInfo.getBegin()));
             timeTextView.setText(Util.getStringTime(recordInfo.getBegin()));
             Map<String, WorkersItem> workersMap = FastSave.getInstance().getObject(WORKERS_MAP, new TypeToken<Map<String, WorkersItem>>() {
@@ -125,7 +125,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         }
     }
 
-    public void setItems(List<ContentItem> cars) {
+    public void setItems(List<RecordItem> cars) {
         allRecordList.addAll(cars);
         notifyDataSetChanged();
     }
@@ -146,7 +146,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         void onItemClick(View view, int position);
     }
 
-    public ContentItem getItem(int id) {
+    public RecordItem getItem(int id) {
         return allRecordList.get(id);
     }
 }

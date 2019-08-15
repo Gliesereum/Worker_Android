@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
+import com.gliesereum.coupler_worker.network.json.client_record_new.RecordItem;
 import com.gliesereum.coupler_worker.util.Util;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ClientRecordListAdapter extends RecyclerView.Adapter<ClientRecordListAdapter.ViewHolder> {
 
-    private List<ContentItem> allRecordList = new ArrayList<>();
+    private List<RecordItem> allRecordList = new ArrayList<>();
     //    private Map<String, String> carWashNameMap = new HashMap<>();
     private Context context;
     private int i = 0;
@@ -64,7 +64,7 @@ public class ClientRecordListAdapter extends RecyclerView.Adapter<ClientRecordLi
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(ContentItem recordInfo) {
+        public void bind(RecordItem recordInfo) {
             dataTextView.setText(Util.getStringFullDateTrue(recordInfo.getBegin()));
             timeTextView.setText(Util.getStringTime(recordInfo.getBegin()));
             if (recordInfo.getStatusRecord().equals("CANCELED")) {
@@ -94,7 +94,7 @@ public class ClientRecordListAdapter extends RecyclerView.Adapter<ClientRecordLi
         }
     }
 
-    public void setItems(List<ContentItem> record) {
+    public void setItems(List<RecordItem> record) {
         allRecordList.addAll(record);
         notifyDataSetChanged();
     }
@@ -115,7 +115,7 @@ public class ClientRecordListAdapter extends RecyclerView.Adapter<ClientRecordLi
         void onItemClick(View view, int position);
     }
 
-    public ContentItem getItem(int id) {
+    public RecordItem getItem(int id) {
         return allRecordList.get(id);
     }
 }

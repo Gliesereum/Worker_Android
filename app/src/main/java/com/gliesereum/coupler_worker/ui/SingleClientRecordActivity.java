@@ -17,7 +17,7 @@ import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
 import com.gliesereum.coupler_worker.network.json.car.AllCarResponse;
-import com.gliesereum.coupler_worker.network.json.client_record_new.ContentItem;
+import com.gliesereum.coupler_worker.network.json.client_record_new.RecordItem;
 import com.gliesereum.coupler_worker.util.CircleTransform;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
@@ -40,7 +40,7 @@ public class SingleClientRecordActivity extends AppCompatActivity {
 
     private APIInterface API;
     private CustomCallback customCallback;
-    private ContentItem record;
+    private RecordItem record;
     private TextView carName;
     private TextView timeLabel;
     private TextView durationLabel;
@@ -86,7 +86,7 @@ public class SingleClientRecordActivity extends AppCompatActivity {
     private void initData() {
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(this, this);
-        record = FastSave.getInstance().getObject(CLIENT_RECORD, ContentItem.class);
+        record = FastSave.getInstance().getObject(CLIENT_RECORD, RecordItem.class);
     }
 
     private void initView() {
