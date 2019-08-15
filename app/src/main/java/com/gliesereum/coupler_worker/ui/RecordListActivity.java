@@ -37,6 +37,7 @@ import com.gliesereum.coupler_worker.network.json.client_record_new.RecordItem;
 import com.gliesereum.coupler_worker.network.json.notificatoin.NotificatoinBody;
 import com.gliesereum.coupler_worker.network.json.notificatoin.UserSubscribe;
 import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
+import com.gliesereum.coupler_worker.network.json.record.PaymentResponse;
 import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
@@ -194,13 +195,13 @@ public class RecordListActivity extends AppCompatActivity {
 //                            recordListAdapter.setItems(recordsList);
                                 newRecordListAdapter.addItems(recordsList);
                                 loadingFlag = true;
-                                int count = 0;
-                                for (int i = 0; i < recordsList.size(); i++) {
-                                    if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
-                                        count += recordsList.get(i).getPrice();
-                                    }
-                                }
-                                moneyCount.setText("Касса: " + count + " грн");
+////                                int count = 0;
+////                                for (int i = 0; i < recordsList.size(); i++) {
+////                                    if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
+////                                        count += recordsList.get(i).getPrice();
+////                                    }
+////                                }
+//                                moneyCount.setText("Касса: " + count + " грн");
                             }
                             Log.d(TAG, "onSuccessful: ");
                             FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
@@ -211,6 +212,20 @@ public class RecordListActivity extends AppCompatActivity {
                             Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
                             newRecordListAdapter.hiddenLoading();
                             FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
+                        }
+                    }));
+            recordsSearchBody.setProcesses(Arrays.asList("COMPLETED"));
+            API.getAllRecordPayment(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
+                    .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<PaymentResponse>() {
+                        @Override
+                        public void onSuccessful(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                            moneyCount.setText("Касса: " + response.body().getSum() + " грн");
+                        }
+
+                        @Override
+                        public void onEmpty(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                            moneyCount.setText("Касса: " + 0 + " грн");
+
                         }
                     }));
         } else {
@@ -239,13 +254,6 @@ public class RecordListActivity extends AppCompatActivity {
 //                            recordListAdapter.setItems(recordsList);
                                 newRecordListAdapter.addItems(recordsList);
                                 loadingFlag = true;
-                                int count = 0;
-                                for (int i = 0; i < recordsList.size(); i++) {
-                                    if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
-                                        count += recordsList.get(i).getPrice();
-                                    }
-                                }
-                                moneyCount.setText("Касса: " + count + " грн");
                             }
                             Log.d(TAG, "onSuccessful: ");
                             FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
@@ -253,7 +261,6 @@ public class RecordListActivity extends AppCompatActivity {
 
                         @Override
                         public void onEmpty(Call<ClientRecordNewResponse> call, Response<ClientRecordNewResponse> response) {
-                            Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
                             newRecordListAdapter.hiddenLoading();
                             FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
                         }
@@ -262,48 +269,6 @@ public class RecordListActivity extends AppCompatActivity {
 
     }
 
-//    private void getAllRecord() {
-//        recordsSearchBody = new RecordsSearchBody();
-//        recordsSearchBody.setBusinessCategoryId(FastSave.getInstance().getString(BUSINESS_CATEGORY_ID, ""));
-//        recordsSearchBody.setFrom(FastSave.getInstance().getLong(FROM_DATE, 0));
-//        recordsSearchBody.setTo(FastSave.getInstance().getLong(TO_DATE, 0));
-//        recordsSearchBody.setBusinessIds(Arrays.asList(FastSave.getInstance().getString(BUSSINES_ID, "")));
-//        recordsSearchBody.setProcesses(FastSave.getInstance().getObjectsList(STATUS_FILTER, String.class));
-//
-//        List<WorkersItem>workersItemList = FastSave.getInstance().getObjectsList(WORKERS_LIST, WorkersItem.class);
-//        Map<String, WorkersItem> workersMap = new HashMap<>();
-//        for (int i = 0; i < workersItemList.size(); i++) {
-//            workersMap.put(workersItemList.get(i).getId(), workersItemList.get(i));
-//        }
-//        FastSave.getInstance().saveObject(WORKERS_MAP, workersMap);
-//
-//        API.getAllRecord(FastSave.getInstance().getString(ACCESS_TOKEN, ""), recordsSearchBody)
-//                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<List<AllRecordResponse>>() {
-//                    @Override
-//                    public void onSuccessful(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
-//                        recordsList = response.body();
-//                        if (recordsList != null && recordsList.size() > 0) {
-//                            bussinesName.setText("Список заказов: " + recordsList.get(0).getBusiness().getName());
-//                            recordListAdapter.setItems(recordsList);
-//                            int count = 0;
-//                            for (int i = 0; i < recordsList.size(); i++) {
-//                                if (recordsList.get(i).getStatusProcess().equals("COMPLETED")) {
-//                                    count += recordsList.get(i).getPrice();
-//                                }
-//                            }
-//                            moneyCount.setText("Касса: " + count + " грн");
-//                        }
-//                        Log.d(TAG, "onSuccessful: ");
-//                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
-//                    }
-//
-//                    @Override
-//                    public void onEmpty(Call<List<AllRecordResponse>> call, Response<List<AllRecordResponse>> response) {
-//                        Toast.makeText(RecordListActivity.this, "Список заказов на сегодня пуст", Toast.LENGTH_SHORT).show();
-//                        FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
-//                    }
-//                }));
-//    }
 
     private void initView() {
         FastSave.init(getApplicationContext());
@@ -326,6 +291,7 @@ public class RecordListActivity extends AppCompatActivity {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
 //                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                FastSave.getInstance().saveBoolean(RECORD_LIST_ACTIVITY, true);
                 newRecordListAdapter.removeAll();
                 page = 0;
                 getAllRecord();

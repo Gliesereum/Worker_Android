@@ -15,6 +15,7 @@ import com.gliesereum.coupler_worker.network.json.pin.PinBody;
 import com.gliesereum.coupler_worker.network.json.pin.PinResponse;
 import com.gliesereum.coupler_worker.network.json.pin.RemindPinCodeResponse;
 import com.gliesereum.coupler_worker.network.json.record.AllRecordResponse;
+import com.gliesereum.coupler_worker.network.json.record.PaymentResponse;
 import com.gliesereum.coupler_worker.network.json.record.RecordsSearchBody;
 import com.gliesereum.coupler_worker.network.json.status.StatusRegistration;
 import com.gliesereum.coupler_worker.network.json.status.StatusResponse;
@@ -58,7 +59,7 @@ public interface APIInterface {
 //    Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
 
     @GET("karma/v1/business/customers")
-    Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("corporationId") String corporationId);
+    Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("corporationId") String corporationId, @Query("page") Integer page, @Query("size") Integer size);
 
     @GET("karma/v1/record/by-client-for-corporation")
     Call<ClientRecordNewResponse> getClientsRecord(@Header("Authorization") String accessToken, @Query("corporationIds") List<String> corporationIds, @Query("clientId") String clientId);
@@ -116,6 +117,9 @@ public interface APIInterface {
 
     @POST("karma/v1/record/create-for-business")
     Call<AllRecordResponse> doOrder(@Header("Authorization") String accessToken, @Body OrderBody orderBody);
+
+    @POST("karma/v1/record/by-params-for-business/payment-info")
+    Call<PaymentResponse> getAllRecordPayment(@Header("Authorization") String accessToken, @Body RecordsSearchBody recordsSearchBody);
 
     @POST("karma/v1/record/by-params-for-business")
     Call<ClientRecordNewResponse> getAllRecord(@Header("Authorization") String accessToken, @Body RecordsSearchBody recordsSearchBody);

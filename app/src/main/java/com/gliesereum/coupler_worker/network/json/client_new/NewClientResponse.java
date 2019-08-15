@@ -31,7 +31,7 @@ public class NewClientResponse {
     private Sort sort;
 
     @SerializedName("content")
-    private List<ContentItem> content;
+    private List<ClientItem> content;
 
     @SerializedName("first")
     private boolean first;
@@ -101,11 +101,11 @@ public class NewClientResponse {
         return sort;
     }
 
-    public void setContent(List<ContentItem> content) {
+    public void setContent(List<ClientItem> content) {
         this.content = content;
     }
 
-    public List<ContentItem> getContent() {
+    public List<ClientItem> getContent() {
         return content;
     }
 

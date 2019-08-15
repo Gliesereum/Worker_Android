@@ -7,7 +7,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
-public class ContentItem {
+public class ClientItem {
 
     @SerializedName("corporationIds")
     private List<String> corporationIds;

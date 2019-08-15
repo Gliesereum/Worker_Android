@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.adapter.ClientListAdapter;
 import com.gliesereum.coupler_worker.adapter.WorkerListAdapter;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
@@ -31,7 +30,7 @@ import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SECOND_
 import static com.gliesereum.coupler_worker.util.Constants.CHOOSE_WORKER_SPACE;
 import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 
-public class MasterListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, WorkerListAdapter.ItemClickListener {
+public class MasterListActivity extends AppCompatActivity implements WorkerListAdapter.ItemClickListener {
 
     private APIInterface API;
     private Toolbar toolbar;

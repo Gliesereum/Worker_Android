@@ -14,14 +14,18 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.gliesereum.coupler_worker.R;
-import com.gliesereum.coupler_worker.adapter.ClientListAdapter;
+import com.gliesereum.coupler_worker.adapter.NewClientListAdapter;
+import com.gliesereum.coupler_worker.adapter.customadapterrecycleview.listener.OnClickItemListener;
+import com.gliesereum.coupler_worker.adapter.customadapterrecycleview.listener.OnLoadMoreListener;
 import com.gliesereum.coupler_worker.network.APIClient;
 import com.gliesereum.coupler_worker.network.APIInterface;
 import com.gliesereum.coupler_worker.network.CustomCallback;
+import com.gliesereum.coupler_worker.network.json.client_new.ClientItem;
 import com.gliesereum.coupler_worker.network.json.client_new.NewClientResponse;
 import com.gliesereum.coupler_worker.util.ErrorHandler;
 import com.gliesereum.coupler_worker.util.FastSave;
@@ -43,7 +47,7 @@ import static com.gliesereum.coupler_worker.util.Constants.IS_LOCK;
 import static com.gliesereum.coupler_worker.util.Constants.ONLY_CLIENT;
 import static com.gliesereum.coupler_worker.util.Constants.REG_NEW_CLIENT;
 
-public class ClientsListActivity extends AppCompatActivity implements ClientListAdapter.ItemClickListener, View.OnClickListener {
+public class ClientsListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private APIInterface API;
     private ErrorHandler errorHandler;
@@ -58,11 +62,15 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     private Button addRecord;
     private CustomCallback customCallback;
     private RecyclerView recyclerView;
-    private ClientListAdapter clientListAdapter;
+    //    private ClientListAdapter clientListAdapter;
+    private NewClientListAdapter newClientListAdapter;
     private List<NewClientResponse> clientsList;
     private Button addNewClient;
     private EditText searchTextView;
     private ImageButton lockBtn;
+    private boolean loadingFlag = true;
+    private Integer page = 0;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -78,18 +86,38 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
     }
 
     private void getAllClients() {
-        API.getAllClientsByCorporation(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CORPORATION_ID, ""))
-                .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<NewClientResponse>() {
-                    @Override
-                    public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
-                        clientListAdapter.setItems(response.body().getContent());
-                    }
+        if (page == 0) {
+            API.getAllClientsByCorporation(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CORPORATION_ID, ""), page, 20)
+                    .enqueue(customCallback.getResponseWithProgress(new CustomCallback.ResponseCallback<NewClientResponse>() {
+                        @Override
+                        public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+//                        clientListAdapter.setItems(response.body().getContent());
+                            newClientListAdapter.addItems(response.body().getContent());
+                            loadingFlag = true;
+                        }
 
-                    @Override
-                    public void onEmpty(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+                        @Override
+                        public void onEmpty(Call<NewClientResponse> call, Response<NewClientResponse> response) {
 
-                    }
-                }));
+                        }
+                    }));
+        } else {
+            API.getAllClientsByCorporation(FastSave.getInstance().getString(ACCESS_TOKEN, ""), FastSave.getInstance().getString(CORPORATION_ID, ""), page, 20)
+                    .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<NewClientResponse>() {
+                        @Override
+                        public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+//                        clientListAdapter.setItems(response.body().getContent());
+                            newClientListAdapter.addItems(response.body().getContent());
+                            loadingFlag = true;
+                        }
+
+                        @Override
+                        public void onEmpty(Call<NewClientResponse> call, Response<NewClientResponse> response) {
+                            newClientListAdapter.hiddenLoading();
+                        }
+                    }));
+        }
+
 
     }
 
@@ -98,8 +126,8 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
                 .enqueue(customCallback.getResponse(new CustomCallback.ResponseCallback<NewClientResponse>() {
                     @Override
                     public void onSuccessful(Call<NewClientResponse> call, Response<NewClientResponse> response) {
-                        clientListAdapter.clearItems();
-                        clientListAdapter.setItems(response.body().getContent());
+                        newClientListAdapter.removeAll();
+                        newClientListAdapter.addItems(response.body().getContent());
                     }
 
                     @Override
@@ -130,10 +158,69 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
         addRecord = findViewById(R.id.addRecord);
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        clientListAdapter = new ClientListAdapter(ClientsListActivity.this);
-        clientListAdapter.setClickListener(ClientsListActivity.this);
-        recyclerView.setAdapter(clientListAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        clientListAdapter = new ClientListAdapter(ClientsListActivity.this);
+//        clientListAdapter.setClickListener(ClientsListActivity.this);
+//        recyclerView.setAdapter(clientListAdapter);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+//                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                newClientListAdapter.removeAll();
+                page = 0;
+                getAllClients();
+//                finish();
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        newClientListAdapter = new NewClientListAdapter(this);
+        newClientListAdapter.endLessScrolled(recyclerView);
+        recyclerView.setAdapter(newClientListAdapter);
+
+        newClientListAdapter.setOnClickItemListener(recyclerView, new OnClickItemListener<ClientItem>() {
+            @Override
+            public void onClickItem(int position, ClientItem element) {
+                if (element != null) {
+                    if (FastSave.getInstance().getBoolean(ONLY_CLIENT, false)) {
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, element.getId());
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, element.getFirstName());
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, element.getMiddleName());
+                        FastSave.getInstance().saveString(CLIENT_AVATAR_URL, element.getAvatarUrl());
+                        startActivity(new Intent(ClientsListActivity.this, ClientRecordListActivity.class));
+                    } else {
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, element.getId());
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, element.getFirstName());
+                        FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, element.getMiddleName());
+                        FastSave.getInstance().saveString(CLIENT_AVATAR_URL, element.getAvatarUrl());
+                        FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onLongClickItem(int position, ClientItem element) {
+
+            }
+        });
+
+        newClientListAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                loadingFlag = false;
+                newClientListAdapter.showLoading();
+                ++page;
+                getAllClients();
+            }
+        });
+
         addNewClient = findViewById(R.id.addNewClient);
         addNewClient.setOnClickListener(this);
         searchTextView = findViewById(R.id.searchTextView);
@@ -174,24 +261,6 @@ public class ClientsListActivity extends AppCompatActivity implements ClientList
 
         }
     };
-
-    @Override
-    public void onItemClick(View view, int position) {
-        if (FastSave.getInstance().getBoolean(ONLY_CLIENT, false)) {
-            FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
-            FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
-            FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
-            FastSave.getInstance().saveString(CLIENT_AVATAR_URL, clientListAdapter.getItem(position).getAvatarUrl());
-            startActivity(new Intent(ClientsListActivity.this, ClientRecordListActivity.class));
-        } else {
-            FastSave.getInstance().saveString(CHOOSE_CLIENT_ID, clientListAdapter.getItem(position).getId());
-            FastSave.getInstance().saveString(CHOOSE_CLIENT_FIRST_NAME, clientListAdapter.getItem(position).getFirstName());
-            FastSave.getInstance().saveString(CHOOSE_CLIENT_SECOND_NAME, clientListAdapter.getItem(position).getMiddleName());
-            FastSave.getInstance().saveString(CLIENT_AVATAR_URL, clientListAdapter.getItem(position).getAvatarUrl());
-            FastSave.getInstance().saveBoolean(CHOOSE_CLIENT_DONE, true);
-            finish();
-        }
-    }
 
     @Override
     public void onClick(View view) {
