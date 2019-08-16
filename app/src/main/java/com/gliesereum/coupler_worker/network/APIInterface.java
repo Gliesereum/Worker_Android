@@ -55,14 +55,12 @@ public interface APIInterface {
     @GET("karma/v1/worker/by-business")
     Call<WorkerResponse> getAllWorkersByBusiness(@Header("Authorization") String accessToken, @Query("businessId") String businessId);
 
-//    @GET("karma/v1/business/customers")
-//    Call<List<ClientResponse>> getAllClientsByBusiness(@Header("Authorization") String accessToken, @Query("ids") List<String> ids);
 
     @GET("karma/v1/business/customers")
     Call<NewClientResponse> getAllClientsByCorporation(@Header("Authorization") String accessToken, @Query("corporationId") String corporationId, @Query("page") Integer page, @Query("size") Integer size);
 
-    @GET("karma/v1/record/by-client-for-corporation")
-    Call<ClientRecordNewResponse> getClientsRecord(@Header("Authorization") String accessToken, @Query("corporationIds") List<String> corporationIds, @Query("clientId") String clientId);
+//    @GET("karma/v1/record/by-client-for-corporation")
+//    Call<ClientRecordNewResponse> getClientsRecord(@Header("Authorization") String accessToken, @Query("corporationIds") List<String> corporationIds, @Query("clientId") String clientId);
 
     @GET("karma/v1/business/customers")
     Call<NewClientResponse> searchClients(@Header("Authorization") String accessToken, @Query("corporationId") String corporationId, @Query("query") String query);

@@ -320,7 +320,7 @@ public class Util {
                         }
                         alertDialog = new LottieAlertDialog.Builder(activity, DialogTypes.TYPE_QUESTION)
                                 .setTitle("Выход")
-                                .setDescription("Вы действительно хотите выйти со своего профиля?")
+                                .setDescription("Вы действительно хотите выйти из Coupler Worker?")
                                 .setPositiveText("Да")
                                 .setNegativeText("Нет")
                                 .setPositiveButtonColor(activity.getResources().getColor(R.color.md_red_A200))

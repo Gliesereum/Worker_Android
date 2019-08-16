@@ -184,7 +184,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Поис клиента по имени или по номеру телефона"
+            android:text="Поиск клиента по имени / номеру телефона"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

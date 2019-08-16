@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Для доступа к приложению введите PIN код"
+        android:text="Введите PIN-код для доступа к приложению"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18sp"
