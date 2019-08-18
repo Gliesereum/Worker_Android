@@ -202,7 +202,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         TextView priceServiceLabel;
         int index = 0;
         for (int i = 0; i < carWash.getServicePrices().size(); i++) {
-            if (!serviceMap.containsKey(carWash.getServicePrices().get(i).getId())) {
+            if (carWash.getServicePrices().get(i).getObjectState().equals("ACTIVE") && !serviceMap.containsKey(carWash.getServicePrices().get(i).getId())) {
                 layout2 = LayoutInflater.from(this).inflate(R.layout.service_order_item, serviceLianear, false);
                 checkBox = layout2.findViewById(R.id.nameServiceLabel);
                 timeServiceLabel = layout2.findViewById(R.id.timeServiceLabel);
