@@ -83,6 +83,16 @@ public class RegisterClientActivity extends AppCompatActivity implements View.On
         secondNameTextView.addTextChangedListener(secondNameListener);
         middleNameTextView.addTextChangedListener(thirdNameListener);
         saveClientInfoBtn.setOnClickListener(this);
+
+        if (user.getFirstName() != null) {
+            firstNameTextView.setText(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            secondNameTextView.setText(user.getLastName());
+        }
+        if (user.getMiddleName() != null) {
+            middleNameTextView.setText(user.getMiddleName());
+        }
     }
 
     @Override
