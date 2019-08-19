@@ -21,8 +21,12 @@ import com.gliesereum.coupler_worker.network.json.client_record_new.RecordItem;
 import com.gliesereum.coupler_worker.util.CircleTransform;
 import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
+import com.labters.lottiealertdialoglibrary.ClickListener;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,8 @@ public class SingleClientRecordActivity extends AppCompatActivity {
     private ImageView imageView8;
     private TextView textView21;
     private ImageButton lockBtn;
+    private ImageView cancelImg;
+    private TextView cancelDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,33 @@ public class SingleClientRecordActivity extends AppCompatActivity {
         if (FastSave.getInstance().getBoolean(IS_LOCK, false)) {
             new Util().lockScreen(this, this, lockBtn);
         }
+
+        checkCancelRecord();
+
     }
+
+    private void checkCancelRecord() {
+        if (record.getStatusProcess().equals("CANCELED") && record.getCanceledDescription() != null) {
+            cancelImg.setVisibility(View.VISIBLE);
+            cancelDescription.setVisibility(View.VISIBLE);
+            cancelDescription.setText(record.getCanceledDescription());
+            alertDialog = new LottieAlertDialog.Builder(SingleClientRecordActivity.this, DialogTypes.TYPE_ERROR)
+                    .setTitle("Причина отмены заказа:")
+                    .setDescription(record.getCanceledDescription())
+                    .setPositiveText("Ок")
+                    .setPositiveButtonColor(getResources().getColor(R.color.colorPrimaryGreen))
+                    .setPositiveListener(new ClickListener() {
+                        @Override
+                        public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                            alertDialog.dismiss();
+                        }
+                    })
+                    .build();
+            alertDialog.setCancelable(true);
+            alertDialog.show();
+        }
+    }
+
 
     private void initData() {
         API = APIClient.getClient().create(APIInterface.class);
@@ -117,6 +149,8 @@ public class SingleClientRecordActivity extends AppCompatActivity {
                 new Util().lockScreen(SingleClientRecordActivity.this, SingleClientRecordActivity.this, lockBtn);
             }
         });
+        cancelImg = findViewById(R.id.cancelImg);
+        cancelDescription = findViewById(R.id.cancelDescription);
     }
 
     private void fillActivity() {

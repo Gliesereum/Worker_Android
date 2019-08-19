@@ -13,7 +13,7 @@ public class RecordItem {
     private String lastName;
 
     @SerializedName("canceledDescription")
-    private Object canceledDescription;
+    private String canceledDescription;
 
     @SerializedName("packageDto")
     private PackageDto packageDto;
@@ -101,12 +101,12 @@ public class RecordItem {
         return lastName;
     }
 
-    public void setCanceledDescription(Object canceledDescription) {
-        this.canceledDescription = canceledDescription;
+    public String getCanceledDescription() {
+        return canceledDescription;
     }
 
-    public Object getCanceledDescription() {
-        return canceledDescription;
+    public void setCanceledDescription(String canceledDescription) {
+        this.canceledDescription = canceledDescription;
     }
 
     public void setPackageDto(PackageDto packageDto) {

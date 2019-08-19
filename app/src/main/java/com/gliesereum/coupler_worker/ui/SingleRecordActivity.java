@@ -30,8 +30,12 @@ import com.gliesereum.coupler_worker.util.FastSave;
 import com.gliesereum.coupler_worker.util.Util;
 import com.gohn.nativedialog.ButtonType;
 import com.gohn.nativedialog.NDialog;
+import com.labters.lottiealertdialoglibrary.ClickListener;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,8 +79,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private ImageButton updateTimeBtn;
     private Calendar date;
     private Long begin = 0L;
-
-
+    private ImageView cancelImg;
+    private TextView cancelDescription;
 
 
     @Override
@@ -103,6 +107,54 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             new Util().lockScreen(this, this, lockBtn);
         }
 
+        checkCancelRecord();
+
+    }
+
+    private void checkCancelRecord() {
+        if (record.getStatusProcess().equals("CANCELED") && record.getCanceledDescription() != null) {
+            cancelImg.setVisibility(View.VISIBLE);
+            cancelDescription.setVisibility(View.VISIBLE);
+            cancelDescription.setText(record.getCanceledDescription());
+            alertDialog = new LottieAlertDialog.Builder(SingleRecordActivity.this, DialogTypes.TYPE_ERROR)
+                    .setTitle("Причина отмены заказа:")
+                    .setDescription(record.getCanceledDescription())
+                    .setPositiveText("Ок")
+                    .setPositiveButtonColor(getResources().getColor(R.color.colorPrimaryGreen))
+                    .setPositiveListener(new ClickListener() {
+                        @Override
+                        public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                            alertDialog.dismiss();
+                        }
+                    })
+                    .build();
+            alertDialog.setCancelable(true);
+            alertDialog.show();
+
+
+//            NDialog cancelInfoDialog = new NDialog(SingleRecordActivity.this, ButtonType.NO_BUTTON);
+//            cancelInfoDialog.setCustomView(R.layout.cancele_info_dialog);
+//            List<View> childViews = cancelInfoDialog.getCustomViewChildren();
+//            for (View childView : childViews) {
+//                switch (childView.getId()) {
+//                    case R.id.canceledDescription:
+//                        TextView canceledDescription = childView.findViewById(R.id.canceledDescription);
+//                        canceledDescription.setText(record.getCanceledDescription());
+//                        break;
+//                    case R.id.dismissBtn:
+//                        Button dismissBtn = childView.findViewById(R.id.dismissBtn);
+//                        dismissBtn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                cancelInfoDialog.dismiss();
+//                            }
+//                        });
+//                        break;
+//                }
+//            }
+//            cancelInfoDialog.isCancelable(true);
+//            cancelInfoDialog.show();
+        }
     }
 
     private void initData() {
@@ -152,6 +204,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
                 showDateTimePicker();
             }
         });
+        cancelImg = findViewById(R.id.cancelImg);
+        cancelDescription = findViewById(R.id.cancelDescription);
     }
 
     public void showDateTimePicker() {
@@ -186,7 +240,6 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
         },
                 currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
     }
-
 
 
     private void fillActivity() {

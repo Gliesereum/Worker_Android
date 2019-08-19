@@ -16,7 +16,6 @@ public class APIClient {
     private static Retrofit retrofit = null;
 
     private static final String ROOT_URL = "https://dev.gliesereum.com/api/";
-
     //    private static final String ROOT_URL = "https://api.coupler.app/api/";
     //    private static final String ROOT_URL = "http://192.168.0.107:8200/api/";
 //    private static final String ROOT_URL = "https://karma.gliesereum.com/api/";

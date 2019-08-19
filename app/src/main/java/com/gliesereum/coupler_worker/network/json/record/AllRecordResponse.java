@@ -10,6 +10,9 @@ import javax.annotation.Generated;
 @Generated("com.robohorse.robopojogenerator")
 public class AllRecordResponse {
 
+	@SerializedName("canceledDescription")
+	private String canceledDescription;
+
 	@SerializedName("firstName")
 	private String firstName;
 
@@ -87,6 +90,14 @@ public class AllRecordResponse {
 
 	@SerializedName("notificationSend")
 	private boolean notificationSend;
+
+	public String getCanceledDescription() {
+		return canceledDescription;
+	}
+
+	public void setCanceledDescription(String canceledDescription) {
+		this.canceledDescription = canceledDescription;
+	}
 
 	public String getMiddleName() {
 		return middleName;
