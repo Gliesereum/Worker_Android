@@ -13,10 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LockActivity"></activity>
-        <activity android:name=".ui.MasterListActivity" />
-        <activity android:name=".ui.SingleClientRecordActivity" />
-        <activity android:name=".ui.ClientRecordListActivity" />
+        <activity
+            android:name=".ui.LockActivity"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".ui.MasterListActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.SingleClientRecordActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.ClientRecordListActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".ui.RegisterClientActivity"
             android:screenOrientation="landscape" />

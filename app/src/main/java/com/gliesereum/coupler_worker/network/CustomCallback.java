@@ -90,8 +90,8 @@ public class CustomCallback {
         try {
             if (alertDialog == null || !alertDialog.isShowing()) {
                 alertDialog = new LottieAlertDialog.Builder(context, DialogTypes.TYPE_LOADING)
-                        .setTitle("Загрузка")
-                        .setDescription("Происходит загрузка, подождите")
+                        .setTitle("Подождите")
+                        .setDescription("Идет загрузка")
                         .build();
                 alertDialog.setCancelable(false);
                 alertDialog.show();
