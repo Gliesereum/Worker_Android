@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ConstraintLayout valueBlock;
     private PinView codeView;
     private TextView codeLabel1;
-    private TextView codeLabel2;
+    //    private TextView codeLabel2;
     private TextView timerLabel;
     private String code;
     private CountDownTimer countDownTimer;
@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         codeLabel1 = findViewById(R.id.codeLabel1);
-        codeLabel2 = findViewById(R.id.codeLabel2);
+//        codeLabel2 = findViewById(R.id.codeLabel2);
         timerLabel = findViewById(R.id.timerLabel);
     }
 
@@ -278,7 +278,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call<CodeResponse> call, Response<CodeResponse> response) {
                 if (response.code() == 200) {
                     showCodeBlock();
-                    setPhoneCodeLabel(phone);
+//                    setPhoneCodeLabel(phone);
+                    codeLabel1.setText(codeLabel1.getText().toString() + " " + "+" + phone);
                     startTimer();
                 } else {
                     try {
@@ -299,7 +300,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void showValueBlock() {
         codeLabel1.setVisibility(View.GONE);
-        codeLabel2.setVisibility(View.GONE);
+//        codeLabel2.setVisibility(View.GONE);
         timerLabel.setVisibility(View.GONE);
         codeView.setVisibility(View.GONE);
         loginBtn.setVisibility(View.GONE);
@@ -313,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getCodeBtn.setVisibility(View.GONE);
         loginBtn.setVisibility(View.VISIBLE);
         codeLabel1.setVisibility(View.VISIBLE);
-        codeLabel2.setVisibility(View.VISIBLE);
+//        codeLabel2.setVisibility(View.VISIBLE);
         timerLabel.setVisibility(View.VISIBLE);
         codeView.setVisibility(View.VISIBLE);
         loginBtn.setEnabled(false);
@@ -325,10 +326,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                 TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
-    }
-
-    public void setPhoneCodeLabel(String phone) {
-        codeLabel2.setText("+" + phone);
     }
 
     @Override

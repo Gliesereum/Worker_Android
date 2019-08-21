@@ -2,7 +2,7 @@ package com.gliesereum.coupler_worker.ui;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -37,7 +37,7 @@ public class MasterListActivity extends AppCompatActivity implements WorkerListA
     private CustomCallback customCallback;
     private RecyclerView recyclerView;
     private WorkerListAdapter workerListAdapter;
-    private ImageButton lockBtn;
+    private Button lockBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,7 +3,7 @@ package com.gliesereum.coupler_worker.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +48,7 @@ public class ClientRecordListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     //    private ClientRecordListAdapter clientRecordListAdapter;
     private NewClientRecordListAdapter newClientRecordListAdapter;
-    private ImageButton lockBtn;
+    private Button lockBtn;
     private RecordsSearchBody recordsSearchBody;
     private boolean loadingFlag = true;
     private Integer page = 0;

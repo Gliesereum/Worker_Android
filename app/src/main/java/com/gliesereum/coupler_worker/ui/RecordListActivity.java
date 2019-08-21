@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -110,7 +109,7 @@ public class RecordListActivity extends AppCompatActivity {
     private TextView toLabel1;
     private TextView toLabel2;
     private Toolbar toolbar;
-    private ImageButton lockBtn;
+    private Button lockBtn;
     private Integer page = 0;
     private boolean loadingFlag = true;
     private SwipeRefreshLayout swipeRefreshLayout;

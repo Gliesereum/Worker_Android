@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -96,7 +95,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private TextView carName;
     private Button chooseMasterBtn;
     private TextView masterNameTextView;
-    private ImageButton lockBtn;
+    private Button lockBtn;
     private ImageView imageView15;
     private TextView textView8;
     private ImageView imageView14;

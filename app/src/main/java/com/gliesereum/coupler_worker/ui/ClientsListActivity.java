@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,7 +66,7 @@ public class ClientsListActivity extends AppCompatActivity implements View.OnCli
     private List<NewClientResponse> clientsList;
     private Button addNewClient;
     private EditText searchTextView;
-    private ImageButton lockBtn;
+    private Button lockBtn;
     private boolean loadingFlag = true;
     private Integer page = 0;
     private SwipeRefreshLayout swipeRefreshLayout;

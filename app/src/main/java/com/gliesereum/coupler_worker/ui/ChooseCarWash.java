@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -71,7 +70,7 @@ public class ChooseCarWash extends AppCompatActivity implements MyRecyclerViewAd
     private MyRecyclerViewAdapter adapter;
     private Button logoutBtn;
     private ImageView imageView3;
-    private ImageButton lockBtn;
+    private Button lockBtn;
     private LottieAlertDialog alertDialog;
 
 

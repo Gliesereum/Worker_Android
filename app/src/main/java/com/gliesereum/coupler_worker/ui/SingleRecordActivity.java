@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -75,8 +74,8 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
     private ImageView avatarImg;
     private ImageView imageView8;
     private TextView textView21;
-    private ImageButton lockBtn;
-    private ImageButton updateTimeBtn;
+    private Button lockBtn;
+    private Button updateTimeBtn;
     private Calendar date;
     private Long begin = 0L;
     private ImageView cancelImg;
@@ -198,6 +197,9 @@ public class SingleRecordActivity extends AppCompatActivity implements View.OnCl
             }
         });
         updateTimeBtn = findViewById(R.id.updateTimeBtn);
+        if (record.getStatusProcess().equals("WAITING")) {
+            updateTimeBtn.setVisibility(View.VISIBLE);
+        }
         updateTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

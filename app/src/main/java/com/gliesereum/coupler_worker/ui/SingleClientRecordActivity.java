@@ -3,7 +3,7 @@ package com.gliesereum.coupler_worker.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,7 +60,7 @@ public class SingleClientRecordActivity extends AppCompatActivity {
     private ImageView avatarImg;
     private ImageView imageView8;
     private TextView textView21;
-    private ImageButton lockBtn;
+    private Button lockBtn;
     private ImageView cancelImg;
     private TextView cancelDescription;
 

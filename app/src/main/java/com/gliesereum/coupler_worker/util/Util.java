@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -104,7 +103,7 @@ public class Util {
     public Util() {
     }
 
-    public void lockScreen(Context context, Activity activity, ImageButton lockBtn) {
+    public void lockScreen(Context context, Activity activity, Button lockBtn) {
         Log.d("TAG", "lockScreen: ");
         API = APIClient.getClient().create(APIInterface.class);
         customCallback = new CustomCallback(context, activity);
